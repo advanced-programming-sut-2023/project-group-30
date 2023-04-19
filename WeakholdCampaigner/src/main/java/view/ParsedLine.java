@@ -56,7 +56,8 @@ public class ParsedLine {
                         }
                     }
 
-                    parsedLine.options.put(optionMatcher.group("optionName"), argumentsArrayList.get(0));
+                    String argument = argumentsArrayList.isEmpty() ? null : argumentsArrayList.get(0);
+                    parsedLine.options.put(optionMatcher.group("optionName"), argument);
                 }
             }
 

@@ -35,9 +35,9 @@ public class MenuUtils {
                     slogan = argument;
                     break;
                 default:
-                    System.out.println("Error: This command must have the following format: " +
+                    System.out.println("Error: This command should have the following format:\n" +
                             "user create -u <username> -p <password> [--confirmation <password confirmation>]" +
-                            "–email <email> [-n <nickname>] [-s <slogan>]");
+                            "--email <email> [-n <nickname>] [-s <slogan>]");
                     return;
             }
         }

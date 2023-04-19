@@ -34,17 +34,19 @@ public class AppMenu {
     public void run() {
         while (true) {
             ParsedLine parsedLine = ParsedLine.parseLine(scanner.nextLine());
-            if (parsedLine == null) System.out.println("Error: Invalid command structure.\n A command should" +
+            if (parsedLine == null) System.out.println("Error: Invalid command structure.\nA command should" +
                     " have the following structure: <command> [<subcommand>] [<options>]\nAn option should have the" +
-                    " following form: (-<shortOption>|--<longOption>) [<arguments>]");
+                    " following form and cannot have more than one argument: (-<shortOption>|--<longOption>) [<argument>]");
             else {
+                boolean isValid = false;
                 for (Command command :
                         commands)
                     if (command.command.equals(parsedLine.command) && command.subcommand.equals(parsedLine.subCommand)) {
                         command.util.accept(parsedLine);
+                        isValid = true;
                         break;
                     }
-                System.out.println("Error: Invalid command.");
+                if (!isValid) System.out.println("Error: Invalid command.");
             }
         }
 
