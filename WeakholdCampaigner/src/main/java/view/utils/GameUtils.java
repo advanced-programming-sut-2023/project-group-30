@@ -358,6 +358,13 @@ public class GameUtils {
         } else System.out.println("Error: pleas enter counter or type correctly");
 
     }
+    public static void repair(ParsedLine parsedLine) {
+        switch (GameMenuController.repair()) {
+            case OK:
+                break;
+        }
+    }
+
 
 
 }
