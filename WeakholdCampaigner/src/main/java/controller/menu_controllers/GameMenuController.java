@@ -21,4 +21,10 @@ public class GameMenuController {
     public static MenuMessages foodRate(int rate) {
         return MenuMessages.OK;
     }
+
+    public static void showFoodRate() {
+    }
+    public static MenuMessages taxRate(int rate) {
+        return MenuMessages.OK;
+    }
 }

@@ -212,5 +212,33 @@ public class GameUtils {
         }
         else System.out.println("Error: please enter rateNumber correctly");
     }
+    public static void showFoodRate(ParsedLine parsedLine) {
+        GameMenuController.showFoodRate();
+    }
+    public static void taxRate(ParsedLine parsedLine) {
+        String Rate = null;
+        HashMap<String, String> options = parsedLine.options;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey(), argument = entry.getValue();
+            switch (option) {
+                case "-r":
+                    Rate = argument;
+                    break;
+                default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "tax rate -r <rateNumber>");
+                    return;
+            }
+        }
+        if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)){
+            int rate = Integer.parseInt(Rate);
+            switch (GameMenuController.taxRate(rate)) {
+                case OK:
+                    break;
+            }
+        }
+        else System.out.println("Error: please enter rateNumber correctly");
+    }
 
 }
