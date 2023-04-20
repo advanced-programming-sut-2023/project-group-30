@@ -28,6 +28,8 @@ public class AppMenu {
             commands.add(new Command("show", "map", GameUtils::showMap));
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
+            commands.add(new Command("show", "details", GameUtils::showDetails));
+            commands.add((new Command("exit","mapMenu", GameUtils::exitFromMapMenu)));
         }
 
         return new AppMenu(commands, scanner);

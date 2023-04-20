@@ -122,5 +122,41 @@ public class GameUtils {
             return 0;
         else return Integer.parseInt(dir);
     }
+    public static void showDetails(ParsedLine parsedLine) {
+        String X = null, Y = null;
+        HashMap<String, String> options = parsedLine.options;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey(), argument = entry.getValue();
+            switch (option) {
+                case "-x":
+                    X = argument;
+                    break;
+                case "-y":
+                    Y = argument;
+                    break;
+                default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "show details -x [x] -y [y]");
+                    return;
+            }
+        }
+        if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y)) {
+            int x = Integer.parseInt(X), y = Integer.parseInt(Y);
+            switch (MapController.showDetails(x, y)) {
+                case OK:
+                    break;
+                case INVALID_LOCATION:
+                    System.out.println("Error: please enter valid location");
+                    break;
+
+            }
+        } else System.out.println("Error: please enter location correctly");
+
+    }
+    public static void exitFromMapMenu(ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("you are in Game Menu");
+    }
 
 }
