@@ -262,6 +262,40 @@ public class GameUtils {
             }
         }
         return Rate;
+    }
+    public static void dropBuilding(ParsedLine parsedLine) {
+        String X = null, Y = null, type = null;
+        HashMap<String, String> options = parsedLine.options;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey(), argument = entry.getValue();
+            switch (option) {
+                case "-x":
+                    X = argument;
+                    break;
+                case "-y":
+                    Y = argument;
+                    break;
+                case "--type":
+                    type = argument;
+                    break;
+                default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "drop building -x [x] -y [y] --type [type]");
+                    return;
+            }
+        }
+        if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y) && type != null) {
+            int x = Integer.parseInt(X), y = Integer.parseInt(Y);
+            switch (GameMenuController.dropBuilding(x, y, type)) {
+                case OK:
+                    break;
+                case INVALID_LOCATION:
+                    System.out.println("Error: please enter valid location");
+                    break;
+
+            }
+        } else System.out.println("Error: please enter location or type correctly");
 
     }
 

@@ -33,4 +33,7 @@ public class GameMenuController {
     public static MenuMessages setFearRate(int rate) {
         return MenuMessages.OK;
     }
+    public static MenuMessages dropBuilding(int x, int y, String type){
+        return MenuMessages.OK;
+    }
 }
