@@ -27,4 +27,10 @@ public class GameMenuController {
     public static MenuMessages taxRate(int rate) {
         return MenuMessages.OK;
     }
+
+    public static void showTaxRate() {
+    }
+    public static MenuMessages setFearRate(int rate) {
+        return MenuMessages.OK;
+    }
 }

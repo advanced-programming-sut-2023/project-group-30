@@ -187,35 +187,67 @@ public class GameUtils {
     public static void showFoodList(ParsedLine parsedLine) {
         GameMenuController.showFoodList();
     }
+
     public static void setFoodRate(ParsedLine parsedLine) {
-        String Rate = null;
-        HashMap<String, String> options = parsedLine.options;
-        for (Map.Entry<String, String> entry :
-                options.entrySet()) {
-            String option = entry.getKey(), argument = entry.getValue();
-            switch (option) {
-                case "-r":
-                    Rate = argument;
-                    break;
-                default:
-                    System.out.println("Error: This command should have the following format:\n" +
-                            "food rate -r <rateNumber>");
-                    return;
-            }
+        String Rate = getRate(parsedLine);
+        if (Rate == null)
+            System.out.println("Error: This command should have the following format:\n" +
+                    "food rate -r <rateNumber>");
+        else {
+            if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)) {
+                int rate = Integer.parseInt(Rate);
+                switch (GameMenuController.foodRate(rate)) {
+                    case OK:
+                        break;
+                }
+            } else System.out.println("Error: please enter rateNumber correctly");
+
         }
-        if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)){
-            int rate = Integer.parseInt(Rate);
-            switch (GameMenuController.foodRate(rate)) {
-                case OK:
-                    break;
-            }
-        }
-        else System.out.println("Error: please enter rateNumber correctly");
     }
+
     public static void showFoodRate(ParsedLine parsedLine) {
         GameMenuController.showFoodRate();
     }
+
     public static void taxRate(ParsedLine parsedLine) {
+        String Rate = getRate(parsedLine);
+        if (Rate == null)
+            System.out.println("Error: This command should have the following format:\n" +
+                    "tax rate -r <rateNumber>");
+        else {
+            if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)) {
+                int rate = Integer.parseInt(Rate);
+                switch (GameMenuController.taxRate(rate)) {
+                    case OK:
+                        break;
+                }
+            } else System.out.println("Error: please enter rateNumber correctly");
+
+        }
+    }
+
+    public static void showTaxRate(ParsedLine parsedLine) {
+        GameMenuController.showTaxRate();
+    }
+
+    public static void fearRate(ParsedLine parsedLine) {
+        String Rate = getRate(parsedLine);
+        if (Rate == null)
+            System.out.println("Error: This command should have the following format:\n" +
+                    "fear rate -r <rateNumber>");
+        else {
+            if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)) {
+                int rate = Integer.parseInt(Rate);
+                switch (GameMenuController.setFearRate(rate)) {
+                    case OK:
+                        break;
+                }
+            } else System.out.println("Error: please enter rateNumber correctly");
+
+        }
+    }
+
+    public static String getRate(ParsedLine parsedLine) {
         String Rate = null;
         HashMap<String, String> options = parsedLine.options;
         for (Map.Entry<String, String> entry :
@@ -226,19 +258,12 @@ public class GameUtils {
                     Rate = argument;
                     break;
                 default:
-                    System.out.println("Error: This command should have the following format:\n" +
-                            "tax rate -r <rateNumber>");
-                    return;
+                    return null;
             }
         }
-        if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)){
-            int rate = Integer.parseInt(Rate);
-            switch (GameMenuController.taxRate(rate)) {
-                case OK:
-                    break;
-            }
-        }
-        else System.out.println("Error: please enter rateNumber correctly");
+        return Rate;
+
     }
+
 
 }
