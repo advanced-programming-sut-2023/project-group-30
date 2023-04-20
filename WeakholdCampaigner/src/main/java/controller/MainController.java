@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class MainController {
     private static final HashMap<AppMenu.MenuName, AppMenu> menus = new HashMap<>();
     private static AppMenu currentMenu;
-    private User currentUser;
+    private static User currentUser;
     private final Scanner scanner = new Scanner(System.in);
 
     public void initializeApp() {
@@ -18,7 +18,7 @@ public class MainController {
         menus.put(AppMenu.MenuName.GAME_MENU, AppMenu.getMenu(AppMenu.MenuName.GAME_MENU, scanner));
         menus.put(AppMenu.MenuName.MAP_MENU, AppMenu.getMenu(AppMenu.MenuName.MAP_MENU, scanner));
 
-        currentMenu = menus.get(AppMenu.MenuName.SIGNUP_MENU);
+        currentMenu = menus.get(AppMenu.MenuName.GAME_MENU);
         currentUser = null;
     }
 
@@ -34,5 +34,13 @@ public class MainController {
 
     public static AppMenu getCurrentMenu() {
         return currentMenu;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        MainController.currentUser = currentUser;
     }
 }

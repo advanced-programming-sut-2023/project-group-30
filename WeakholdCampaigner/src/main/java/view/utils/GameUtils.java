@@ -158,5 +158,29 @@ public class GameUtils {
         MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
         System.out.println("you are in Game Menu");
     }
+    public static void showPopularity(ParsedLine parsedLine) {
+        HashMap<String, String> options = parsedLine.options;
+        boolean signForFactors = false;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey();
+            switch (option) {
+                case "--factors":
+                    signForFactors = true;
+                    break;
+                default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "show popularity [--factors]");
+                    return;
+            }
+        }
+        if (signForFactors)
+            GameMenuController.showPopularityFactor();
+        else {
+            System.out.println(GameMenuController.showPopularity(MainController.getCurrentUser()));
+        }
+
+
+    }
 
 }
