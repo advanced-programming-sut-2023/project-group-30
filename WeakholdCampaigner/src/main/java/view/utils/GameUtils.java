@@ -122,6 +122,7 @@ public class GameUtils {
             return 0;
         else return Integer.parseInt(dir);
     }
+
     public static void showDetails(ParsedLine parsedLine) {
         String X = null, Y = null;
         HashMap<String, String> options = parsedLine.options;
@@ -154,10 +155,12 @@ public class GameUtils {
         } else System.out.println("Error: please enter location correctly");
 
     }
+
     public static void exitFromMapMenu(ParsedLine parsedLine) {
         MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
         System.out.println("you are in Game Menu");
     }
+
     public static void showPopularity(ParsedLine parsedLine) {
         HashMap<String, String> options = parsedLine.options;
         boolean signForFactors = false;
@@ -179,8 +182,10 @@ public class GameUtils {
         else {
             System.out.println(GameMenuController.showPopularity(MainController.getCurrentUser()));
         }
+    }
 
-
+    public static void showFoodList(ParsedLine parsedLine) {
+        GameMenuController.showFoodList();
     }
 
 }

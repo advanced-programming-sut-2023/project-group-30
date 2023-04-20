@@ -7,10 +7,15 @@ public class GameMenuController {
     public static MenuMessages showMap(int x, int y) {
         return MenuMessages.OK;
     }
-    public static void showPopularityFactor() {}
+
+    public static void showPopularityFactor() {
+    }
+
     public static int showPopularity(User currentUser) {
         return 1;
     }
 
+    public static void showFoodList() {
 
+    }
 }

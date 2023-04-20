@@ -27,6 +27,8 @@ public class AppMenu {
         } else if (menuName == MenuName.GAME_MENU) {
             commands.add(new Command("show", "map", GameUtils::showMap));
             commands.add(new Command("show", "popularity", GameUtils::showPopularity));
+            commands.add(new Command("show","foodList", GameUtils::showFoodList));
+
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
             commands.add(new Command("show", "details", GameUtils::showDetails));
