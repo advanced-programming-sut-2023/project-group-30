@@ -15,6 +15,7 @@ public class MainController {
     public void initializeApp() {
         menus.put(AppMenu.MenuName.SIGNUP_MENU, AppMenu.getMenu(AppMenu.MenuName.SIGNUP_MENU, scanner));
         menus.put(AppMenu.MenuName.LOGIN_MENU, AppMenu.getMenu(AppMenu.MenuName.LOGIN_MENU, scanner));
+        menus.put(AppMenu.MenuName.Game_Menu, AppMenu.getMenu(AppMenu.MenuName.Game_Menu, scanner));
 
         currentMenu = menus.get(AppMenu.MenuName.SIGNUP_MENU);
         currentUser = null;

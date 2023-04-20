@@ -1,5 +1,6 @@
 package view;
 
+import view.utils.GameUtils;
 import view.utils.MenuUtils;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class AppMenu {
             commands.add(new Command("user", "login", MenuUtils::userLogin));
         } else if (menuName == MenuName.PROFILE_MENU) {
             commands.add(new Command("profile", "change", MenuUtils::profileChange));
+        } else if (menuName == MenuName.Game_Menu) {
+            commands.add(new Command("show", "map", GameUtils::showMap));
         }
 
         return new AppMenu(commands, scanner);
@@ -57,5 +60,6 @@ public class AppMenu {
         SIGNUP_MENU,
         MAIN_MENU,
         PROFILE_MENU,
+        Game_Menu,
     }
 }

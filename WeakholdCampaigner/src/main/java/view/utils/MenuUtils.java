@@ -1,5 +1,6 @@
 package view.utils;
 
+import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.SignupMenuController;
 import view.ParsedLine;
 
@@ -56,4 +57,5 @@ public class MenuUtils {
     public static void profileChange(ParsedLine parsedLine) {
 
     }
+
 }
