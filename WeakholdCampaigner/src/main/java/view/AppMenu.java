@@ -1,5 +1,6 @@
 package view;
 
+import controller.MainController;
 import view.utils.GameUtils;
 import view.utils.MenuUtils;
 
@@ -23,8 +24,10 @@ public class AppMenu {
             commands.add(new Command("user", "login", MenuUtils::userLogin));
         } else if (menuName == MenuName.PROFILE_MENU) {
             commands.add(new Command("profile", "change", MenuUtils::profileChange));
-        } else if (menuName == MenuName.Game_Menu) {
+        } else if (menuName == MenuName.GAME_MENU) {
             commands.add(new Command("show", "map", GameUtils::showMap));
+        } else if (menuName == MenuName.MAP_MENU) {
+            commands.add(new Command("move", "map", GameUtils::moveMap));
         }
 
         return new AppMenu(commands, scanner);
@@ -35,7 +38,8 @@ public class AppMenu {
     }
 
     public void run() {
-        while (true) {
+        AppMenu tempMenu = MainController.getCurrentMenu();
+        while (tempMenu.equals(MainController.getCurrentMenu())) {
             ParsedLine parsedLine = ParsedLine.parseLine(scanner.nextLine());
             if (parsedLine == null) System.out.println("Error: Invalid command structure.\nA command should" +
                     " have the following structure: <command> [<subcommand>] [<options>]\nAn option should have the" +
@@ -60,6 +64,8 @@ public class AppMenu {
         SIGNUP_MENU,
         MAIN_MENU,
         PROFILE_MENU,
-        Game_Menu,
+        GAME_MENU,
+        MAP_MENU,
+
     }
 }
