@@ -3,6 +3,7 @@ package view.utils;
 import controller.MainController;
 import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
+import controller.messages.MenuMessages;
 import view.AppMenu;
 import view.ParsedLine;
 
@@ -296,6 +297,65 @@ public class GameUtils {
 
             }
         } else System.out.println("Error: please enter location or type correctly");
+    }
+    public static void selectBuilding(ParsedLine parsedLine) {
+        String X = null, Y = null;
+        HashMap<String, String> options = parsedLine.options;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey(), argument = entry.getValue();
+            switch (option) {
+                case "-x":
+                    X = argument;
+                    break;
+                case "-y":
+                    Y = argument;
+                    break;
+                default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "select building -x [x] -y [y]");
+                    return;
+            }
+        }
+        if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y)) {
+            int x = Integer.parseInt(X), y = Integer.parseInt(Y);
+            switch (GameMenuController.selectBuilding(x, y)) {
+                case OK:
+                    break;
+                case INVALID_LOCATION:
+                    System.out.println("Error: please enter valid location");
+                    break;
+
+            }
+        } else System.out.println("Error: please enter location correctly");
+    }
+    public static void creatUnit(ParsedLine parsedLine) {
+        String type = null, Count = null;
+        HashMap<String, String> options = parsedLine.options;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey(), argument = entry.getValue();
+            switch (option) {
+                case "--type":
+                    type = argument;
+                    break;
+                case "-c":
+                    Count = argument;
+                    break;
+                default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "creat unit --type [type] -c [count]");
+                    return;
+            }
+        }
+        if (checkStrIsNumberAndNotNullForAllEnteranc(Count) && type != null) {
+            int count = Integer.parseInt(Count);
+            switch (GameMenuController.creatUnit(count,type)) {
+                case OK:
+                    break;
+            }
+
+        } else System.out.println("Error: pleas enter counter or type correctly");
 
     }
 

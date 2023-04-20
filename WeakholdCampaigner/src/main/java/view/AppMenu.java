@@ -34,6 +34,8 @@ public class AppMenu {
             commands.add(new Command("show", "taxRate", GameUtils::showTaxRate));
             commands.add(new Command("fear", "rate", GameUtils::fearRate));
             commands.add(new Command("drop", "building", GameUtils::dropBuilding));
+            commands.add(new Command("select", "building", GameUtils::selectBuilding));
+            commands.add(new Command("creat", "unit", GameUtils::creatUnit));
 
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
