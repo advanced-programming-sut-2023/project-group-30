@@ -187,5 +187,30 @@ public class GameUtils {
     public static void showFoodList(ParsedLine parsedLine) {
         GameMenuController.showFoodList();
     }
+    public static void setFoodRate(ParsedLine parsedLine) {
+        String Rate = null;
+        HashMap<String, String> options = parsedLine.options;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey(), argument = entry.getValue();
+            switch (option) {
+                case "-r":
+                    Rate = argument;
+                    break;
+                default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "food rate -r <rateNumber>");
+                    return;
+            }
+        }
+        if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)){
+            int rate = Integer.parseInt(Rate);
+            switch (GameMenuController.foodRate(rate)) {
+                case OK:
+                    break;
+            }
+        }
+        else System.out.println("Error: please enter rateNumber correctly");
+    }
 
 }

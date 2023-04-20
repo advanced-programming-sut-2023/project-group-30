@@ -18,4 +18,7 @@ public class GameMenuController {
     public static void showFoodList() {
 
     }
+    public static MenuMessages foodRate(int rate) {
+        return MenuMessages.OK;
+    }
 }
