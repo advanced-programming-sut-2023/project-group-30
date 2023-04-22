@@ -35,7 +35,7 @@ public class AppMenu {
             commands.add(new Command("fear", "rate", GameUtils::fearRate));
             commands.add(new Command("drop", "building", GameUtils::dropBuilding));
             commands.add(new Command("select", "building", GameUtils::selectBuilding));
-            commands.add(new Command("creat", "unit", GameUtils::creatUnit));
+            commands.add(new Command("create", "unit", GameUtils::creatUnit));
             commands.add(new Command("repair", "building", GameUtils::repair));
 
         } else if (menuName == MenuName.MAP_MENU) {
