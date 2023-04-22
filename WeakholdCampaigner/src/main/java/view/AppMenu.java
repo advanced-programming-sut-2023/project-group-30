@@ -20,8 +20,10 @@ public class AppMenu {
         ArrayList<Command> commands = new ArrayList<>();
         if (menuName == MenuName.SIGNUP_MENU) {
             commands.add(new Command("user", "create", MenuUtils::userCreate));
+            commands.add(new Command("enter", "login_menu", MenuUtils::enterLoginMenu));
         } else if (menuName == MenuName.LOGIN_MENU) {
             commands.add(new Command("user", "login", MenuUtils::userLogin));
+            commands.add(new Command("forgot", "my_password", MenuUtils::forgotPassword));
         } else if (menuName == MenuName.PROFILE_MENU) {
             commands.add(new Command("profile", "change", MenuUtils::profileChange));
         } else if (menuName == MenuName.GAME_MENU) {
