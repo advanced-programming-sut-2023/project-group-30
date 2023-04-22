@@ -344,7 +344,7 @@ public class GameUtils {
                     break;
                 default:
                     System.out.println("Error: This command should have the following format:\n" +
-                            "creat unit --type [type] -c [count]");
+                            "create unit --type [type] -c [count]");
                     return;
             }
         }
