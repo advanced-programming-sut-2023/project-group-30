@@ -27,7 +27,7 @@ public class AppMenu {
             commands.add(new Command("enter", "signup_menu", MenuUtils::enterSignUpMenu));
         } else if (menuName == MenuName.PROFILE_MENU) {
             commands.add(new Command("profile", "change", MenuUtils::profileChange));
-            commands.add(new Command("enter", "main_menu", MenuUtils::enterMainMenu));
+            commands.add(new Command("exit", "profile_menu", MenuUtils::enterMainMenu));
             commands.add(new Command("profile", "remove", MenuUtils::profileRemove));
             commands.add(new Command("profile", "display", MenuUtils::profileDisplay));
         } else if (menuName == MenuName.GAME_MENU) {
@@ -43,8 +43,8 @@ public class AppMenu {
             commands.add(new Command("select", "building", GameUtils::selectBuilding));
             commands.add(new Command("create", "unit", GameUtils::creatUnit));
             commands.add(new Command("repair", "building", GameUtils::repair));
+            commands.add(new Command("exit", "game_menu",MenuUtils::enterMainMenu));
 
-            commands.add(new Command("enter", "main_menu", MenuUtils::enterMainMenu));
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
         } else if (menuName == MenuName.MAIN_MENU) {

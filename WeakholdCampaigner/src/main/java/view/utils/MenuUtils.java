@@ -153,15 +153,19 @@ public class MenuUtils {
     }
     public static void enterProfileMenu(ParsedLine parsedLine){
         MainController.setCurrentMenu(AppMenu.MenuName.PROFILE_MENU);
+        System.out.println("enter profile_menu");
     }
     public static void enterSignUpMenu(ParsedLine parsedLine){
         MainController.setCurrentMenu(AppMenu.MenuName.SIGNUP_MENU);
+        System.out.println("entered signup_menu");
     }
     public static void enterMainMenu(ParsedLine parsedLine){
         MainController.setCurrentMenu(AppMenu.MenuName.MAIN_MENU);
+        System.out.println("entered main_menu");
     }
     public static void enterLoginMenu(ParsedLine parsedLine){
         MainController.setCurrentMenu(AppMenu.MenuName.LOGIN_MENU);
+        System.out.println("entered login_menu");
     }
     public static void profileChange(ParsedLine parsedLine) {
         String username = null, nickname = null, email = null, slogan = null, newpassword = null, oldpassword = null;
