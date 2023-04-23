@@ -28,6 +28,8 @@ public class Database {
             BufferedReader br = new BufferedReader(reader);
             Type userListType = new TypeToken<ArrayList<User>>(){}.getType();
             allUsers = gson.fromJson(br, userListType);
+            if (allUsers == null)
+                allUsers = new ArrayList<>();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -89,6 +91,7 @@ public class Database {
 
     public static void addUser(User user) {
         allUsers.add(user);
+        saveAllUsers();
     }
 
     public static ArrayList<PasswordRecoveryQNA> getSecurityQuestions() {
