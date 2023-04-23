@@ -1,5 +1,6 @@
 package controller;
 
+import model.Database;
 import model.User;
 import view.AppMenu;
 
@@ -20,6 +21,10 @@ public class MainController {
 
         currentMenu = menus.get(AppMenu.MenuName.SIGNUP_MENU);
         currentUser = null;
+
+        Database.loadAllUsers();
+        Database.loadSlogan();
+        Database.loadSecurityQuestions();
     }
 
     public void run() {
