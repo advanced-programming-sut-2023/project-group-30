@@ -9,7 +9,7 @@ public class User {
     private String email;
     private String slogan;
     private PasswordRecoveryQNA securityQuestion = new PasswordRecoveryQNA();
-    private Integer score;
+    private Integer score = 0;
     private ArrayList<Trad> tradList;
     private ArrayList<Trad> tradHistory;
     private ArrayList<Trad> tradNotification;

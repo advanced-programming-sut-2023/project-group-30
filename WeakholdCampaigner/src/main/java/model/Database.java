@@ -71,7 +71,7 @@ public class Database {
         }
         return null;
     }
-    public static ArrayList sortUserByRank() {
+    public static ArrayList<User> sortUserByRank() {
         ArrayList<User> sortedUserByRank = new ArrayList<>();
         sortedUserByRank.addAll(allUsers);
         Comparator<User> byScore = Comparator.comparing(User::getScore);
@@ -82,4 +82,21 @@ public class Database {
     public static String generateSimilarUsername(String username) {
         return username + "96";
     }
+
+    public static ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
+
+    public static void addUser(User user) {
+        allUsers.add(user);
+    }
+
+    public static ArrayList<PasswordRecoveryQNA> getSecurityQuestions() {
+        return securityQuestions;
+    }
+
+    public static ArrayList<String> getSlogans() {
+        return slogans;
+    }
+
 }
