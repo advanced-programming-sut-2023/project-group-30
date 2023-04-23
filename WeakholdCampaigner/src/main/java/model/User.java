@@ -8,7 +8,7 @@ public class User {
     private String nikname;
     private String email;
     private String slogan;
-    private PasswordRecoveryQNA securityQuestion;
+    private PasswordRecoveryQNA securityQuestion = new PasswordRecoveryQNA();
     private Integer score;
     private ArrayList<Trad> tradList;
     private ArrayList<Trad> tradHistory;
@@ -22,5 +22,21 @@ public class User {
         this.email = email;
         this.slogan = slogan;
         this.securityQuestion = securityQuestion;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void increaseScore(int increaseAmount) {
+        score += increaseAmount;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
