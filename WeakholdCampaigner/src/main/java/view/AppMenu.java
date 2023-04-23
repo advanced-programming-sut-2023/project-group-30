@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class AppMenu {
     private final ArrayList<Command> commands = new ArrayList<>();
-    private final Scanner scanner;
+    private static Scanner scanner;
 
     private AppMenu(ArrayList<Command> commands, Scanner scanner) {
         this.scanner = scanner;
@@ -83,6 +83,10 @@ public class AppMenu {
             }
         }
 
+    }
+    public static String getOneLine(String prompt) {
+        System.out.println(prompt);
+        return scanner.nextLine();
     }
 
     public enum MenuName {
