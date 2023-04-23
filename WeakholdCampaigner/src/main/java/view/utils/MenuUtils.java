@@ -112,6 +112,7 @@ public class MenuUtils {
             case USER_LOGGED_IN_SUCCESSFULLY:
                 System.out.println("User logged in successfully");
                 MainController.setCurrentMenu(AppMenu.MenuName.MAIN_MENU);
+                break;
         }
     }
 
@@ -139,6 +140,7 @@ public class MenuUtils {
         switch (LoginMenuController.forgotPassword(username)){
             case SECURITY_QUESTION_CONFIRMED:
                 System.out.println("Your password is : TODOCOMMENT");//TODO:  fill here with User class
+                break;
         }
     }
 
@@ -162,9 +164,9 @@ public class MenuUtils {
         MainController.setCurrentMenu(AppMenu.MenuName.LOGIN_MENU);
     }
     public static void profileChange(ParsedLine parsedLine) {
-        String username = null, nickname = null, email = null, slogan = null;
+        String username = null, nickname = null, email = null, slogan = null, newpassword = null, oldpassword = null;
         HashMap<String, String> options = parsedLine.options;
-        for (Entry<String, String> entry :
+        loop: for (Entry<String, String> entry :
                 options.entrySet()) {
             String option = entry.getKey(), argument = entry.getValue();
             switch (option) {
@@ -180,6 +182,20 @@ public class MenuUtils {
                             System.out.println("username has changed successfully");
                     }
                     break;
+                case "--password":
+                    oldpassword = options.get("-o");
+                    newpassword = options.get("-n");
+                    if(!checkInputsAreNotNull(newpassword, oldpassword)){
+                        System.out.println("Error: This command should have the following format:\n" +
+                                "profile change -password --old <old password> --new <new password>");
+                        return;
+                    }
+                    switch (ProfileMenuController.changePassword(oldpassword, newpassword)){
+                        case PASSWORD_HAS_CHANGED:
+                            System.out.println("password has changed successfully");
+                            break;
+                    }
+                    break loop;
                 case "-n":
                     nickname = argument;
                     if(!checkInputsAreNotNull(nickname)){
@@ -190,10 +206,8 @@ public class MenuUtils {
                     switch (ProfileMenuController.changeNickname(nickname)){
                         case NICKNAME_HAS_CHANGED:
                             System.out.println("nickname has changed successfully");
+                            break;
                     }
-                    break;
-                case "--password":
-
                     break;
                 case "-e":
                     email = argument;
@@ -205,6 +219,7 @@ public class MenuUtils {
                     switch (ProfileMenuController.changeEmail(email)){
                         case EMAIL_HAS_CHANGED:
                             System.out.println("email has changed successfully");
+                            break;
                     }
                     break;
                 case "-s":
@@ -217,12 +232,13 @@ public class MenuUtils {
                     switch (ProfileMenuController.changeSlogan(slogan)){
                         case SLOGAN_HAS_CHANGED:
                             System.out.println("slogan has changed successfully");
+                            break;
                     }
                     break;
                 default:
                     System.out.println("Error: This command should have the following format:\n" +
                             "profile change [-u <username>] [-n <nickname>] "+
-                            "[--password -o <old password> -n <new password>] "+
+                            "[--password --old <old password> --new <new password>] "+
                             "[-e <email>] [-s <slogan>]");
                     return;
             }
@@ -243,6 +259,7 @@ public class MenuUtils {
                     switch (ProfileMenuController.changeSlogan(argument)){
                         case SLOGAN_HAS_CHANGED:
                             System.out.println("slogan has removed");
+                            break;
                     }
                     break;
                 default:
@@ -256,15 +273,51 @@ public class MenuUtils {
         HashMap<String, String> options = parsedLine.options;
         for (Entry<String, String> entry :
                 options.entrySet()) {
-            String option = entry.getKey();
+            String option = entry.getKey(), argument = entry.getValue();
             switch (option) {
                 case "--highscore":
+                    if(checkInputsAreNotNull(argument)){
+                        System.out.println("Error: This command should have the following format:\n" +
+                                "profile display --highscore");
+                        return;
+                    }
+                    System.out.println("The highscore is: " + ProfileMenuController.displayHighscore());
                     break;
                 case "--rank":
+                    if(checkInputsAreNotNull(argument)){
+                        System.out.println("Error: This command should have the following format:\n" +
+                                "profile display --rank");
+                        return;
+                    }
+                    System.out.println("This user's rank is: " + ProfileMenuController.displayRank());
                     break;
                 case "--slogan":
+                    if(checkInputsAreNotNull(argument)){
+                        System.out.println("Error: This command should have the following format:\n" +
+                                "profile display --slogan");
+                        return;
+                    }
+                    switch (ProfileMenuController.displaySlogan()){
+                        case DISPLAY:
+                            System.out.println("This user's slogan is : TODO");//TODO: fill here with  user class
+                            break;
+                    }
+                    break;
+                case "--all":
+                    if(checkInputsAreNotNull(argument)){
+                        System.out.println("Error: This command should have the following format:\n" +
+                                "profile display --all");
+                        return;
+                    }
+                    switch (ProfileMenuController.displayProfile()){
+                        case DISPLAY:
+                            System.out.println("PROFILE DISPLAY");//TODO: fill here with  user class
+                            break;
+                    }
                     break;
                 default:
+                    System.out.println("Error: This command should have the following format:\n" +
+                            "profile display [--slogan | --highscore | --rank | --all]");
                     break;
             }
         }

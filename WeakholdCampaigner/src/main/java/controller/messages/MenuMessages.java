@@ -11,4 +11,5 @@ public enum MenuMessages {
     PASSWORD_HAS_CHANGED,
     EMAIL_HAS_CHANGED,
     SLOGAN_HAS_CHANGED,
+    DISPLAY,
 }

@@ -29,6 +29,7 @@ public class AppMenu {
             commands.add(new Command("profile", "change", MenuUtils::profileChange));
             commands.add(new Command("enter", "main_menu", MenuUtils::enterMainMenu));
             commands.add(new Command("profile", "remove", MenuUtils::profileRemove));
+            commands.add(new Command("profile", "display", MenuUtils::profileDisplay));
         } else if (menuName == MenuName.GAME_MENU) {
             commands.add(new Command("show", "map", GameUtils::showMap));
             commands.add(new Command("enter", "main_menu", MenuUtils::enterMainMenu));
