@@ -36,9 +36,10 @@ public class GameUtils {
         }
         if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y)) {
             int x = Integer.parseInt(X), y = Integer.parseInt(Y);
-            MainController.setCurrentMenu(AppMenu.MenuName.MAP_MENU);
             switch (GameMenuController.showMap(x, y)) {
                 case OK:
+                    MainController.setCurrentMenu(AppMenu.MenuName.MAP_MENU);
+                    System.out.println("entered map_menu");
                     break;
                 case INVALID_LOCATION:
                     System.out.println("Error: please enter valid location");
