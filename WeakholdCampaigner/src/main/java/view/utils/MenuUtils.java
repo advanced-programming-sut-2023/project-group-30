@@ -56,7 +56,7 @@ public class MenuUtils {
                     return;
             }
         }
-        if(!checkInputsAreNotNull(username, password, passwordConfirmation, email, nickname)){
+        if(!checkInputsAreNotNull(username, password, email, nickname)){
             System.out.println("Error: This command should have the following format:\n" +
                     "user create -u <username> -p <password> [--confirmation <password confirmation>]" +
                     "--email <email> -n <nickname> [-s <slogan>]");
@@ -150,6 +150,7 @@ public class MenuUtils {
     }
     public static void enterGameMenu(ParsedLine parsedLine){
         MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("entered game_menu");
     }
     public static void enterProfileMenu(ParsedLine parsedLine){
         MainController.setCurrentMenu(AppMenu.MenuName.PROFILE_MENU);
@@ -191,7 +192,7 @@ public class MenuUtils {
                     newpassword = options.get("-n");
                     if(!checkInputsAreNotNull(newpassword, oldpassword)){
                         System.out.println("Error: This command should have the following format:\n" +
-                                "profile change -password --old <old password> --new <new password>");
+                                "profile change -password -o <old password> -n <new password>");
                         return;
                     }
                     switch (ProfileMenuController.changePassword(oldpassword, newpassword)){
@@ -242,11 +243,17 @@ public class MenuUtils {
                 default:
                     System.out.println("Error: This command should have the following format:\n" +
                             "profile change [-u <username>] [-n <nickname>] "+
-                            "[--password --old <old password> --new <new password>] "+
+                            "[--password -o <old password> -n <new password>] "+
                             "[-e <email>] [-s <slogan>]");
                     return;
             }
         }
+        if (options.size() == 0)
+            System.out.println("Error: This command should have the following format:\n" +
+                    "profile change [-u <username>] [-n <nickname>] "+
+                    "[--password --old <old password> --new <new password>] "+
+                    "[-e <email>] [-s <slogan>]");
+
     }
     public static void profileRemove(ParsedLine parsedLine){
         HashMap<String, String> options = parsedLine.options;
@@ -322,8 +329,13 @@ public class MenuUtils {
                 default:
                     System.out.println("Error: This command should have the following format:\n" +
                             "profile display [--slogan | --highscore | --rank | --all]");
-                    break;
+                    return;
+
             }
         }
+        if (options.size() == 0)
+            System.out.println("Error: This command should have the following format:\n" +
+                    "profile display [--slogan | --highscore | --rank | --all]");
+
     }
 }

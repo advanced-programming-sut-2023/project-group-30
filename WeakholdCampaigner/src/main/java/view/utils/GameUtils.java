@@ -39,7 +39,6 @@ public class GameUtils {
             switch (GameMenuController.showMap(x, y)) {
                 case OK:
                     MainController.setCurrentMenu(AppMenu.MenuName.MAP_MENU);
-                    System.out.println("entered map_menu");
                     break;
                 case INVALID_LOCATION:
                     System.out.println("Error: please enter valid location");
