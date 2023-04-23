@@ -24,12 +24,20 @@ public class AppMenu {
         } else if (menuName == MenuName.LOGIN_MENU) {
             commands.add(new Command("user", "login", MenuUtils::userLogin));
             commands.add(new Command("forgot", "my_password", MenuUtils::forgotPassword));
+            commands.add(new Command("enter", "signup_menu", MenuUtils::enterSignUpMenu));
         } else if (menuName == MenuName.PROFILE_MENU) {
             commands.add(new Command("profile", "change", MenuUtils::profileChange));
+            commands.add(new Command("enter", "main_menu", MenuUtils::enterMainMenu));
+            commands.add(new Command("profile", "remove", MenuUtils::profileRemove));
         } else if (menuName == MenuName.GAME_MENU) {
             commands.add(new Command("show", "map", GameUtils::showMap));
+            commands.add(new Command("enter", "main_menu", MenuUtils::enterMainMenu));
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
+        } else if (menuName == MenuName.MAIN_MENU) {
+            commands.add(new Command("user", "logout", MenuUtils::userLogout));
+            commands.add(new Command("enter", "game_menu", MenuUtils::enterGameMenu));
+            commands.add(new Command("enter", "profile_menu", MenuUtils::enterProfileMenu));
         }
 
         return new AppMenu(commands, scanner);
