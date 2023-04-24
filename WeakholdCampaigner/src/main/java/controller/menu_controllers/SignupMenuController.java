@@ -2,6 +2,7 @@ package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
 import model.Database;
+import view.AppMenu;
 
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -12,18 +13,27 @@ public class SignupMenuController {
                                           String email, String nickname, String slogan) {
         if (!isUsernameValid(username))
             return MenuMessages.INVALID_USERNAME;
-        if (Database.getUserByName(username) != null)
-            return MenuMessages.TAKEN_USERNAME;
+        if (Database.getUserByName(username) != null) {
+            username = Database.generateSimilarUsername(username);
+            if (!AppMenu.getOneLine("Error: This username has already been taken. Similar username : " +
+                    username+"\nDo you want this username to be yours? Y/N").equals("Y")) {
+                return MenuMessages.OPERATION_CANCELLED;
+            }
+        }
         if (Database.getUserByEmail(email.toLowerCase()) != null)
             return MenuMessages.TAKEN_EMAIL;
         if (!isEmailValid(email))
             return MenuMessages.INVALID_EMAIL;
         else email = email.toLowerCase();
         if (password.equals("random")) {
-            return MenuMessages.RANDOM_PASSWORD;
-        } else if (!isPasswordStrong(password).equals(MenuMessages.STRONG_PASSWORD)) {
-            return isPasswordStrong(password);
-        } else if (!password.equals(passwordConfirm))
+            password = SignupMenuController.generateRandomPassword();
+            if (!AppMenu.getOneLine("Your random password is: " + password +
+                    "\nPlease re-enter your password here: ").equals(password))
+                return MenuMessages.WRONG_RANDOM_PASSWORD_REENTERED;
+        }// else if (!isPasswordStrong(password).equals(MenuMessages.STRONG_PASSWORD)) {
+           // return isPasswordStrong(password);
+       // }
+        else if (!password.equals(passwordConfirm))
             return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
         if(slogan.equals("random")) {
             ;
@@ -59,7 +69,7 @@ public class SignupMenuController {
         passwordBuilder.append(uppercases.charAt(random.nextInt(uppercases.length())));
         passwordBuilder.append(numbers.charAt(random.nextInt(numbers.length())));
         passwordBuilder.append(characters.charAt(random.nextInt(characters.length())));
-        for(int i = 4;i < length;i++){
+        for (int i = 4; i < length; i++) {
             String allAllowedChar = lowercases + uppercases + numbers + characters;
             passwordBuilder.append(allAllowedChar.charAt(random.nextInt(allAllowedChar.length())));
         }
