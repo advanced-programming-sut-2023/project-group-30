@@ -16,7 +16,7 @@ public class Government {
     private int numOfVillagers;
     private int taxRate;
     private int fearRate;
-    //we want main castle but concept is unknown  //todo
+    //we want main castle but concept is unknown  //TODO
     private HashMap<Resource, Integer> resources;
 
     public void getPopularity() {
