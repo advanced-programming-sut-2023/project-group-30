@@ -3,6 +3,7 @@ package view;
 import controller.MainController;
 import model.attributes.Attribute;
 import model.attributes.building_attributes.CreateUnit;
+import model.attributes.building_attributes.HasHP;
 import model.attributes.unit_attributes.CloseCombat;
 import model.game_entities.Building;
 import model.game_entities.GameEntity;
@@ -84,9 +85,10 @@ public class AppMenu {
         if (gameEntity instanceof Building){
             for (Attribute attribute:
                     gameEntity.getAttributes()) {
-                if (attribute instanceof CreateUnit){
+                if (attribute instanceof CreateUnit)
                     commands.add(new Command("create", "unit", GameEntityUtils::createUnit));
-                }
+                else if (attribute instanceof HasHP)
+                    commands.add(new Command("repair", null, GameEntityUtils::repair));
             }
         }
 
