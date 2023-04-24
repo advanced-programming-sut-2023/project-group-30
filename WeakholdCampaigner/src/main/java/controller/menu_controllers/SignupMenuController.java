@@ -2,6 +2,8 @@ package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
 import model.Database;
+import model.PasswordRecoveryQNA;
+import model.User;
 import view.AppMenu;
 import view.ParsedLine;
 import view.utils.MenuUtils;
@@ -13,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignupMenuController {
+    static PasswordRecoveryQNA passwordRecoveryQNA;
     public static MenuMessages createUser(String username, String password, String passwordConfirm,
                                           String email, String nickname, String slogan) {
         if (!isUsernameValid(username))
@@ -67,7 +70,13 @@ public class SignupMenuController {
         }
         if (checkInvalidSecurityQuestion(questionNumber, answer, answerConfirm) != MenuMessages.OK)
             return checkInvalidSecurityQuestion(questionNumber, answer, answerConfirm);
-
+        else {
+            int questionNumberInt = Integer.parseInt(questionNumber);
+            passwordRecoveryQNA = new PasswordRecoveryQNA(Database.getSecurityQuestions().get(questionNumberInt - 1)
+                    .getQuestion(), answer);
+        }
+        User user = new User(username,password,nickname,email,slogan,passwordRecoveryQNA);
+        Database.addUser(user);
         return MenuMessages.USER_CREATED_SUCCESSFULLY;//TODO: return callligraphic password
     }
 
