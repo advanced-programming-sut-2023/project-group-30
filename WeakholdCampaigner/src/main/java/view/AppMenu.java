@@ -17,7 +17,7 @@ import java.util.Scanner;
 
 public class AppMenu {
     private final ArrayList<Command> commands = new ArrayList<>();
-    private static Scanner scanner;
+    private static Scanner scanner = null;
 
     private AppMenu(ArrayList<Command> commands, Scanner scanner) {
         this.scanner = scanner;
