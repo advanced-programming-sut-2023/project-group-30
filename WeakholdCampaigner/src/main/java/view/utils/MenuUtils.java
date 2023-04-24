@@ -102,12 +102,14 @@ public class MenuUtils {
                 System.out.println("Your password confirmation is wrong!");
                 break;
             case WRONG_SECURITY_QUESTION_FORMAT:
-                    System.out.println("Error: This command should have the following format:\n" +
-                            "question pick -q <question-number> -a <answer> -c <answerconfirm>");
-                    break;
-            default:
-                System.out.println("do");
-                return;
+                System.out.println("Error: This command should have the following format:\n" +
+                        "question pick -q <question-number> -a <answer> -c <answerconfirm>");
+                break;
+            case OUT_OF_BOUNDS:
+                System.out.println("Error: Your chosen question number should be between 1 and 3");
+                break;
+            case WRONG_ANSWER_CONFIRM:
+                System.out.println("Error: Your answer confirmation is wrong!");
         }
     }
 
