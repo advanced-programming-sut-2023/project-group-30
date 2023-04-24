@@ -1,6 +1,10 @@
 package view;
 
 import controller.MainController;
+import model.attributes.Attribute;
+import model.attributes.CloseCombat;
+import model.game_entities.GameEntity;
+import view.utils.GameEntityUtils;
 import view.utils.GameUtils;
 import view.utils.MenuUtils;
 
@@ -54,6 +58,18 @@ public class AppMenu {
             commands.add(new Command("enter", "game_menu", MenuUtils::enterGameMenu));
             commands.add(new Command("enter", "profile_menu", MenuUtils::enterProfileMenu));
 
+        }
+
+        return new AppMenu(commands, scanner);
+    }
+
+    public static AppMenu getGameEntityMenu(GameEntity gameEntity, Scanner scanner){
+        ArrayList<Command> commands = new ArrayList<>();
+        for (Attribute attribute:
+                gameEntity.getAttributes()) {
+            if (attribute instanceof CloseCombat){
+                commands.add(new Command("attack", null, GameEntityUtils::attack));
+            }
         }
 
         return new AppMenu(commands, scanner);
