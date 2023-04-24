@@ -72,26 +72,17 @@ public class MenuUtils {
             case INVALID_USERNAME:
                 System.out.println("Error: Username consists of letters ,numbers and underscore");
                 break;
-            case TAKEN_USERNAME:
-                username = Database.generateSimilarUsername(username);
-                System.out.println("Error: This username has already been taken. Similar username : " +
-                        username);
-                if(AppMenu.getOneLine("Do you want this username to be yours? Y/N").equals("Y")) {
-                } else if (AppMenu.getOneLine("Do you want this username to be yours? Y/N").equals("N")) {
-                    System.out.println("Creating user operation cancelled");
-                }else {
-                    System.out.println("Error : your input should be Y/N");
-                }
+            case OPERATION_CANCELLED:
+                System.out.println("Operation cancelled");
+                break;
             case TAKEN_EMAIL:
                 System.out.println("Error: An account has been created with this email address");
                 break;
             case INVALID_EMAIL:
                 System.out.println("Error:Your email format is invalid");
                 break;
-            case RANDOM_PASSWORD:
-                System.out.println("Your random password is: " + SignupMenuController.generateRandomPassword());
-                AppMenu.getOneLine(" Please re-enter your password here: ");
-                break;
+            case WRONG_RANDOM_PASSWORD_REENTERED:
+                System.out.println("Wrong re-entered password");
             case FEW_CHARACTERS:
                 System.out.println("Your password should have at least 6 character");
                 break;
