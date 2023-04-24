@@ -8,7 +8,7 @@ public class User {
     private String nikname;
     private String email;
     private String slogan;
-    private PasswordRecoveryQNA securityQuestion = new PasswordRecoveryQNA();
+    private PasswordRecoveryQNA securityQuestion;
     private Integer score = 0;
     private ArrayList<Trad> tradList;
     private ArrayList<Trad> tradHistory;

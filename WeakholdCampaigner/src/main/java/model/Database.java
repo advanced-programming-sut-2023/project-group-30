@@ -28,40 +28,37 @@ public class Database {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/recourse/allUsers.json")) {
             BufferedReader br = new BufferedReader(reader);
-            Type userListType = new TypeToken<ArrayList<User>>() {
-            }.getType();
+            Type userListType = new TypeToken<ArrayList<User>>(){}.getType();
             allUsers = gson.fromJson(br, userListType);
             if (allUsers == null)
                 allUsers = new ArrayList<>();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public static void loadSecurityQuestions() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/recourse/securityQuestions.json")) {
             BufferedReader br = new BufferedReader(reader);
-            Type QNAListType = new TypeToken<ArrayList<PasswordRecoveryQNA>>() {
-            }.getType();
+            Type QNAListType = new TypeToken<ArrayList<PasswordRecoveryQNA>>(){}.getType();
             securityQuestions = gson.fromJson(br, QNAListType);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public static void loadSlogan() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/recourse/slogan.json")) {
             BufferedReader br = new BufferedReader(reader);
-            Type StringListType = new TypeToken<ArrayList<String>>() {
-            }.getType();
+            Type StringListType = new TypeToken<ArrayList<String>>(){}.getType();
             slogans = gson.fromJson(br, StringListType);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     @Nullable
     public static User getUserByName(String username) {
         for (User user : allUsers) {
@@ -70,7 +67,6 @@ public class Database {
         }
         return null;
     }
-
     @Nullable
     public static User getUserByEmail(String email) {
         for (User user : allUsers) {
@@ -79,16 +75,14 @@ public class Database {
         }
         return null;
     }
-
     public static ArrayList<User> sortUserByRank() {
         ArrayList<User> sortedUserByRank = new ArrayList<>();
         sortedUserByRank.addAll(allUsers);
         Comparator<User> byScore = Comparator.comparing(User::getScore);
-        Collections.sort(sortedUserByRank, byScore);
+        Collections.sort(sortedUserByRank,byScore);
         Collections.reverse(sortedUserByRank);
         return sortedUserByRank;
     }
-
     public static String generateSimilarUsername(String username) {
         int addedNumberToUsername = 0;
         String newUsername = username + addedNumberToUsername;
