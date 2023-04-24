@@ -4,6 +4,7 @@ import controller.MainController;
 import model.attributes.Attribute;
 import model.attributes.CloseCombat;
 import model.game_entities.GameEntity;
+import model.game_entities.Unit;
 import view.utils.GameEntityUtils;
 import view.utils.GameUtils;
 import view.utils.MenuUtils;
@@ -65,10 +66,16 @@ public class AppMenu {
 
     public static AppMenu getGameEntityMenu(GameEntity gameEntity, Scanner scanner){
         ArrayList<Command> commands = new ArrayList<>();
+
+        if (gameEntity instanceof Unit){
+            commands.add(new Command("unit", "move_to", GameEntityUtils::moveUnit));
+            commands.add(new Command("set", "stance", GameEntityUtils::setStance));
+        }
+
         for (Attribute attribute:
                 gameEntity.getAttributes()) {
             if (attribute instanceof CloseCombat){
-                commands.add(new Command("attack", null, GameEntityUtils::attack));
+                commands.add(new Command("attack", "melee", GameEntityUtils::attack));
             }
         }
 
