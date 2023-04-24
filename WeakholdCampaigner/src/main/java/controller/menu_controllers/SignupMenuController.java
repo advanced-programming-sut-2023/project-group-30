@@ -3,7 +3,11 @@ package controller.menu_controllers;
 import controller.messages.MenuMessages;
 import model.Database;
 import view.AppMenu;
+import view.ParsedLine;
+import view.utils.MenuUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +20,7 @@ public class SignupMenuController {
         if (Database.getUserByName(username) != null) {
             username = Database.generateSimilarUsername(username);
             if (!AppMenu.getOneLine("Error: This username has already been taken. Similar username : " +
-                    username+"\nDo you want this username to be yours? Y/N").equals("Y")) {
+                    username + "\nDo you want this username to be yours? Y/N").equals("Y")) {
                 return MenuMessages.OPERATION_CANCELLED;
             }
         }
@@ -30,14 +34,40 @@ public class SignupMenuController {
             if (!AppMenu.getOneLine("Your random password is: " + password +
                     "\nPlease re-enter your password here: ").equals(password))
                 return MenuMessages.WRONG_RANDOM_PASSWORD_REENTERED;
-        }// else if (!isPasswordStrong(password).equals(MenuMessages.STRONG_PASSWORD)) {
-           // return isPasswordStrong(password);
-       // }
-        else if (!password.equals(passwordConfirm))
+        } else if (!isPasswordStrong(password).equals(MenuMessages.STRONG_PASSWORD)) {
+            return isPasswordStrong(password);
+        } else if (!password.equals(passwordConfirm))
             return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
-        if(slogan.equals("random")) {
-            ;
+        if (slogan.equals("random")) {
+            Random random = new Random();
+            slogan = Database.getSlogans().get(random.nextInt(8));
         }
+        String questionPick = AppMenu.getOneLine("Pick your security question: " +
+                "1. What is my father’s name? 2. What\n" +
+                "was my first pet’s name? 3. What is my mother’s last name?");
+        ParsedLine parsedLine = ParsedLine.parseLine(questionPick);
+        HashMap<String, String> options = parsedLine.options;
+        String questionNumber = null, answer = null, answerConfirm = null;
+        for (Map.Entry<String, String> entry :
+                options.entrySet()) {
+            String option = entry.getKey(), argument = entry.getValue();
+            switch (option) {
+                case "-q":
+                    questionNumber = argument;
+                    break;
+                case "-a":
+                    answer = argument;
+                    break;
+                case "-c":
+                    answerConfirm = argument;
+                    break;
+                default:
+                    return MenuMessages.WRONG_SECURITY_QUESTION_FORMAT;
+            }
+        }
+        if (checkInvalidSecurityQuestion(questionNumber, answer, answerConfirm) != MenuMessages.OK)
+            return checkInvalidSecurityQuestion(questionNumber, answer, answerConfirm);
+
         return MenuMessages.USER_CREATED_SUCCESSFULLY;//TODO: return callligraphic password
     }
 
@@ -54,7 +84,6 @@ public class SignupMenuController {
         Matcher emailMatcher = emailPattern.matcher(email);
         return emailMatcher.matches();
     }
-
 
 
     public static String generateRandomPassword() {
@@ -97,5 +126,15 @@ public class SignupMenuController {
                 return MenuMessages.STRONG_PASSWORD;
             }
         }
+    }
+    public static MenuMessages checkInvalidSecurityQuestion (String questionNumber, String answer, String answerConfirm){
+        Pattern pattern = Pattern.compile("[1-3]");
+        if (!MenuUtils.checkInputsAreNotNull(questionNumber,answer,answerConfirm))
+            return MenuMessages.WRONG_SECURITY_QUESTION_FORMAT;
+        else if (!pattern.matcher(questionNumber).matches())
+            return MenuMessages.OUT_OF_BOUNDS;
+        else if (answer.equals(answerConfirm))
+            return MenuMessages.WRONG_ANSWER_CONFIRM;
+        return MenuMessages.OK;
     }
 }
