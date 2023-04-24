@@ -94,7 +94,7 @@ public class GameUtils {
     }
 
     public static boolean checkStrIsNumberAndNotNullForAllEnteranc(String... enterances) {
-        Pattern patternForCheckStrIsNumber = Pattern.compile("\\d+$");
+        Pattern patternForCheckStrIsNumber = Pattern.compile("-?\\d+$");
         for (String enteranc : enterances) {
             if (enteranc == null)
                 return false;
@@ -106,7 +106,7 @@ public class GameUtils {
 
     public static boolean checkStrIsNumberAndNotNullForMove(String... enterances) {
         int size = enterances.length;
-        Pattern patternForCheckStrIsNumber = Pattern.compile("\\d+$");
+        Pattern patternForCheckStrIsNumber = Pattern.compile("-?\\d+$");
         for (String enteranc : enterances) {
             if (enteranc == null)
                 size--;

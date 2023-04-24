@@ -22,8 +22,8 @@ public class ParsedLine {
         this.options = new HashMap<>();
     }
 
-    private static final String argumentRegex = "((?<argument>[^\\s\\-\"]+)|(\"(?<quotedArgument>[^\"]*)\"))",
-            optionRegex = "((?<optionName>--?[^\\s\\-]+)(?<arguments>(\\s+" + argumentRegex + "))?)",
+    private static final String argumentRegex = "((?<argument>([^\\s\\-\"]+)|(-\\d+))|(\"(?<quotedArgument>[^\"]*)\"))",
+            optionRegex = "((?<optionName>--?[^\\s\\-\\d][^\\s\\-]*)(?<arguments>(\\s+" + argumentRegex + "))?)",
     //an option cannot have more than one argument
     commandRegex = "(\\s*(?<command>\\S+)(\\s+(?<subcommand>[^\\s\\-]+))?(?<options>(\\s+" + optionRegex + ")+)?\\s*)";
 
