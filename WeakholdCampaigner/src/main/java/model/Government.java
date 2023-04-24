@@ -1,7 +1,7 @@
 package model;
 
-import model.Enum.Food;
-import model.Enum.Resource;
+import model.enums.Food;
+import model.enums.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +22,6 @@ public class Government {
     public void getPopularity() {
 
     }
-
-
-
-
-
 
 
 }

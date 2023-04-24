@@ -7,11 +7,11 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public abstract class Utils {
-    protected static void invalidFormatError(String correctFormat){
+    protected static void invalidFormatError(String correctFormat) {
         System.out.println("Error: This command should have the following format:\n" + correctFormat);
     }
 
-    protected static boolean hasNullString(String... strings){
+    protected static boolean hasNullString(String... strings) {
         for (String string :
                 strings) {
             if (string == null) return true;
@@ -20,7 +20,7 @@ public abstract class Utils {
         return false;
     }
 
-    protected static boolean areIntegersOrNull(String... strings){
+    protected static boolean areIntegersOrNull(String... strings) {
         Pattern intPattern = Pattern.compile("[\\-+]?\\d+");
 
         for (String string :
@@ -36,7 +36,7 @@ public abstract class Utils {
     protected static HashMap<String, String> formatOptions(@NotNull HashMap<String, String> allUserInputOptions,
                                                            @NotNull String[] allMandatoryOptions,
                                                            @NotNull String[] allOptionalOptions,
-                                                           @NotNull String[] allIntegerOptions){
+                                                           @NotNull String[] allIntegerOptions) {
         //TODO: differentiate "command -u" from "command" and "command -u arg" ("-u" being an optionalOption)
         //Initialize the output:
         HashMap<String, String> output = new HashMap<>();
@@ -65,7 +65,7 @@ public abstract class Utils {
 
         //assert that allIntegerOptions are Integers, otherwise return null:
         for (String option :
-             allIntegerOptions)
+                allIntegerOptions)
             if (!areIntegersOrNull(output.get(option))) return null;
 
         return output;

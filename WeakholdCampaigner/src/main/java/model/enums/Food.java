@@ -1,4 +1,4 @@
-package model.Enum;
+package model.enums;
 
 public enum Food {
     APPLE,

@@ -5,20 +5,20 @@ import java.util.ArrayList;
 public class User {
     private String username;
     private String password;
-    private String nikname;
+    private String nickname;
     private String email;
     private String slogan;
     private PasswordRecoveryQNA securityQuestion;
     private Integer score = 0;
-    private ArrayList<Trad> tradList;
-    private ArrayList<Trad> tradHistory;
-    private ArrayList<Trad> tradNotification;
+    private ArrayList<Trade> tradeList;
+    private ArrayList<Trade> tradeHistory;
+    private ArrayList<Trade> tradeNotification;
 
-    public User(String username, String password, String nikname, String email, String slogan
+    public User(String username, String password, String nickname, String email, String slogan
             , PasswordRecoveryQNA securityQuestion) {
         this.username = username;
         this.password = password;
-        this.nikname = nikname;
+        this.nickname = nickname;
         this.email = email;
         this.slogan = slogan;
         this.securityQuestion = securityQuestion;

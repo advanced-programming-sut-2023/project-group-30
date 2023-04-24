@@ -1,23 +1,19 @@
 package view.utils;
 
 import controller.MainController;
-import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.LoginMenuController;
 import controller.menu_controllers.ProfileMenuController;
 import controller.menu_controllers.SignupMenuController;
-import model.Database;
 import view.AppMenu;
 import view.ParsedLine;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.SortedMap;
 
 public class MenuUtils {
-    public static boolean checkInputsAreNotNull(String... aruments) {
+    public static boolean checkInputsAreNotNull(String... arguments) {
         for (String arg :
-                aruments) {
+                arguments) {
             if (arg == null) {
                 return false;
             }
@@ -104,7 +100,7 @@ public class MenuUtils {
                 break;
             case WRONG_SECURITY_QUESTION_FORMAT:
                 System.out.println("Error: This command should have the following format:\n" +
-                        "question pick -q <question-number> -a <answer> -c <answerconfirm>");
+                        "question pick -q <question-number> -a <answer> -c <answer confirmation>");
                 break;
             case OUT_OF_BOUNDS:
                 System.out.println("Error: Your chosen question number should be between 1 and 3");
@@ -117,7 +113,7 @@ public class MenuUtils {
 
     public static void userLogin(ParsedLine parsedLine) {
         String username = null, password = null;
-        Boolean stayLoggedin = false;
+        Boolean stayLoggedIn = false;
 
         HashMap<String, String> options = parsedLine.options;
         for (Entry<String, String> entry :
@@ -130,30 +126,30 @@ public class MenuUtils {
                 case "-p":
                     password = argument;
                     break;
-                case "--stayloggedin":
+                case "--stay_logged_in":
                     if (argument == null) {
-                        stayLoggedin = true;
+                        stayLoggedIn = true;
                     } else {
-                        stayLoggedin = null;
+                        stayLoggedIn = null;
                     }
                     break;
                 default:
                     System.out.println("Error: This command should have the following format:\n" +
-                            "user login -u <username> -p <password> [--stayedloggedin]");
+                            "user login -u <username> -p <password> [--stay_logged_in]");
                     return;
             }
         }
-        if (stayLoggedin == null) {
+        if (stayLoggedIn == null) {
             System.out.println("Error: This command should have the following format:\n" +
-                    "user login -u <username> -p <password> [--stayedloggedin]");
+                    "user login -u <username> -p <password> [--stay_logged_in]");
             return;
         }
         if (!checkInputsAreNotNull(username, password)) {
             System.out.println("Error: This command should have the following format:\n" +
-                    "user login -u <username> -p <password> [--stayloggedin]");
+                    "user login -u <username> -p <password> [--stay_logged_in]");
             return;
         }
-        switch (LoginMenuController.userLogin(username, password, stayLoggedin)) {
+        switch (LoginMenuController.userLogin(username, password, stayLoggedIn)) {
             case USER_LOGGED_IN_SUCCESSFULLY:
                 System.out.println("User logged in successfully");
                 MainController.setCurrentMenu(AppMenu.MenuName.MAIN_MENU);
@@ -220,7 +216,7 @@ public class MenuUtils {
     }
 
     public static void profileChange(ParsedLine parsedLine) {
-        String username = null, nickname = null, email = null, slogan = null, newpassword = null, oldpassword = null;
+        String username = null, nickname = null, email = null, slogan = null, newPassword = null, oldPassword = null;
         HashMap<String, String> options = parsedLine.options;
         loop:
         for (Entry<String, String> entry :
@@ -240,14 +236,14 @@ public class MenuUtils {
                     }
                     break;
                 case "--password":
-                    oldpassword = options.get("-o");
-                    newpassword = options.get("-n");
-                    if (!checkInputsAreNotNull(newpassword, oldpassword)) {
+                    oldPassword = options.get("-o");
+                    newPassword = options.get("-n");
+                    if (!checkInputsAreNotNull(newPassword, oldPassword)) {
                         System.out.println("Error: This command should have the following format:\n" +
                                 "profile change -password -o <old password> -n <new password>");
                         return;
                     }
-                    switch (ProfileMenuController.changePassword(oldpassword, newpassword)) {
+                    switch (ProfileMenuController.changePassword(oldPassword, newPassword)) {
                         case PASSWORD_HAS_CHANGED:
                             System.out.println("password has changed successfully");
                             break;
@@ -346,7 +342,7 @@ public class MenuUtils {
                                 "profile display --highscore");
                         return;
                     }
-                    System.out.println("The highscore is: " + ProfileMenuController.displayHighscore());
+                    System.out.println("The highscore is: " + ProfileMenuController.displayHighScore());
                     break;
                 case "--rank":
                     if (checkInputsAreNotNull(argument)) {

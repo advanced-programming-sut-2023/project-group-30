@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 public class SignupMenuController {
     static PasswordRecoveryQNA passwordRecoveryQNA;
+
     public static MenuMessages createUser(String username, String password, String passwordConfirm,
                                           String email, String nickname, String slogan) {
         if (!isUsernameValid(username))
@@ -77,7 +78,7 @@ public class SignupMenuController {
             passwordRecoveryQNA = new PasswordRecoveryQNA(Database.getSecurityQuestions().get(questionNumberInt - 1)
                     .getQuestion(), answer);
         }
-        User user = new User(username,password,nickname,email,slogan,passwordRecoveryQNA);
+        User user = new User(username, password, nickname, email, slogan, passwordRecoveryQNA);
         Database.addUser(user);
         return MenuMessages.USER_CREATED_SUCCESSFULLY;//TODO: return callligraphic password
     }
@@ -138,9 +139,10 @@ public class SignupMenuController {
             }
         }
     }
-    public static MenuMessages checkInvalidSecurityQuestion (String questionNumber, String answer, String answerConfirm){
+
+    public static MenuMessages checkInvalidSecurityQuestion(String questionNumber, String answer, String answerConfirm) {
         Pattern pattern = Pattern.compile("[1-3]");
-        if (!MenuUtils.checkInputsAreNotNull(questionNumber,answer,answerConfirm))
+        if (!MenuUtils.checkInputsAreNotNull(questionNumber, answer, answerConfirm))
             return MenuMessages.WRONG_SECURITY_QUESTION_FORMAT;
         else if (!pattern.matcher(questionNumber).matches())
             return MenuMessages.OUT_OF_BOUNDS;

@@ -1,41 +1,49 @@
 package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
-import model.User;
 import org.jetbrains.annotations.Nullable;
-import view.Command;
+
 
 public class ProfileMenuController {
-    public static void showProfile(){
+    public static void showProfile() {
 
     }
-    public static MenuMessages changeUsername(String username){
+
+    public static MenuMessages changeUsername(String username) {
         return MenuMessages.USERNAME_HAS_CHANGED;
     }
-    public static MenuMessages changeNickname(String nickname){
+
+    public static MenuMessages changeNickname(String nickname) {
         return MenuMessages.NICKNAME_HAS_CHANGED;
     }
-    public static MenuMessages changePassword(String oldpassword, String newpassword ){
+
+    public static MenuMessages changePassword(String oldPassword, String newPassword) {
         return MenuMessages.PASSWORD_HAS_CHANGED;
     }
-    public static MenuMessages changeEmail(String email){
+
+    public static MenuMessages changeEmail(String email) {
         return MenuMessages.EMAIL_HAS_CHANGED;
     }
-    public static MenuMessages changeSlogan(@Nullable String slogan){
+
+    public static MenuMessages changeSlogan(@Nullable String slogan) {
         return MenuMessages.SLOGAN_HAS_CHANGED;
     }
-    public static Integer displayHighscore(){
+
+    public static Integer displayHighScore() {
         Integer score = 0;
         return score;
     }
-    public static Integer displayRank(){
+
+    public static Integer displayRank() {
         Integer rank = 0;
         return rank;
     }
-    public static MenuMessages displaySlogan(){
+
+    public static MenuMessages displaySlogan() {
         return MenuMessages.DISPLAY;
     }
-    public static MenuMessages displayProfile(){
+
+    public static MenuMessages displayProfile() {
         return MenuMessages.DISPLAY;
     }
 }

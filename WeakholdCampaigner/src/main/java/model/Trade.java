@@ -1,8 +1,8 @@
 package model;
 
-import model.Enum.Resource;
+import model.enums.Resource;
 
-public class Trad {
+public class Trade {
     private User apllicant;
     private User requestedUser;
     private int resourceAmount;
@@ -11,7 +11,7 @@ public class Trad {
     private String message;
     private int id;
 
-    public Trad(User apllicant, User requestedUser, int resourceAmount, Resource resourceType, int price, String message) {
+    public Trade(User apllicant, User requestedUser, int resourceAmount, Resource resourceType, int price, String message) {
         this.apllicant = apllicant;
         this.requestedUser = requestedUser;
         this.resourceAmount = resourceAmount;
@@ -19,7 +19,8 @@ public class Trad {
         this.price = price;
         this.message = message;
     }
-    public void setId(){
+
+    public void setId() {
         //todo
     }
 }

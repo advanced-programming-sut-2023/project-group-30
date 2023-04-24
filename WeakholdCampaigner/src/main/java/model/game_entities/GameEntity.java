@@ -1,6 +1,6 @@
 package model.game_entities;
 
-import model.Enum.Resource;
+import model.enums.Resource;
 import model.attributes.Attribute;
 
 import java.util.ArrayList;

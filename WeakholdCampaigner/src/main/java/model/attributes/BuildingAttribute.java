@@ -1,5 +1,5 @@
 package model.attributes;
 
-public abstract class BuildingAttribute extends Attribute{
+public abstract class BuildingAttribute extends Attribute {
 
 }

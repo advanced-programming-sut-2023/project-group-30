@@ -3,13 +3,11 @@ package view.utils;
 import controller.MainController;
 import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
-import controller.messages.MenuMessages;
 import view.AppMenu;
 import view.ParsedLine;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GameUtils {
@@ -34,7 +32,7 @@ public class GameUtils {
                     return;
             }
         }
-        if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y)) {
+        if (checkStrIsNumberAndNotNullForAllEntrance(X, Y)) {
             int x = Integer.parseInt(X), y = Integer.parseInt(Y);
             switch (GameMenuController.showMap(x, y)) {
                 case OK:
@@ -93,24 +91,24 @@ public class GameUtils {
                 "[--left [<numberOFMove>]]");
     }
 
-    public static boolean checkStrIsNumberAndNotNullForAllEnteranc(String... enterances) {
+    public static boolean checkStrIsNumberAndNotNullForAllEntrance(String... entrances) {
         Pattern patternForCheckStrIsNumber = Pattern.compile("-?\\d+$");
-        for (String enteranc : enterances) {
-            if (enteranc == null)
+        for (String entrance : entrances) {
+            if (entrance == null)
                 return false;
-            if (!patternForCheckStrIsNumber.matcher(enteranc).matches())
+            if (!patternForCheckStrIsNumber.matcher(entrance).matches())
                 return false;
         }
         return true;
     }
 
-    public static boolean checkStrIsNumberAndNotNullForMove(String... enterances) {
-        int size = enterances.length;
+    public static boolean checkStrIsNumberAndNotNullForMove(String... entrances) {
+        int size = entrances.length;
         Pattern patternForCheckStrIsNumber = Pattern.compile("-?\\d+$");
-        for (String enteranc : enterances) {
-            if (enteranc == null)
+        for (String entrance : entrances) {
+            if (entrance == null)
                 size--;
-            else if (!patternForCheckStrIsNumber.matcher(enteranc).matches())
+            else if (!patternForCheckStrIsNumber.matcher(entrance).matches())
                 return false;
         }
         if (size == 0)
@@ -143,7 +141,7 @@ public class GameUtils {
                     return;
             }
         }
-        if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y)) {
+        if (checkStrIsNumberAndNotNullForAllEntrance(X, Y)) {
             int x = Integer.parseInt(X), y = Integer.parseInt(Y);
             switch (MapController.showDetails(x, y)) {
                 case OK:
@@ -195,7 +193,7 @@ public class GameUtils {
             System.out.println("Error: This command should have the following format:\n" +
                     "food rate -r <rateNumber>");
         else {
-            if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)) {
+            if (checkStrIsNumberAndNotNullForAllEntrance(Rate)) {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.foodRate(rate)) {
                     case OK:
@@ -216,7 +214,7 @@ public class GameUtils {
             System.out.println("Error: This command should have the following format:\n" +
                     "tax rate -r <rateNumber>");
         else {
-            if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)) {
+            if (checkStrIsNumberAndNotNullForAllEntrance(Rate)) {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.taxRate(rate)) {
                     case OK:
@@ -237,7 +235,7 @@ public class GameUtils {
             System.out.println("Error: This command should have the following format:\n" +
                     "fear rate -r <rateNumber>");
         else {
-            if (checkStrIsNumberAndNotNullForAllEnteranc(Rate)) {
+            if (checkStrIsNumberAndNotNullForAllEntrance(Rate)) {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.setFearRate(rate)) {
                     case OK:
@@ -264,6 +262,7 @@ public class GameUtils {
         }
         return Rate;
     }
+
     public static void dropBuilding(ParsedLine parsedLine) {
         String X = null, Y = null, type = null;
         HashMap<String, String> options = parsedLine.options;
@@ -286,7 +285,7 @@ public class GameUtils {
                     return;
             }
         }
-        if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y) && type != null) {
+        if (checkStrIsNumberAndNotNullForAllEntrance(X, Y) && type != null) {
             int x = Integer.parseInt(X), y = Integer.parseInt(Y);
             switch (GameMenuController.dropBuilding(x, y, type)) {
                 case OK:
@@ -298,6 +297,7 @@ public class GameUtils {
             }
         } else System.out.println("Error: please enter location or type correctly");
     }
+
     public static void selectBuilding(ParsedLine parsedLine) {
         String X = null, Y = null;
         HashMap<String, String> options = parsedLine.options;
@@ -317,7 +317,7 @@ public class GameUtils {
                     return;
             }
         }
-        if (checkStrIsNumberAndNotNullForAllEnteranc(X, Y)) {
+        if (checkStrIsNumberAndNotNullForAllEntrance(X, Y)) {
             int x = Integer.parseInt(X), y = Integer.parseInt(Y);
             switch (GameMenuController.selectBuilding(x, y)) {
                 case OK:
@@ -329,6 +329,7 @@ public class GameUtils {
             }
         } else System.out.println("Error: please enter location correctly");
     }
+
     public static void creatUnit(ParsedLine parsedLine) {
         String type = null, Count = null;
         HashMap<String, String> options = parsedLine.options;
@@ -348,9 +349,9 @@ public class GameUtils {
                     return;
             }
         }
-        if (checkStrIsNumberAndNotNullForAllEnteranc(Count) && type != null) {
+        if (checkStrIsNumberAndNotNullForAllEntrance(Count) && type != null) {
             int count = Integer.parseInt(Count);
-            switch (GameMenuController.creatUnit(count,type)) {
+            switch (GameMenuController.creatUnit(count, type)) {
                 case OK:
                     break;
             }
@@ -358,14 +359,13 @@ public class GameUtils {
         } else System.out.println("Error: pleas enter counter or type correctly");
 
     }
+
     public static void repair(ParsedLine parsedLine) {
         switch (GameMenuController.repair()) {
             case OK:
                 break;
         }
     }
-
-
 
 
 }

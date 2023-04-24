@@ -19,7 +19,7 @@ public class GameEntityUtils extends Utils {
         GameEntityController.createUnit(options.get("-t"), Integer.parseInt(options.get("-c")));
     }
 
-    public static void repair(ParsedLine parsedLine){
+    public static void repair(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}, new String[]{},
                 new String[]{});
 

@@ -1,6 +1,6 @@
 package model.game_entities;
 
-public abstract class Unit extends GameEntity{
+public abstract class Unit extends GameEntity {
     private int defence, speed, fieldOfView;
     private UnitStance unitStance;
 
