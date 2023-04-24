@@ -17,7 +17,7 @@ public class Database {
 
     public static void saveAllUsers() {
         Gson gson = new Gson();
-        try (FileWriter writer = new FileWriter("src/main/recourse/allUsers.json")) {
+        try (FileWriter writer = new FileWriter("src/main/resources/allUsers.json")) {
             gson.toJson(allUsers, writer);
         } catch (IOException e) {
             e.printStackTrace();
@@ -26,7 +26,7 @@ public class Database {
 
     public static void loadAllUsers() {
         Gson gson = new Gson();
-        try (FileReader reader = new FileReader("src/main/recourse/allUsers.json")) {
+        try (FileReader reader = new FileReader("src/main/resources/allUsers.json")) {
             BufferedReader br = new BufferedReader(reader);
             Type userListType = new TypeToken<ArrayList<User>>() {
             }.getType();
@@ -40,7 +40,7 @@ public class Database {
 
     public static void loadSecurityQuestions() {
         Gson gson = new Gson();
-        try (FileReader reader = new FileReader("src/main/recourse/securityQuestions.json")) {
+        try (FileReader reader = new FileReader("src/main/resources/securityQuestions.json")) {
             BufferedReader br = new BufferedReader(reader);
             Type QNAListType = new TypeToken<ArrayList<PasswordRecoveryQNA>>() {
             }.getType();
@@ -52,7 +52,7 @@ public class Database {
 
     public static void loadSlogan() {
         Gson gson = new Gson();
-        try (FileReader reader = new FileReader("src/main/recourse/slogan.json")) {
+        try (FileReader reader = new FileReader("src/main/resources/slogan.json")) {
             BufferedReader br = new BufferedReader(reader);
             Type StringListType = new TypeToken<ArrayList<String>>() {
             }.getType();
