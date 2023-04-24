@@ -1,6 +1,9 @@
 package controller.menu_controllers;
 
 public class GameEntityController {
+    public static void createUnit(String type, int count){
+
+    }
     public static void moveUnit(int destinationX, int destinationY){
 
     }

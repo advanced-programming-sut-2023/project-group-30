@@ -2,7 +2,9 @@ package view;
 
 import controller.MainController;
 import model.attributes.Attribute;
-import model.attributes.CloseCombat;
+import model.attributes.building_attributes.CreateUnit;
+import model.attributes.unit_attributes.CloseCombat;
+import model.game_entities.Building;
 import model.game_entities.GameEntity;
 import model.game_entities.Unit;
 import view.utils.GameEntityUtils;
@@ -70,12 +72,21 @@ public class AppMenu {
         if (gameEntity instanceof Unit){
             commands.add(new Command("unit", "move_to", GameEntityUtils::moveUnit));
             commands.add(new Command("set", "stance", GameEntityUtils::setStance));
+
+            for (Attribute attribute:
+                    gameEntity.getAttributes()) {
+                if (attribute instanceof CloseCombat){
+                    commands.add(new Command("attack", "melee", GameEntityUtils::attack));
+                }
+            }
         }
 
-        for (Attribute attribute:
-                gameEntity.getAttributes()) {
-            if (attribute instanceof CloseCombat){
-                commands.add(new Command("attack", "melee", GameEntityUtils::attack));
+        if (gameEntity instanceof Building){
+            for (Attribute attribute:
+                    gameEntity.getAttributes()) {
+                if (attribute instanceof CreateUnit){
+                    commands.add(new Command("create", "unit", GameEntityUtils::createUnit));
+                }
             }
         }
 

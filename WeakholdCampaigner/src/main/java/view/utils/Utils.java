@@ -37,6 +37,7 @@ public abstract class Utils {
                                                            @NotNull String[] allMandatoryOptions,
                                                            @NotNull String[] allOptionalOptions,
                                                            @NotNull String[] allIntegerOptions){
+        //TODO: differentiate "command -u" from "command" and "command -u arg" ("-u" being an optionalOption)
         //Initialize the output:
         HashMap<String, String> output = new HashMap<>();
         for (String option :

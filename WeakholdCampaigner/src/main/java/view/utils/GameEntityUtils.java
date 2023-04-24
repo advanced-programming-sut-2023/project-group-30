@@ -7,6 +7,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GameEntityUtils extends Utils {
+    public static void createUnit(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t", "-c"}, new String[]{},
+                new String[]{"-c"});
+
+        if (options == null) {
+            invalidFormatError("create unit -t <type> -c <count>");
+            return;
+        }
+
+        GameEntityController.createUnit(options.get("-t"), Integer.parseInt(options.get("-c")));
+    }
+
     public static void moveUnit(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y"}, new String[]{},
                 new String[]{"-x", "-y"});
