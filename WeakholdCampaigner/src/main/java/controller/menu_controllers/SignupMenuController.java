@@ -1,5 +1,6 @@
 package controller.menu_controllers;
 
+import controller.MainController;
 import controller.messages.MenuMessages;
 import model.Database;
 import model.PasswordRecoveryQNA;
@@ -44,6 +45,7 @@ public class SignupMenuController {
         if (slogan.equals("random")) {
             Random random = new Random();
             slogan = Database.getSlogans().get(random.nextInt(8));
+            AppMenu.show("your slogan: " + slogan);
         }
         String questionPick = AppMenu.getOneLine("Pick your security question: " +
                 "1. What is my father’s name? 2. What\n" +
@@ -142,7 +144,7 @@ public class SignupMenuController {
             return MenuMessages.WRONG_SECURITY_QUESTION_FORMAT;
         else if (!pattern.matcher(questionNumber).matches())
             return MenuMessages.OUT_OF_BOUNDS;
-        else if (answer.equals(answerConfirm))
+        else if (!answer.equals(answerConfirm))
             return MenuMessages.WRONG_ANSWER_CONFIRM;
         return MenuMessages.OK;
     }

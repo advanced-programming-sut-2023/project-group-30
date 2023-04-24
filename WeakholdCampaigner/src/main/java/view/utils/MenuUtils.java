@@ -83,6 +83,7 @@ public class MenuUtils {
                 break;
             case WRONG_RANDOM_PASSWORD_REENTERED:
                 System.out.println("Wrong re-entered password");
+                break;
             case FEW_CHARACTERS:
                 System.out.println("Your password should have at least 6 character");
                 break;
@@ -110,6 +111,7 @@ public class MenuUtils {
                 break;
             case WRONG_ANSWER_CONFIRM:
                 System.out.println("Error: Your answer confirmation is wrong!");
+                break;
         }
     }
 
