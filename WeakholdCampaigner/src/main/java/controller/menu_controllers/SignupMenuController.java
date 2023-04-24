@@ -25,8 +25,9 @@ public class SignupMenuController {
             return isPasswordStrong(password);
         } else if (!password.equals(passwordConfirm))
             return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
-//        if(slogan.equals("random"))
-//            slogan = Database.getSlogans().;
+        if(slogan.equals("random")) {
+            ;
+        }
         return MenuMessages.USER_CREATED_SUCCESSFULLY;//TODO: return callligraphic password
     }
 
@@ -44,11 +45,7 @@ public class SignupMenuController {
         return emailMatcher.matches();
     }
 
-//    public static String suggestingUsername(String username) {
-//        int addedNumberToUsername = 0;
-//        while (Database.getUserByName())
-//        return username;
-//    }
+
 
     public static String generateRandomPassword() {
         int length = 8;
@@ -73,17 +70,18 @@ public class SignupMenuController {
     private static MenuMessages isPasswordStrong(String password) {
         if (password.length() < 6) return MenuMessages.FEW_CHARACTERS;
         else {
-            String strongPasswordReg = "^(?=.*(?<lowercase>[a-z]*))(?=.*(?<uppercase>[A-Z]*))" +
-                    "(?=.*(?<number>\\d*))(?=.*(?<character>[^a-zA-Z0-9]*)).+$";
-            Pattern strongPasswordpattern = Pattern.compile(strongPasswordReg);
-            Matcher strongPasswordMatcher = strongPasswordpattern.matcher(password);
-            if (strongPasswordMatcher.group("lowercase").length() == 0) {
+            Pattern patternForLowerCase = Pattern.compile(".*[a-z]+.*");
+            Pattern patternForUpperCase = Pattern.compile(".*[A-Z]+.*");
+            Pattern patternForNumber = Pattern.compile(".*\\d+.*");
+            Pattern patternForCharacter = Pattern.compile(".*[^a-zA-Z0-9]+.*");
+
+            if (!patternForLowerCase.matcher(password).matches()) {
                 return MenuMessages.N0_LOWERCASE_LETTER;
-            } else if (strongPasswordMatcher.group("uppercase").length() == 0) {
+            } else if (!patternForUpperCase.matcher(password).matches()) {
                 return MenuMessages.N0_UPPERCASE_LETTER;
-            } else if (strongPasswordMatcher.group("number").length() == 0) {
+            } else if (!patternForNumber.matcher(password).matches()) {
                 return MenuMessages.N0_NUMBER;
-            } else if (strongPasswordMatcher.group("character").length() == 0) {
+            } else if (!patternForCharacter.matcher(password).matches()) {
                 return MenuMessages.NO_NON_WORD_NUMBER_CHARACTER;
             } else {
                 return MenuMessages.STRONG_PASSWORD;
