@@ -150,6 +150,14 @@ public class MenuUtils {
             return;
         }
         switch (LoginMenuController.userLogin(username, password, stayLoggedIn)) {
+            case NO_USER_WITH_USERNAME:
+                System.out.println("Error: this username not exist");
+                break;
+            case PASSWORD_INCORRECT:
+                System.out.println("Error: password is incorrect");
+                break;
+            case STAY:
+                break;
             case USER_LOGGED_IN_SUCCESSFULLY:
                 System.out.println("User logged in successfully");
                 MainController.setCurrentMenu(AppMenu.MenuName.MAIN_MENU);
@@ -179,15 +187,32 @@ public class MenuUtils {
             return;
         }
         switch (LoginMenuController.forgotPassword(username)) {
+            case FEW_CHARACTERS:
+                System.out.println("Your password should have at least 6 character");
+                break;
+            case N0_LOWERCASE_LETTER:
+                System.out.println("Your password doesn't have any lowercase letter");
+                break;
+            case N0_UPPERCASE_LETTER:
+                System.out.println("Your password doesn't have any uppercase letter");
+                break;
+            case N0_NUMBER:
+                System.out.println("Your password doesn't have any number");
+                break;
+            case NO_NON_WORD_NUMBER_CHARACTER:
+                System.out.println("Your password doesn't have any character");
+                break;
+            case INCORRECT_QNA_ANSWER:
+                System.out.println("your answer isn't correct");
+                break;
             case SECURITY_QUESTION_CONFIRMED:
-                System.out.println("Your password is : TODOCOMMENT");//TODO:  fill here with User class
                 break;
         }
     }
 
     public static void userLogout(ParsedLine parsedLine) {
         System.out.println("user logged out successfully!");
-        MainController.setCurrentMenu(AppMenu.MenuName.LOGIN_MENU);
+        LoginMenuController.userLogOut();
     }
 
     public static void enterGameMenu(ParsedLine parsedLine) {

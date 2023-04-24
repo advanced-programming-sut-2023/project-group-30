@@ -2,7 +2,9 @@ package model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import controller.MainController;
 import org.jetbrains.annotations.Nullable;
+import view.AppMenu;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -97,6 +99,28 @@ public class Database {
             newUsername = username + addedNumberToUsername;
         }
         return newUsername;
+    }
+    public static void loadStayLogin() {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader("src/main/resources/stayLoginUser.json")) {
+            User user = gson.fromJson(reader, User.class);
+            if (user != null) {
+                MainController.setCurrentMenu(AppMenu.MenuName.MAIN_MENU);
+                MainController.setCurrentUser(getUserByName(user.getUsername()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static void saveStayLoginUser(User user) {
+        Gson gson = new Gson();
+        try (FileWriter writer = new FileWriter("src/main/resources/stayLoginUser.json")){
+            gson.toJson(user, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ArrayList<User> getAllUsers() {

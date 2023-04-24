@@ -27,6 +27,7 @@ public class MainController {
         Database.loadSecurityQuestions();
         Database.loadSlogan();
         Database.loadAllUsers();
+        Database.loadStayLogin();
     }
 
     public void run() {
