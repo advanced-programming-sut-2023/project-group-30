@@ -25,7 +25,7 @@ public class LoginMenuController {
                 return MenuMessages.PASSWORD_INCORRECT;
             }
         }
-        if (stayLoggedIn) Database.saveStayLoginUser(user);
+        if (stayLoggedIn) Database.saveStayLoggedInUser(user);
         MainController.setCurrentUser(user);
         attemptNumber = 0;
         return MenuMessages.USER_LOGGED_IN_SUCCESSFULLY;
@@ -67,6 +67,6 @@ public class LoginMenuController {
     }
     public static void userLogOut() {
         MainController.setCurrentMenu(AppMenu.MenuName.LOGIN_MENU);
-        Database.saveStayLoginUser(null);
+        Database.saveStayLoggedInUser(null);
     }
 }

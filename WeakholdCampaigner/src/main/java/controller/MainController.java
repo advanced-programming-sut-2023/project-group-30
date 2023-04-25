@@ -24,10 +24,7 @@ public class MainController {
         currentMenu = menus.get(AppMenu.MenuName.SIGNUP_MENU);
         currentUser = null;
 
-        Database.loadSecurityQuestions();
-        Database.loadSlogan();
-        Database.loadAllUsers();
-        Database.loadStayLogin();
+        Database.loadData();
     }
 
     public void run() {

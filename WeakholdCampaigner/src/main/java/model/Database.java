@@ -26,7 +26,14 @@ public class Database {
         }
     }
 
-    public static void loadAllUsers() {
+    public static void loadData() {
+        Database.loadSecurityQuestions();
+        Database.loadSlogan();
+        Database.loadAllUsers();
+        Database.loadStayLogin();
+    }
+
+    private static void loadAllUsers() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/allUsers.json")) {
             BufferedReader br = new BufferedReader(reader);
@@ -40,7 +47,7 @@ public class Database {
         }
     }
 
-    public static void loadSecurityQuestions() {
+    private static void loadSecurityQuestions() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/securityQuestions.json")) {
             BufferedReader br = new BufferedReader(reader);
@@ -52,7 +59,7 @@ public class Database {
         }
     }
 
-    public static void loadSlogan() {
+    private static void loadSlogan() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/slogan.json")) {
             BufferedReader br = new BufferedReader(reader);
@@ -83,10 +90,9 @@ public class Database {
     }
 
     public static ArrayList<User> sortUserByRank() {
-        ArrayList<User> sortedUserByRank = new ArrayList<>();
-        sortedUserByRank.addAll(allUsers);
+        ArrayList<User> sortedUserByRank = new ArrayList<>(allUsers);
         Comparator<User> byScore = Comparator.comparing(User::getHighScore);
-        Collections.sort(sortedUserByRank, byScore);
+        sortedUserByRank.sort(byScore);
         Collections.reverse(sortedUserByRank);
         return sortedUserByRank;
     }
@@ -100,7 +106,7 @@ public class Database {
         }
         return newUsername;
     }
-    public static void loadStayLogin() {
+    private static void loadStayLogin() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/stayLoginUser.json")) {
             User user = gson.fromJson(reader, User.class);
@@ -113,7 +119,7 @@ public class Database {
         }
 
     }
-    public static void saveStayLoginUser(User user) {
+    public static void saveStayLoggedInUser(User user) {
         Gson gson = new Gson();
         try (FileWriter writer = new FileWriter("src/main/resources/stayLoginUser.json")){
             gson.toJson(user, writer);
