@@ -6,7 +6,6 @@ import view.ParsedLine;
 import view.menus.AppMenu;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class GameEntityUtils extends Utils {
     public static void createUnit(ParsedLine parsedLine) {
@@ -76,8 +75,79 @@ public class GameEntityUtils extends Utils {
         GameEntityController.setStance(options.get("-s"));
     }
 
-    public static void attack(ParsedLine parsedLine) {
+    public static void meleeAttack(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
 
+        if (options == null) {
+            invalidFormatError("attack melee -x <enemy's x> -y <enemy's y>");
+            return;
+        }
+
+        GameEntityController.meleeAttack(Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")));
+    }
+
+    public static void rangedAttack(ParsedLine parsedLine) { //smelly. merge this with meleeAttack.
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
+
+        if (options == null) {
+            invalidFormatError("attack ranged -x <enemy's x> -y <enemy's y>");
+            return;
+        }
+
+        GameEntityController.rangedAttack(Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")));
+    }
+
+    public static void pourOil(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-d"}, new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("pour oil -d <direction>");
+            return;
+        }
+
+        GameEntityController.pourOil(options.get("-d"));
+    }
+
+    public static void digTunnel(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
+
+        if (options == null) {
+            invalidFormatError("dig tunnel -x <x> -y <y>");
+            return;
+        }
+
+        GameEntityController.digTunnel(Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")));
+    }
+
+    public static void buildEquipment(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-q"}, new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("build equipment -q <equipment name>");
+            return;
+        }
+
+        GameEntityController.buildEquipment(options.get("-q"));
+    }
+
+    public static void disbandUnit(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{}, new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("unit disband");
+            return;
+        }
+
+        GameEntityController.disbandUnit();
     }
 
     public static void exitEntityMenu(ParsedLine parsedLine){

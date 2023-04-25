@@ -1,12 +1,10 @@
 package view.menus;
 
+import controller.menu_controllers.GameEntityController;
 import model.attributes.Attribute;
-import model.attributes.building_attributes.CreateUnit;
-import model.attributes.building_attributes.HasHP;
-import model.attributes.unit_attributes.CloseCombat;
-import model.game_entities.Building;
-import model.game_entities.GameEntity;
-import model.game_entities.Unit;
+import model.attributes.building_attributes.*;
+import model.attributes.unit_attributes.*;
+import model.game_entities.*;
 import view.Command;
 import view.utils.GameEntityUtils;
 import view.utils.MenuUtils;
@@ -26,12 +24,20 @@ public class GameEntityMenu extends AppMenu{
             commands.add(new Command("unit", "move_to", GameEntityUtils::moveUnit));
             commands.add(new Command("unit", "patrol", GameEntityUtils::patrolUnit));
             commands.add(new Command("set", "stance", GameEntityUtils::setStance));
+            commands.add(new Command("unit", "disband", GameEntityUtils::disbandUnit));
 
             for (Attribute attribute :
                     gameEntity.getAttributes()) {
-                if (attribute instanceof CloseCombat) {
-                    commands.add(new Command("attack", "melee", GameEntityUtils::attack));
-                }
+                if (attribute instanceof CloseCombat)
+                    commands.add(new Command("attack", "melee", GameEntityUtils::meleeAttack));
+                else if (attribute instanceof RangedAttack)
+                    commands.add(new Command("attack", "ranged", GameEntityUtils::rangedAttack));
+                else if (attribute instanceof PourOil)
+                    commands.add(new Command("pour", "oil", GameEntityUtils::pourOil));
+                else if (attribute instanceof DigTunnel)
+                    commands.add(new Command("dig", "tunnel", GameEntityUtils::digTunnel));
+                else if (attribute instanceof BuildEquipment)
+                    commands.add(new Command("build", "equipment", GameEntityUtils::buildEquipment));
             }
         }
 

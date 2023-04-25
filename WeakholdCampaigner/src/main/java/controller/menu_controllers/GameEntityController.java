@@ -20,4 +20,28 @@ public class GameEntityController {
     public static void setStance(String stance) {
 
     }
+
+    public static void meleeAttack(int enemyX, int enemyY){
+
+    }
+
+    public static void rangedAttack(int enemyX, int enemyY){
+
+    }
+
+    public static void pourOil(String direction){
+
+    }
+
+    public static void digTunnel(int x, int y){
+
+    }
+
+    public static void buildEquipment(String equipmentName){
+
+    }
+
+    public static void disbandUnit() {
+
+    }
 }
