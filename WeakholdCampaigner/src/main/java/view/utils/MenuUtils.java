@@ -448,4 +448,13 @@ public class MenuUtils {
                     "profile display [--slogan | --highscore | --rank | --all]");
 
     }
+
+    public static void showCurrentMenu(ParsedLine parsedLine){
+        System.out.println("You are currently in " + MainController.getCurrentMenu().menuName.nameString);
+    }
+
+    public static void saveAndExit(ParsedLine parsedLine) {
+        MainController.setCurrentMenu(null);
+        //TODO: save.
+    }
 }

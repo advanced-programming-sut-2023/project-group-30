@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 public class Command {
     public final String command;
+    @Nullable
     public final String subcommand;
     public final Consumer<ParsedLine> util;
 

@@ -18,14 +18,17 @@ import java.util.Scanner;
 public class AppMenu {
     private final ArrayList<Command> commands = new ArrayList<>();
     private static Scanner scanner = null;
+    public final MenuName menuName;
 
-    private AppMenu(ArrayList<Command> commands, Scanner scanner) {
+    private AppMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
+        this.menuName = menuName;
         this.scanner = scanner;
         this.commands.addAll(commands);
     }
 
     public static AppMenu getMenu(MenuName menuName, Scanner scanner) {
         ArrayList<Command> commands = new ArrayList<>();
+
         if (menuName == MenuName.SIGNUP_MENU) {
             commands.add(new Command("user", "create", MenuUtils::userCreate));
             commands.add(new Command("enter", "login_menu", MenuUtils::enterLoginMenu));
@@ -52,7 +55,6 @@ public class AppMenu {
             commands.add(new Command("create", "unit", GameUtils::creatUnit));
             commands.add(new Command("repair", "building", GameUtils::repair));
             commands.add(new Command("exit", "game_menu", MenuUtils::enterMainMenu));
-
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
             commands.add(new Command("show", "details", GameUtils::showDetails));
@@ -61,10 +63,12 @@ public class AppMenu {
             commands.add(new Command("user", "logout", MenuUtils::userLogout));
             commands.add(new Command("enter", "game_menu", MenuUtils::enterGameMenu));
             commands.add(new Command("enter", "profile_menu", MenuUtils::enterProfileMenu));
-
         }
 
-        return new AppMenu(commands, scanner);
+        commands.add(new Command("show", "current_menu", MenuUtils::showCurrentMenu));
+        commands.add(new Command("save_and_exit", null, MenuUtils::saveAndExit));
+
+        return new AppMenu(commands, scanner, menuName);
     }
 
     public static AppMenu getGameEntityMenu(GameEntity gameEntity, Scanner scanner) {
@@ -92,7 +96,7 @@ public class AppMenu {
             }
         }
 
-        return new AppMenu(commands, scanner);
+        return new AppMenu(commands, scanner, MenuName.ENTITY_MENU);
     }
 
     public static void show(String output) {
@@ -110,7 +114,9 @@ public class AppMenu {
                 boolean isValid = false;
                 for (Command command :
                         commands)
-                    if (command.command.equals(parsedLine.command) && command.subcommand.equals(parsedLine.subCommand)) {
+                    if (command.command.equals(parsedLine.command) && (
+                                    (command.subcommand == null && parsedLine.subCommand == null) ||
+                                    (command.subcommand != null && command.subcommand.equals(parsedLine.subCommand)))) {
                         command.util.accept(parsedLine);
                         isValid = true;
                         break;
@@ -127,12 +133,18 @@ public class AppMenu {
     }
 
     public enum MenuName {
-        LOGIN_MENU,
-        SIGNUP_MENU,
-        MAIN_MENU,
-        PROFILE_MENU,
-        GAME_MENU,
-        MAP_MENU,
+        LOGIN_MENU("Login Menu"),
+        SIGNUP_MENU("Signup Menu"),
+        MAIN_MENU("Main Menu"),
+        PROFILE_MENU("Profile Menu"),
+        GAME_MENU("Game Menu"),
+        MAP_MENU("Map Menu"),
+        ENTITY_MENU("Entity Menu");
 
+        public final String nameString;
+
+        MenuName(String nameString){
+            this.nameString = nameString;
+        }
     }
 }

@@ -21,14 +21,14 @@ public class MainController {
         menus.put(AppMenu.MenuName.MAIN_MENU, AppMenu.getMenu(AppMenu.MenuName.MAIN_MENU, scanner));
         menus.put(AppMenu.MenuName.PROFILE_MENU, AppMenu.getMenu(AppMenu.MenuName.PROFILE_MENU, scanner));
 
-        currentMenu = menus.get(AppMenu.MenuName.SIGNUP_MENU);
+        currentMenu = menus.get(AppMenu.MenuName.LOGIN_MENU);
         currentUser = null;
 
         Database.loadData();
     }
 
     public void run() {
-        while (true) {
+        while (currentMenu != null) {
             currentMenu.run();
         }
     }
