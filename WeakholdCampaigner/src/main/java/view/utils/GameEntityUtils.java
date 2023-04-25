@@ -1,7 +1,9 @@
 package view.utils;
 
+import controller.MainController;
 import controller.menu_controllers.GameEntityController;
 import view.ParsedLine;
+import view.menus.AppMenu;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,44 +42,46 @@ public class GameEntityUtils extends Utils {
             return;
         }
 
-        GameEntityController.moveUnit(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")));
+        GameEntityController.moveUnitTo(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")));
     }
 
-    public static void setStance(ParsedLine parsedLine) {
-        String x = null, y = null, stance = null;
-        boolean invalidOption = false;
+    public static void patrolUnit(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-x1", "-y1", "-x2", "-y2"},
+                new String[]{},
+                new String[]{"-x1", "-y1", "-x2", "-y2"});
 
-        HashMap<String, String> options = parsedLine.options;
-        for (Map.Entry<String, String> entry :
-                options.entrySet()) {
-            String option = entry.getKey(), argument = entry.getValue();
-            switch (option) {
-                case "-x":
-                    x = argument;
-                    break;
-                case "-y":
-                    y = argument;
-                    break;
-                case "-s":
-                    stance = argument;
-                    break;
-                default:
-                    invalidOption = true;
-                    break;
-            }
-        }
-
-        if (invalidOption || hasNullString(x, y, stance) || !areIntegersOrNull(x, y)) {
-            invalidFormatError("set stance -x <x> -y <y> -s <stance>");
+        if (options == null) {
+            invalidFormatError("unit patrol -x1 <x1> -y1 <y1> -x2 <x2> -y2 <y2>");
             return;
         }
-        assert x != null;
-        assert y != null;
 
-        GameEntityController.setStance(Integer.parseInt(x), Integer.parseInt(y), stance);
+        GameEntityController.patrolUnit(
+                Integer.parseInt(options.get("-x1")),
+                Integer.parseInt(options.get("-y1")),
+                Integer.parseInt(options.get("-x2")),
+                Integer.parseInt(options.get("-y2")));
+    }
+
+
+    public static void setStance(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-s"}, new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("set stance -s <stance>");
+            return;
+        }
+
+        GameEntityController.setStance(options.get("-s"));
     }
 
     public static void attack(ParsedLine parsedLine) {
 
+    }
+
+    public static void exitEntityMenu(ParsedLine parsedLine){
+        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("Entered Game Menu.");
     }
 }

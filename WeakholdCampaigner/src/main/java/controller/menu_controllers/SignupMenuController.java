@@ -1,18 +1,16 @@
 package controller.menu_controllers;
 
-import controller.MainController;
 import controller.messages.MenuMessages;
 import model.Database;
 import model.PasswordRecoveryQNA;
 import model.User;
-import view.AppMenu;
+import view.menus.AppMenu;
 import view.ParsedLine;
 import view.utils.MenuUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignupMenuController extends MenuController {

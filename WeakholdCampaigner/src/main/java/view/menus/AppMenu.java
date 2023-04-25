@@ -1,14 +1,8 @@
-package view;
+package view.menus;
 
 import controller.MainController;
-import model.attributes.Attribute;
-import model.attributes.building_attributes.CreateUnit;
-import model.attributes.building_attributes.HasHP;
-import model.attributes.unit_attributes.CloseCombat;
-import model.game_entities.Building;
-import model.game_entities.GameEntity;
-import model.game_entities.Unit;
-import view.utils.GameEntityUtils;
+import view.Command;
+import view.ParsedLine;
 import view.utils.GameUtils;
 import view.utils.MenuUtils;
 
@@ -16,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AppMenu {
-    private final ArrayList<Command> commands = new ArrayList<>();
-    private static Scanner scanner = null;
+    protected final ArrayList<Command> commands = new ArrayList<>();
+    protected static Scanner scanner = null;
     public final MenuName menuName;
 
-    private AppMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
+    protected AppMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
         this.menuName = menuName;
         this.scanner = scanner;
         this.commands.addAll(commands);
@@ -52,8 +46,6 @@ public class AppMenu {
             commands.add(new Command("fear", "rate", GameUtils::fearRate));
             commands.add(new Command("drop", "building", GameUtils::dropBuilding));
             commands.add(new Command("select", "building", GameUtils::selectBuilding));
-            commands.add(new Command("create", "unit", GameUtils::creatUnit));
-            commands.add(new Command("repair", "building", GameUtils::repair));
             commands.add(new Command("exit", "game_menu", MenuUtils::enterMainMenu));
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
@@ -69,34 +61,6 @@ public class AppMenu {
         commands.add(new Command("save_and_exit", null, MenuUtils::saveAndExit));
 
         return new AppMenu(commands, scanner, menuName);
-    }
-
-    public static AppMenu getGameEntityMenu(GameEntity gameEntity, Scanner scanner) {
-        ArrayList<Command> commands = new ArrayList<>();
-
-        if (gameEntity instanceof Unit) {
-            commands.add(new Command("unit", "move_to", GameEntityUtils::moveUnit));
-            commands.add(new Command("set", "stance", GameEntityUtils::setStance));
-
-            for (Attribute attribute :
-                    gameEntity.getAttributes()) {
-                if (attribute instanceof CloseCombat) {
-                    commands.add(new Command("attack", "melee", GameEntityUtils::attack));
-                }
-            }
-        }
-
-        if (gameEntity instanceof Building) {
-            for (Attribute attribute :
-                    gameEntity.getAttributes()) {
-                if (attribute instanceof CreateUnit)
-                    commands.add(new Command("create", "unit", GameEntityUtils::createUnit));
-                else if (attribute instanceof HasHP)
-                    commands.add(new Command("repair", null, GameEntityUtils::repair));
-            }
-        }
-
-        return new AppMenu(commands, scanner, MenuName.ENTITY_MENU);
     }
 
     public static void show(String output) {

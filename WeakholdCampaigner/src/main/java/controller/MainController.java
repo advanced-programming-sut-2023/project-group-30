@@ -2,7 +2,7 @@ package controller;
 
 import model.Database;
 import model.User;
-import view.AppMenu;
+import view.menus.AppMenu;
 
 import java.util.HashMap;
 import java.util.Scanner;

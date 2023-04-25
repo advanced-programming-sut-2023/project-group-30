@@ -44,12 +44,4 @@ public class GameMenuController {
     public static MenuMessages selectBuilding(int x, int y) {
         return MenuMessages.OK;
     }
-
-    public static MenuMessages creatUnit(int count, String type) {
-        return MenuMessages.OK;
-    }
-
-    public static MenuMessages repair() {
-        return MenuMessages.OK;
-    }
 }

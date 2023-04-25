@@ -3,7 +3,7 @@ package view.utils;
 import controller.MainController;
 import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
-import view.AppMenu;
+import view.menus.AppMenu;
 import view.ParsedLine;
 
 import java.util.HashMap;
@@ -329,43 +329,4 @@ public class GameUtils {
             }
         } else System.out.println("Error: please enter location correctly");
     }
-
-    public static void creatUnit(ParsedLine parsedLine) {
-        String type = null, Count = null;
-        HashMap<String, String> options = parsedLine.options;
-        for (Map.Entry<String, String> entry :
-                options.entrySet()) {
-            String option = entry.getKey(), argument = entry.getValue();
-            switch (option) {
-                case "--type":
-                    type = argument;
-                    break;
-                case "-c":
-                    Count = argument;
-                    break;
-                default:
-                    System.out.println("Error: This command should have the following format:\n" +
-                            "create unit --type [type] -c [count]");
-                    return;
-            }
-        }
-        if (checkStrIsNumberAndNotNullForAllEntrance(Count) && type != null) {
-            int count = Integer.parseInt(Count);
-            switch (GameMenuController.creatUnit(count, type)) {
-                case OK:
-                    break;
-            }
-
-        } else System.out.println("Error: pleas enter counter or type correctly");
-
-    }
-
-    public static void repair(ParsedLine parsedLine) {
-        switch (GameMenuController.repair()) {
-            case OK:
-                break;
-        }
-    }
-
-
 }

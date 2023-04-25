@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import controller.MainController;
 import org.jetbrains.annotations.Nullable;
-import view.AppMenu;
+import view.menus.AppMenu;
 
 import java.io.*;
 import java.lang.reflect.Type;

@@ -4,7 +4,7 @@ import controller.MainController;
 import controller.messages.MenuMessages;
 import model.Database;
 import model.User;
-import view.AppMenu;
+import view.menus.AppMenu;
 
 public class LoginMenuController {
     private static int attemptNumber = 0;

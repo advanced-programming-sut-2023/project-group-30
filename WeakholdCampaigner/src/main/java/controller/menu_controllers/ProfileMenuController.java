@@ -5,7 +5,7 @@ import controller.messages.MenuMessages;
 import model.Database;
 import model.User;
 import org.jetbrains.annotations.Nullable;
-import view.AppMenu;
+import view.menus.AppMenu;
 
 import java.util.ArrayList;
 
