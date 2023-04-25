@@ -47,9 +47,9 @@ public class ProfileMenuController extends MenuController {
     }
 
     public static MenuMessages changeEmail(String email) {
-        if(Database.getUserByEmail(email.toLowerCase()) != null)
+        if (Database.getUserByEmail(email.toLowerCase()) != null)
             return MenuMessages.TAKEN_EMAIL;
-        else if(!isEmailValid(email))
+        else if (!isEmailValid(email))
             return MenuMessages.INVALID_EMAIL;
         MainController.getCurrentUser().setEmail(email.toLowerCase());
         Database.saveAllUsers();
@@ -64,18 +64,20 @@ public class ProfileMenuController extends MenuController {
 
     public static Integer displayHighScore() {
         Integer highscore = MainController.getCurrentUser().getHighScore();
-        if(highscore == null) return 0;
+        if (highscore == null) return 0;
         return highscore;
     }
-    private static Integer getRank(ArrayList<User> sortedUserByRank){
+
+    private static Integer getRank(ArrayList<User> sortedUserByRank) {
         return sortedUserByRank.indexOf(MainController.getCurrentUser());
     }
+
     public static Integer displayRank() {
         return getRank(Database.sortUserByRank());
     }
 
     public static MenuMessages displaySlogan() {
-        if(MainController.getCurrentUser().getSlogan() == null){
+        if (MainController.getCurrentUser().getSlogan() == null) {
             return MenuMessages.NULL_SLOGAN;
         }
         return MenuMessages.DISPLAY;
@@ -85,7 +87,7 @@ public class ProfileMenuController extends MenuController {
         AppMenu.show("Username: " + MainController.getCurrentUser().getUsername());
         AppMenu.show("Email: " + MainController.getCurrentUser().getEmail());
         AppMenu.show("Nickname: " + MainController.getCurrentUser().getNickname());
-        if(MainController.getCurrentUser().getSlogan() != null) {
+        if (MainController.getCurrentUser().getSlogan() != null) {
             AppMenu.show("Slogan: " + MainController.getCurrentUser().getSlogan());
         }
     }

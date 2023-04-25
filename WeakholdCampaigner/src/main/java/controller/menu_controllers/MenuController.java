@@ -46,9 +46,10 @@ public class MenuController {
         Matcher emailMatcher = emailPattern.matcher(email);
         return emailMatcher.matches();
     }
+
     public static String getSHA(String input) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte [] cryptogtaphicBytes =  md.digest(input.getBytes(StandardCharsets.UTF_8));
+        byte[] cryptogtaphicBytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
         BigInteger number = new BigInteger(1, cryptogtaphicBytes);
         StringBuilder hexString = new StringBuilder(number.toString(16));
         while (hexString.length() < 64) {

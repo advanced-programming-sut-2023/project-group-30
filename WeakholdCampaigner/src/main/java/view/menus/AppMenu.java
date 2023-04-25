@@ -79,7 +79,7 @@ public class AppMenu {
                 for (Command command :
                         commands)
                     if (command.command.equals(parsedLine.command) && (
-                                    (command.subcommand == null && parsedLine.subCommand == null) ||
+                            (command.subcommand == null && parsedLine.subCommand == null) ||
                                     (command.subcommand != null && command.subcommand.equals(parsedLine.subCommand)))) {
                         command.util.accept(parsedLine);
                         isValid = true;
@@ -107,7 +107,7 @@ public class AppMenu {
 
         public final String nameString;
 
-        MenuName(String nameString){
+        MenuName(String nameString) {
             this.nameString = nameString;
         }
     }

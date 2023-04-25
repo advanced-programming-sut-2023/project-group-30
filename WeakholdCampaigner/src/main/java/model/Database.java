@@ -106,6 +106,7 @@ public class Database {
         }
         return newUsername;
     }
+
     private static void loadStayLogin() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/stayLoginUser.json")) {
@@ -119,9 +120,10 @@ public class Database {
         }
 
     }
+
     public static void saveStayLoggedInUser(User user) {
         Gson gson = new Gson();
-        try (FileWriter writer = new FileWriter("src/main/resources/stayLoginUser.json")){
+        try (FileWriter writer = new FileWriter("src/main/resources/stayLoginUser.json")) {
             gson.toJson(user, writer);
 
         } catch (IOException e) {

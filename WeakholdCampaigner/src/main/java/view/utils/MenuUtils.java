@@ -422,7 +422,7 @@ public class MenuUtils {
                     }
                     switch (ProfileMenuController.displaySlogan()) {
                         case DISPLAY:
-                            System.out.println("This user's slogan is : "+ MainController.getCurrentUser().getSlogan());
+                            System.out.println("This user's slogan is : " + MainController.getCurrentUser().getSlogan());
                             break;
                         case NULL_SLOGAN:
                             System.out.println("Slogan is empty!");
@@ -449,7 +449,7 @@ public class MenuUtils {
 
     }
 
-    public static void showCurrentMenu(ParsedLine parsedLine){
+    public static void showCurrentMenu(ParsedLine parsedLine) {
         System.out.println("You are currently in " + MainController.getCurrentMenu().menuName.nameString);
     }
 

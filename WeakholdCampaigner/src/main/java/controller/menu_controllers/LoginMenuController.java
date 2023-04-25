@@ -8,6 +8,7 @@ import view.menus.AppMenu;
 
 public class LoginMenuController {
     private static int attemptNumber = 0;
+
     public static MenuMessages userLogin(String username, String password, Boolean stayLoggedIn) {
         User user = Database.getUserByName(username);
         if (user == null)
@@ -19,8 +20,7 @@ public class LoginMenuController {
                 pause(5000 * attemptNumber);
                 attemptNumber++;
                 return MenuMessages.STAY;
-            }
-            else {
+            } else {
                 attemptNumber++;
                 return MenuMessages.PASSWORD_INCORRECT;
             }
@@ -54,6 +54,7 @@ public class LoginMenuController {
         }
 
     }
+
     public static void pause(int ms) {
         try {
             Thread.sleep(ms);
@@ -65,6 +66,7 @@ public class LoginMenuController {
     public static int getAttemptNumber() {
         return attemptNumber;
     }
+
     public static void userLogOut() {
         MainController.setCurrentMenu(AppMenu.MenuName.LOGIN_MENU);
         Database.saveStayLoggedInUser(null);

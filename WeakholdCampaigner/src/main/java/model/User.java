@@ -8,7 +8,7 @@ public class User {
     private String nickname;
     private String email;
     private String slogan;
-    private Integer highScore = 0 ;
+    private Integer highScore = 0;
     private PasswordRecoveryQNA securityQuestion;
     private ArrayList<Trade> tradeList;
     private ArrayList<Trade> tradeHistory;
@@ -68,7 +68,6 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
 
     public PasswordRecoveryQNA getSecurityQuestion() {

@@ -12,7 +12,7 @@ import view.utils.MenuUtils;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GameEntityMenu extends AppMenu{
+public class GameEntityMenu extends AppMenu {
     private GameEntityMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
         super(commands, scanner, menuName);
     }

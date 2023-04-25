@@ -150,7 +150,7 @@ public class GameEntityUtils extends Utils {
         GameEntityController.disbandUnit();
     }
 
-    public static void exitEntityMenu(ParsedLine parsedLine){
+    public static void exitEntityMenu(ParsedLine parsedLine) {
         MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
         System.out.println("Entered Game Menu.");
     }
