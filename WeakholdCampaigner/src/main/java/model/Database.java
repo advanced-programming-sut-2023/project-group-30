@@ -83,7 +83,7 @@ public class Database {
     public static ArrayList<User> sortUserByRank() {
         ArrayList<User> sortedUserByRank = new ArrayList<>();
         sortedUserByRank.addAll(allUsers);
-        Comparator<User> byScore = Comparator.comparing(User::getScore);
+        Comparator<User> byScore = Comparator.comparing(User::getHighScore);
         Collections.sort(sortedUserByRank, byScore);
         Collections.reverse(sortedUserByRank);
         return sortedUserByRank;
