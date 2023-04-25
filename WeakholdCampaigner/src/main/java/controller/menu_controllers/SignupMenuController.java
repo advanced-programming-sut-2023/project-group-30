@@ -15,7 +15,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignupMenuController {
+public class SignupMenuController extends MenuController {
     static PasswordRecoveryQNA passwordRecoveryQNA;
 
     public static MenuMessages createUser(String username, String password, String passwordConfirm,
@@ -43,10 +43,12 @@ public class SignupMenuController {
             return isPasswordStrong(password);
         } else if (!password.equals(passwordConfirm))
             return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
-        if (slogan.equals("random")) {
-            Random random = new Random();
-            slogan = Database.getSlogans().get(random.nextInt(8));
-            AppMenu.show("your slogan: " + slogan);
+        if (slogan != null) {
+            if (slogan.equals("random")) {
+                Random random = new Random();
+                slogan = Database.getSlogans().get(random.nextInt(8));
+                AppMenu.show("your slogan: " + slogan);
+            }
         }
         String questionPick = AppMenu.getOneLine("Pick your security question: " +
                 "1. What is my father’s name? 2. What\n" +
@@ -83,27 +85,13 @@ public class SignupMenuController {
         return MenuMessages.USER_CREATED_SUCCESSFULLY;//TODO: return callligraphic password
     }
 
-    private static boolean isUsernameValid(String username) {
-        String validUsernameReg = "^[a-zA-Z0-9_]+$";
-        Pattern usernamePattern = Pattern.compile(validUsernameReg);
-        Matcher usernameMatcher = usernamePattern.matcher(username);
-        return usernameMatcher.matches();
-    }
-
-    private static boolean isEmailValid(String email) {
-        String validEmaileReg = "^[a-zA-Z0-9._]+@[a-zA-Z0-9._]+\\.[a-zA-Z0-9._]+$";
-        Pattern emailPattern = Pattern.compile(validEmaileReg);
-        Matcher emailMatcher = emailPattern.matcher(email);
-        return emailMatcher.matches();
-    }
-
 
     public static String generateRandomPassword() {
         int length = 8;
         final String lowercases = "abcdefghijklmnopqrstuvwxyz";
         final String uppercases = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         final String numbers = "0123456789";
-        final String characters = "=+-_)(*&^%$#@!~{}[]|/?':;,<>.\"";
+        final String characters = "=+_)(*&^%$#@!~{}[]|/?':;,<>.";
         Random random = new Random();
         StringBuilder passwordBuilder = new StringBuilder(length);
         passwordBuilder.append(lowercases.charAt(random.nextInt(lowercases.length())));
@@ -116,28 +104,6 @@ public class SignupMenuController {
         }
 
         return passwordBuilder.toString();
-    }
-
-    private static MenuMessages isPasswordStrong(String password) {
-        if (password.length() < 6) return MenuMessages.FEW_CHARACTERS;
-        else {
-            Pattern patternForLowerCase = Pattern.compile(".*[a-z]+.*");
-            Pattern patternForUpperCase = Pattern.compile(".*[A-Z]+.*");
-            Pattern patternForNumber = Pattern.compile(".*\\d+.*");
-            Pattern patternForCharacter = Pattern.compile(".*[^a-zA-Z0-9]+.*");
-
-            if (!patternForLowerCase.matcher(password).matches()) {
-                return MenuMessages.N0_LOWERCASE_LETTER;
-            } else if (!patternForUpperCase.matcher(password).matches()) {
-                return MenuMessages.N0_UPPERCASE_LETTER;
-            } else if (!patternForNumber.matcher(password).matches()) {
-                return MenuMessages.N0_NUMBER;
-            } else if (!patternForCharacter.matcher(password).matches()) {
-                return MenuMessages.NO_NON_WORD_NUMBER_CHARACTER;
-            } else {
-                return MenuMessages.STRONG_PASSWORD;
-            }
-        }
     }
 
     public static MenuMessages checkInvalidSecurityQuestion(String questionNumber, String answer, String answerConfirm) {

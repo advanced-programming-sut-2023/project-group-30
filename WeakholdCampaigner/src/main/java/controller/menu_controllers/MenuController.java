@@ -2,9 +2,18 @@ package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MenuController {
+    protected static boolean isUsernameValid(String username) {
+        String validUsernameReg = "^[a-zA-Z0-9_]+$";
+        Pattern usernamePattern = Pattern.compile(validUsernameReg);
+        Matcher usernameMatcher = usernamePattern.matcher(username);
+        return usernameMatcher.matches();
+    }
+
+
     public static MenuMessages isPasswordStrong(String password) {
         if (password.length() < 6) return MenuMessages.FEW_CHARACTERS;
         else {
@@ -25,5 +34,12 @@ public class MenuController {
                 return MenuMessages.STRONG_PASSWORD;
             }
         }
+    }
+
+    protected static boolean isEmailValid(String email) {
+        String validEmaileReg = "^[a-zA-Z0-9._]+@[a-zA-Z0-9._]+\\.[a-zA-Z0-9._]+$";
+        Pattern emailPattern = Pattern.compile(validEmaileReg);
+        Matcher emailMatcher = emailPattern.matcher(email);
+        return emailMatcher.matches();
     }
 }

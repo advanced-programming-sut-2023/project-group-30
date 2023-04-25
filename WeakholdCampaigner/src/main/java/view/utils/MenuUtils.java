@@ -258,6 +258,13 @@ public class MenuUtils {
                     switch (ProfileMenuController.changeUsername(username)) {
                         case USERNAME_HAS_CHANGED:
                             System.out.println("username has changed successfully");
+                            break;
+                        case INVALID_USERNAME:
+                            System.out.println("Error: Username consists of letters ,numbers and underscore");
+                            break;
+                        case TAKEN_USERNAME:
+                            System.out.println("Error: This username has already been taken");
+                            break;
                     }
                     break;
                 case "--password":
@@ -271,6 +278,30 @@ public class MenuUtils {
                     switch (ProfileMenuController.changePassword(oldPassword, newPassword)) {
                         case PASSWORD_HAS_CHANGED:
                             System.out.println("password has changed successfully");
+                            break;
+                        case FEW_CHARACTERS:
+                            System.out.println("Your password should have at least 6 character");
+                            break;
+                        case N0_LOWERCASE_LETTER:
+                            System.out.println("Your password doesn't have any lowercase letter");
+                            break;
+                        case N0_UPPERCASE_LETTER:
+                            System.out.println("Your password doesn't have any uppercase letter");
+                            break;
+                        case N0_NUMBER:
+                            System.out.println("Your password doesn't have any number");
+                            break;
+                        case NO_NON_WORD_NUMBER_CHARACTER:
+                            System.out.println("Your password doesn't have any character");
+                            break;
+                        case INCORRECT_CURRENT_PASSWORD:
+                            System.out.println("Your old password is wrong!");
+                            break;
+                        case SAME_PASSWORD:
+                            System.out.println("Your new password is the same as the previous one");
+                            break;
+                        case WRONG_PASSWORD_CONFIRMATION:
+                            System.out.println("Your password confirmation is wrong!");
                             break;
                     }
                     break loop;
@@ -297,6 +328,12 @@ public class MenuUtils {
                     switch (ProfileMenuController.changeEmail(email)) {
                         case EMAIL_HAS_CHANGED:
                             System.out.println("email has changed successfully");
+                            break;
+                        case INVALID_EMAIL:
+                            System.out.println("Error:Your email format is invalid");
+                            break;
+                        case TAKEN_EMAIL:
+                            System.out.println("Error: An account has been created with this email address");
                             break;
                     }
                     break;
@@ -385,8 +422,10 @@ public class MenuUtils {
                     }
                     switch (ProfileMenuController.displaySlogan()) {
                         case DISPLAY:
-                            System.out.println("This user's slogan is : TODO");//TODO: fill here with  user class
+                            System.out.println("This user's slogan is : "+ MainController.getCurrentUser().getSlogan());
                             break;
+                        case NULL_SLOGAN:
+                            System.out.println("Slogan is empty!");
                     }
                     break;
                 case "--all":
@@ -395,11 +434,7 @@ public class MenuUtils {
                                 "profile display --all");
                         return;
                     }
-                    switch (ProfileMenuController.displayProfile()) {
-                        case DISPLAY:
-                            System.out.println("PROFILE DISPLAY");//TODO: fill here with  user class
-                            break;
-                    }
+                    ProfileMenuController.displayProfile();
                     break;
                 default:
                     System.out.println("Error: This command should have the following format:\n" +
