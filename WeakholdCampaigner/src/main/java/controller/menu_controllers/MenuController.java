@@ -2,6 +2,10 @@ package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,4 +46,14 @@ public class MenuController {
         Matcher emailMatcher = emailPattern.matcher(email);
         return emailMatcher.matches();
     }
+    public static String getSHA(String input) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte [] cryptogtaphicBytes =  md.digest(input.getBytes(StandardCharsets.UTF_8));
+        BigInteger number = new BigInteger(1, cryptogtaphicBytes);
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+        while (hexString.length() < 64) {
+            hexString.insert(0, '0');
+        }
+        return hexString.toString();
+    }//TODO: use this method in logic and profile and signup controller
 }
