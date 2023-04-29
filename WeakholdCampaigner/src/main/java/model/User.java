@@ -10,9 +10,7 @@ public class User {
     private String slogan;
     private Integer highScore = 0;
     private PasswordRecoveryQNA securityQuestion;
-    private ArrayList<Trade> tradeList;
-    private ArrayList<Trade> tradeHistory;
-    private ArrayList<Trade> tradeNotification;
+
 
     public String getNickname() {
         return nickname;

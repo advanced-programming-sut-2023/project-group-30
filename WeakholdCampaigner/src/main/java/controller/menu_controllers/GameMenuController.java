@@ -1,9 +1,21 @@
 package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
+import model.Government;
 import model.User;
 
+import java.util.ArrayList;
+
 public class GameMenuController {
+    private static ArrayList<Government> governments = new ArrayList<>();
+
+
+    public static ArrayList<Government> getGovernments() {
+        return governments;
+    }
+    public void addGovernment (Government government) {
+        governments.add(government);
+    }
     public static MenuMessages showMap(int x, int y) {
         return MenuMessages.OK;
     }

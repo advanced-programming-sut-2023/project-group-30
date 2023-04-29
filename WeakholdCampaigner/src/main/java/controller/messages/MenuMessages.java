@@ -35,4 +35,5 @@ public enum MenuMessages {
     PASSWORD_INCORRECT,
     STAY,
     INCORRECT_QNA_ANSWER,
+    INVALID_RESOURCE,
 }

@@ -3,6 +3,7 @@ package view.utils;
 import controller.MainController;
 import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
+import controller.menu_controllers.TradeMenuController;
 import view.menus.AppMenu;
 import view.ParsedLine;
 
@@ -10,7 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class GameUtils {
+import static view.utils.Utils.formatOptions;
+import static view.utils.Utils.invalidFormatError;
+
+public class GameUtils extends Utils{
 
 
     public static void showMap(ParsedLine parsedLine) {
@@ -329,4 +333,32 @@ public class GameUtils {
             }
         } else System.out.println("Error: please enter location correctly");
     }
+    public static void enterTradMenu (ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.TRAD_MENU);
+        System.out.println("entered trade menu");
+    }
+    public static void exitTradMenu (ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("entered game menu");
+    }
+    public static void trade (ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t", "-a", "-p", "-m"}
+                , new String[]{}, new String[]{"-p", "-a"});
+
+        if (options == null) {
+            invalidFormatError("create unit -t <type> -c <count>");
+            return;
+        }
+        switch (TradeMenuController.trade(options.get("-t"), Integer.parseInt(options.get("-a")),
+                Integer.parseInt(options.get("-p")), options.get("-m"))) {
+            case INVALID_RESOURCE:
+                System.out.println("error: resource is not correct");
+            case OK:
+                System.out.println("your request/donation added");
+        }
+
+
+
+    }
+
 }
