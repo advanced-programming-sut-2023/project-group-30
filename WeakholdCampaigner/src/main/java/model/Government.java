@@ -17,11 +17,28 @@ public class Government {
     private int taxRate;
     private int fearRate;
     //we want main castle but concept is unknown  //TODO
-    private ArrayList<Trade> tradeList;
-    private ArrayList<Trade> tradeHistory;
-    private ArrayList<Trade> tradeNotification;
+    private ArrayList<Trade> tradeList = new ArrayList<>();
+    private ArrayList<Trade> tradeHistory = new ArrayList<>();
+    private ArrayList<Trade> tradeNotification = new ArrayList<>();
     private User owner;
-    private HashMap<Resource, Integer> resources;
+    private HashMap<Resource, Integer> resources = new HashMap<>();
+    private void installResource() {
+        resources.put(Resource.GOLD_COIN, 20);
+        resources.put(Resource.GOLD, 0);
+        resources.put(Resource.BREAD, 0);
+        resources.put(Resource.FLOUR, 0);
+        resources.put(Resource.GRAIN, 0);
+        resources.put(Resource.IRON, 0);
+        resources.put(Resource.STONE, 0);
+        resources.put(Resource.WHEAT, 0);
+        resources.put(Resource.WINE, 0);
+        resources.put(Resource.WOOD, 10);
+    }
+
+    public Government(User owner) {
+        this.owner = owner;
+        installResource();
+    }
 
     public void getPopularity() {
 
@@ -127,6 +144,10 @@ public class Government {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+    public void addToTradeHistory(Trade trade) {
+        tradeHistory.add(trade);
+    }
+
 
     public HashMap<Resource, Integer> getResources() {
         return resources;

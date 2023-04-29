@@ -13,7 +13,7 @@ public class GameMenuController {
     public static ArrayList<Government> getGovernments() {
         return governments;
     }
-    public void addGovernment (Government government) {
+    public static void  addGovernment (Government government) {
         governments.add(government);
     }
     public static MenuMessages showMap(int x, int y) {

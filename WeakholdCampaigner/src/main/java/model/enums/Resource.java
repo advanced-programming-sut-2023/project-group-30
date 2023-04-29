@@ -9,7 +9,8 @@ public enum Resource {
     GRAIN("grain"),
     FLOUR("flour"),
     WINE("wine"),
-    BREAD("bread");
+    BREAD("bread"),
+    GOLD_COIN("gold coin");
     public final String nameString;
 
     Resource (String nameString) {

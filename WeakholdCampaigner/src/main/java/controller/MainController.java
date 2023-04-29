@@ -1,6 +1,8 @@
 package controller;
 
+import controller.menu_controllers.GameMenuController;
 import model.Database;
+import model.Government;
 import model.User;
 import view.menus.AppMenu;
 
@@ -20,6 +22,7 @@ public class MainController {
         menus.put(AppMenu.MenuName.MAP_MENU, AppMenu.getMenu(AppMenu.MenuName.MAP_MENU, scanner));
         menus.put(AppMenu.MenuName.MAIN_MENU, AppMenu.getMenu(AppMenu.MenuName.MAIN_MENU, scanner));
         menus.put(AppMenu.MenuName.PROFILE_MENU, AppMenu.getMenu(AppMenu.MenuName.PROFILE_MENU, scanner));
+        menus.put(AppMenu.MenuName.TRAD_MENU, AppMenu.getMenu(AppMenu.MenuName.TRAD_MENU, scanner));
 
         currentMenu = menus.get(AppMenu.MenuName.LOGIN_MENU);
         currentUser = null;

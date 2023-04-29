@@ -36,4 +36,6 @@ public enum MenuMessages {
     STAY,
     INCORRECT_QNA_ANSWER,
     INVALID_RESOURCE,
+    INVALID_AMOUNT,
+    INVALID_MONEY,
 }

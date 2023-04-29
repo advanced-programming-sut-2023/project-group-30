@@ -334,8 +334,7 @@ public class GameUtils extends Utils{
         } else System.out.println("Error: please enter location correctly");
     }
     public static void enterTradMenu (ParsedLine parsedLine) {
-        MainController.setCurrentMenu(AppMenu.MenuName.TRAD_MENU);
-        System.out.println("entered trade menu");
+        TradeMenuController.enterTradeMenu();
     }
     public static void exitTradMenu (ParsedLine parsedLine) {
         MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
@@ -346,19 +345,45 @@ public class GameUtils extends Utils{
                 , new String[]{}, new String[]{"-p", "-a"});
 
         if (options == null) {
-            invalidFormatError("create unit -t <type> -c <count>");
+            invalidFormatError("trade -t [resourceType] -a [resourceAmount] -p [price] -m [message]");
             return;
         }
         switch (TradeMenuController.trade(options.get("-t"), Integer.parseInt(options.get("-a")),
                 Integer.parseInt(options.get("-p")), options.get("-m"))) {
             case INVALID_RESOURCE:
                 System.out.println("error: resource is not correct");
+                break;
+            case INVALID_MONEY:
+                System.out.println("you does not haven enough gold coin");
+                break;
             case OK:
                 System.out.println("your request/donation added");
+                break;
         }
+    }
+    public static void tradeList(ParsedLine parsedLine) {
+        TradeMenuController.showTradeList();
+    }
+    public static void tradeAccept(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-i", "-m"}
+                , new String[]{}, new String[]{"-i"});
 
+        if (options == null) {
+            invalidFormatError("trade accept -i [id] -m message");
+            return;
+        }
+        switch (TradeMenuController.tradeAccept(Integer.parseInt(options.get("-i")), options.get("-m"))) {
+            case INVALID_AMOUNT:
+                System.out.println("you does not have this amount of this resource");
+                break;
+            case OK:
+                System.out.println("trade successful");
 
+        }
 
     }
 
+    public static void tradeHistory(ParsedLine parsedLine) {
+        TradeMenuController.showTradeHistory();
+    }
 }

@@ -57,7 +57,10 @@ public class AppMenu {
             commands.add(new Command("enter", "game_menu", MenuUtils::enterGameMenu));
             commands.add(new Command("enter", "profile_menu", MenuUtils::enterProfileMenu));
         } else if (menuName == MenuName.TRAD_MENU) {
-            commands.add(new Command("exit", "trad_menu", GameUtils::exitTradMenu));
+            commands.add(new Command("exit", "trade_menu", GameUtils::exitTradMenu));
+            commands.add(new Command("trade", "list", GameUtils::tradeList));
+            commands.add(new Command("trade", "accept", GameUtils::tradeAccept));
+            commands.add(new Command("trade", "history", GameUtils::tradeHistory));
             commands.add(new Command("trade", null, GameUtils::trade));
         }
 
