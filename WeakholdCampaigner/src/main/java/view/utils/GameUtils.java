@@ -3,6 +3,7 @@ package view.utils;
 import controller.MainController;
 import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
+import controller.menu_controllers.ShopMenuController;
 import controller.menu_controllers.TradeMenuController;
 import view.menus.AppMenu;
 import view.ParsedLine;
@@ -385,5 +386,26 @@ public class GameUtils extends Utils{
 
     public static void tradeHistory(ParsedLine parsedLine) {
         TradeMenuController.showTradeHistory();
+    }
+
+    public static void enterShopMenu(ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.SHOP_MENU);
+        System.out.println("you entered shop menu");
+    }
+
+    public static void exitShopMenu(ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("you entered game menu");
+    }
+
+    public static void showPriceList(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("show price_list");
+            return;
+        }
+        ShopMenuController.showPriceList();
     }
 }

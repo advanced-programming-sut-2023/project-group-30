@@ -48,6 +48,7 @@ public class AppMenu {
             commands.add(new Command("select", "building", GameUtils::selectBuilding));
             commands.add(new Command("exit", "game_menu", MenuUtils::enterMainMenu));
             commands.add(new Command("enter", "trade_menu", GameUtils::enterTradMenu));
+            commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
             commands.add(new Command("show", "details", GameUtils::showDetails));
@@ -62,6 +63,10 @@ public class AppMenu {
             commands.add(new Command("trade", "accept", GameUtils::tradeAccept));
             commands.add(new Command("trade", "history", GameUtils::tradeHistory));
             commands.add(new Command("trade", null, GameUtils::trade));
+        } else if (menuName == MenuName.SHOP_MENU) {
+            commands.add(new Command("exit", "shop_menu", GameUtils::exitShopMenu));
+            commands.add(new Command("show", "price_list", GameUtils::showPriceList));
+
         }
 
         commands.add(new Command("show", "current_menu", MenuUtils::showCurrentMenu));
@@ -111,7 +116,8 @@ public class AppMenu {
         GAME_MENU("Game Menu"),
         MAP_MENU("Map Menu"),
         ENTITY_MENU("Entity Menu"),
-        TRAD_MENU("Trad Menu");
+        TRAD_MENU("Trad Menu"),
+        SHOP_MENU("shop menu");
 
         public final String nameString;
 

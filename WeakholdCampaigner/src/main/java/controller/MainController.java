@@ -23,11 +23,15 @@ public class MainController {
         menus.put(AppMenu.MenuName.MAIN_MENU, AppMenu.getMenu(AppMenu.MenuName.MAIN_MENU, scanner));
         menus.put(AppMenu.MenuName.PROFILE_MENU, AppMenu.getMenu(AppMenu.MenuName.PROFILE_MENU, scanner));
         menus.put(AppMenu.MenuName.TRAD_MENU, AppMenu.getMenu(AppMenu.MenuName.TRAD_MENU, scanner));
+        menus.put(AppMenu.MenuName.SHOP_MENU, AppMenu.getMenu(AppMenu.MenuName.SHOP_MENU, scanner));
 
         currentMenu = menus.get(AppMenu.MenuName.LOGIN_MENU);
         currentUser = null;
 
         Database.loadData();
+        //for test shop
+        GameMenuController.addGovernment(new Government(Database.getAllUsers().get(0)));
+        GameMenuController.addGovernment(new Government(Database.getAllUsers().get(1)));
     }
 
     public void run() {
