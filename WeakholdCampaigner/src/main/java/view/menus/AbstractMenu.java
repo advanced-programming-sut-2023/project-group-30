@@ -36,7 +36,7 @@ public abstract class AbstractMenu {
         }
     }
 
-    protected static ArrayList<Command> getCommonCommands(){
+    protected static ArrayList<Command> getCommonCommands() {
         ArrayList<Command> commonCommands = new ArrayList<>();
 
         commonCommands.add(new Command("show", "commands", AbstractMenu::showCommands));
@@ -45,7 +45,7 @@ public abstract class AbstractMenu {
         return commonCommands;
     }
 
-    private static void showCommands(ParsedLine parsedLine){
+    private static void showCommands(ParsedLine parsedLine) {
         for (Command command :
                 MainController.getCurrentMenu().commands) {
             String subcommand = command.subcommand;

@@ -7,7 +7,7 @@ import view.utils.MenuUtils;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AppMenu extends AbstractMenu{
+public class AppMenu extends AbstractMenu {
     protected AppMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
         super(commands, scanner, menuName);
     }

@@ -1,4 +1,7 @@
-package model;
+package model.game;
+
+import model.game.map.Map;
+import model.User;
 
 import java.util.LinkedHashMap;
 

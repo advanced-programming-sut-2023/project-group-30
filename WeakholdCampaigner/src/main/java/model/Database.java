@@ -3,6 +3,8 @@ package model;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import controller.MainController;
+import model.game.Game;
+import model.game.map.Map;
 import org.jetbrains.annotations.Nullable;
 import view.menus.AppMenu;
 
@@ -99,12 +101,12 @@ public class Database {
     }
 
     @Nullable
-    public static Game getGameById(int id){
+    public static Game getGameById(int id) {
         return games.get(id);
     }
 
     @Nullable
-    public static Map getMapById(int id){
+    public static Map getMapById(int id) {
         return maps.get(id);
     }
 

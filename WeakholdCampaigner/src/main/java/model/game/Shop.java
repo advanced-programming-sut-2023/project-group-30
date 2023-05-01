@@ -1,12 +1,12 @@
-package model;
+package model.game;
 
 import model.enums.Resource;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Shop {
     private static ArrayList<ShopItem> shopItems = new ArrayList<>();
+
     static {
         shopItems.add(new ShopItem(Resource.BREAD, 12, 6, 30));
         shopItems.add(new ShopItem(Resource.FLOUR, 8, 4, 30));

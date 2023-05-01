@@ -2,9 +2,9 @@ package controller;
 
 import controller.menu_controllers.GameMenuController;
 import model.Database;
-import model.Government;
+import model.game.Government;
 import model.User;
-import model.game_entities.GameEntity;
+import model.game.game_entities.GameEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import view.menus.AbstractMenu;
@@ -51,7 +51,7 @@ public class MainController {
         currentMenu = menus.get(menuName);
     }
 
-    public static void setCurrentMenu(@NotNull GameEntity gameEntity){
+    public static void setCurrentMenu(@NotNull GameEntity gameEntity) {
         currentMenu = GameEntityMenu.getGameEntityMenu(gameEntity, scanner);
     }
 

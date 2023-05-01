@@ -2,8 +2,8 @@ package controller.menu_controllers;
 
 import controller.MainController;
 import controller.messages.MenuMessages;
-import model.Government;
-import model.Trade;
+import model.game.Government;
+import model.game.Trade;
 import model.User;
 import model.enums.Resource;
 import view.menus.AppMenu;
@@ -11,7 +11,7 @@ import view.menus.AppMenu;
 import java.util.ArrayList;
 
 public class TradeMenuController {
-    public static MenuMessages trade (String resource, int resourceAmount, int price, String message) {
+    public static MenuMessages trade(String resource, int resourceAmount, int price, String message) {
         if (getResourceByName(resource) == null)
             return MenuMessages.INVALID_RESOURCE;
         if (getGovernmentByUser(MainController.getCurrentUser()).getResources().get(Resource.GOLD_COIN) < price)
@@ -23,7 +23,8 @@ public class TradeMenuController {
         addTradItem(tradeItem, MainController.getCurrentUser());
         return MenuMessages.OK;
     }
-    public static Resource getResourceByName (String name) {
+
+    public static Resource getResourceByName(String name) {
         Resource resources[] = Resource.values();
         for (Resource resource : resources) {
             if (resource.getNameString().equals(name))
@@ -31,19 +32,20 @@ public class TradeMenuController {
         }
         return null;
     }
+
     public static void addTradItem(Trade tradeItem, User currentUser) {
         ArrayList<Government> governments = GameMenuController.getGovernments();
         for (int i = 0; i < governments.size(); i++) {
-            if (!governments.get(i).getOwner().equals(currentUser)){
+            if (!governments.get(i).getOwner().equals(currentUser)) {
                 governments.get(i).addToTradeList(tradeItem);
-            }
-            else governments.get(i).addToTradeHistory(tradeItem);
+            } else governments.get(i).addToTradeHistory(tradeItem);
         }
     }
+
     public static Government getGovernmentByUser(User currentUser) {
         ArrayList<Government> governments = GameMenuController.getGovernments();
         for (int i = 0; i < governments.size(); i++) {
-            if (governments.get(i).getOwner().equals(currentUser)){
+            if (governments.get(i).getOwner().equals(currentUser)) {
                 return governments.get(i);
             }
         }
@@ -58,6 +60,7 @@ public class TradeMenuController {
                     + trade.getResourceAmount() + ", price: " + trade.getPrice() + ", requested_user: "
                     + trade.getApplicant().getUsername() + ", message: " + trade.getMessage());
     }
+
     public static Trade getTradeById(int id) {
         ArrayList<Trade> tradeList = getGovernmentByUser(MainController.getCurrentUser()).getTradeList();
         for (Trade trade : tradeList) {
@@ -92,6 +95,7 @@ public class TradeMenuController {
 
         return MenuMessages.OK;
     }
+
     public static void removeFromTradList(int id) {
         ArrayList<Government> governments = GameMenuController.getGovernments();
         for (int i = 0; i < governments.size(); i++) {

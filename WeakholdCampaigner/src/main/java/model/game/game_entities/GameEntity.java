@@ -1,4 +1,4 @@
-package model.game_entities;
+package model.game.game_entities;
 
 import model.enums.Resource;
 import model.attributes.Attribute;

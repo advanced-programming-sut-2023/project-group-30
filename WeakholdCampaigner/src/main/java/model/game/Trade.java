@@ -1,5 +1,6 @@
-package model;
+package model.game;
 
+import model.User;
 import model.enums.Resource;
 
 import java.util.Random;

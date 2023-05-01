@@ -1,7 +1,6 @@
-package model.game_entities;
+package model.game.game_entities;
 
 import model.attributes.Attribute;
-import model.attributes.unit_attributes.RangedAttack;
 import model.enums.Resource;
 
 import java.util.ArrayList;

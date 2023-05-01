@@ -1,9 +1,9 @@
 package controller.menu_controllers;
 
 import controller.MainController;
-import model.Government;
-import model.Shop;
-import model.ShopItem;
+import model.game.Government;
+import model.game.Shop;
+import model.game.ShopItem;
 import view.menus.AppMenu;
 
 public class ShopMenuController {
@@ -12,7 +12,7 @@ public class ShopMenuController {
         int i = 1;
         for (ShopItem shopItem : Shop.getShopItems()) {
             AppMenu.show(i + ": " + shopItem.getResource() + ", purchase_price: " + shopItem.getPurchasePrice() +
-                    ", sales_price: " +  shopItem.getSalesPrice() + ", you have "
+                    ", sales_price: " + shopItem.getSalesPrice() + ", you have "
                     + government.getResources().get(shopItem.getResource()) + " number");
             i++;
         }

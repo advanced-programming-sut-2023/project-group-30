@@ -1,7 +1,7 @@
-package model;
+package model.game.map;
 
-import model.game_entities.Building;
-import model.game_entities.Unit;
+import model.game.game_entities.Building;
+import model.game.game_entities.Unit;
 
 import java.util.ArrayList;
 

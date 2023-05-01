@@ -1,5 +1,6 @@
-package model;
+package model.game;
 
+import model.User;
 import model.enums.Food;
 import model.enums.Resource;
 
@@ -22,6 +23,7 @@ public class Government {
     private ArrayList<Trade> tradeNotification = new ArrayList<>();
     private User owner;
     private HashMap<Resource, Integer> resources = new HashMap<>();
+
     private void installResource() {
         resources.put(Resource.GOLD_COIN, 20);
         resources.put(Resource.GOLD, 0);
@@ -144,6 +146,7 @@ public class Government {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+
     public void addToTradeHistory(Trade trade) {
         tradeHistory.add(trade);
     }

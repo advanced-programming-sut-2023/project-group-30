@@ -350,14 +350,17 @@ public class GameUtils extends Utils {
             }
         } else System.out.println("Error: please enter location correctly");
     }
-    public static void enterTradMenu (ParsedLine parsedLine) {
+
+    public static void enterTradMenu(ParsedLine parsedLine) {
         TradeMenuController.enterTradeMenu();
     }
-    public static void exitTradMenu (ParsedLine parsedLine) {
+
+    public static void exitTradMenu(ParsedLine parsedLine) {
         MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
         System.out.println("entered game menu");
     }
-    public static void trade (ParsedLine parsedLine) {
+
+    public static void trade(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t", "-a", "-p", "-m"}
                 , new String[]{}, new String[]{"-p", "-a"});
 
@@ -378,9 +381,11 @@ public class GameUtils extends Utils {
                 break;
         }
     }
+
     public static void tradeList(ParsedLine parsedLine) {
         TradeMenuController.showTradeList();
     }
+
     public static void tradeAccept(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-i", "-m"}
                 , new String[]{}, new String[]{"-i"});
