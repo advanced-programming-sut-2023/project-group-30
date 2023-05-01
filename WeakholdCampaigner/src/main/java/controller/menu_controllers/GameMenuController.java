@@ -3,7 +3,10 @@ package controller.menu_controllers;
 import controller.messages.MenuMessages;
 import model.Database;
 import model.Game;
+import model.Government;
 import model.User;
+
+import java.util.ArrayList;
 
 public class GameMenuController {
     private static Game currentGame;
@@ -12,6 +15,17 @@ public class GameMenuController {
         currentGame = Database.getGameById(gameId);
 
         return currentGame != null;
+    }
+
+    public static ArrayList<Government> getGovernments() {
+        //return governments;
+        //TODO
+        return null;
+    }
+
+    public static void addGovernment (Government government) {
+        //governments.add(government);
+        //TODO
     }
 
     public static MenuMessages showMap(int x, int y) {

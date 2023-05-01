@@ -3,12 +3,17 @@ package view.utils;
 import controller.MainController;
 import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
+import controller.menu_controllers.ShopMenuController;
+import controller.menu_controllers.TradeMenuController;
 import view.menus.AppMenu;
 import view.ParsedLine;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import static view.utils.Utils.formatOptions;
+import static view.utils.Utils.invalidFormatError;
 
 public class GameUtils extends Utils {
     public static void enterGame(ParsedLine parsedLine) {
@@ -344,5 +349,79 @@ public class GameUtils extends Utils {
 
             }
         } else System.out.println("Error: please enter location correctly");
+    }
+    public static void enterTradMenu (ParsedLine parsedLine) {
+        TradeMenuController.enterTradeMenu();
+    }
+    public static void exitTradMenu (ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("entered game menu");
+    }
+    public static void trade (ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t", "-a", "-p", "-m"}
+                , new String[]{}, new String[]{"-p", "-a"});
+
+        if (options == null) {
+            invalidFormatError("trade -t [resourceType] -a [resourceAmount] -p [price] -m [message]");
+            return;
+        }
+        switch (TradeMenuController.trade(options.get("-t"), Integer.parseInt(options.get("-a")),
+                Integer.parseInt(options.get("-p")), options.get("-m"))) {
+            case INVALID_RESOURCE:
+                System.out.println("error: resource is not correct");
+                break;
+            case INVALID_MONEY:
+                System.out.println("you does not haven enough gold coin");
+                break;
+            case OK:
+                System.out.println("your request/donation added");
+                break;
+        }
+    }
+    public static void tradeList(ParsedLine parsedLine) {
+        TradeMenuController.showTradeList();
+    }
+    public static void tradeAccept(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-i", "-m"}
+                , new String[]{}, new String[]{"-i"});
+
+        if (options == null) {
+            invalidFormatError("trade accept -i [id] -m message");
+            return;
+        }
+        switch (TradeMenuController.tradeAccept(Integer.parseInt(options.get("-i")), options.get("-m"))) {
+            case INVALID_AMOUNT:
+                System.out.println("you does not have this amount of this resource");
+                break;
+            case OK:
+                System.out.println("trade successful");
+
+        }
+
+    }
+
+    public static void tradeHistory(ParsedLine parsedLine) {
+        TradeMenuController.showTradeHistory();
+    }
+
+    public static void enterShopMenu(ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.SHOP_MENU);
+        System.out.println("you entered shop menu");
+    }
+
+    public static void exitShopMenu(ParsedLine parsedLine) {
+        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("you entered game menu");
+    }
+
+    public static void showPriceList(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("show price_list");
+            return;
+        }
+        ShopMenuController.showPriceList();
     }
 }
