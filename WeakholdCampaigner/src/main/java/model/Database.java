@@ -11,11 +11,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class Database {
     private static ArrayList<User> allUsers = new ArrayList<>();
     private static ArrayList<PasswordRecoveryQNA> securityQuestions = new ArrayList<>();
     private static ArrayList<String> slogans = new ArrayList<>();
+    private static HashMap<Integer, Game> games; //each game must have a unique id.
+    private static HashMap<Integer, Map> maps; //each map must have a unique id.
 
     public static void saveAllUsers() {
         Gson gson = new Gson();
@@ -31,6 +34,12 @@ public class Database {
         Database.loadSlogan();
         Database.loadAllUsers();
         Database.loadStayLogin();
+
+        //TODO: loadMaps, loadGames :
+        maps = new HashMap<>();
+        maps.put(1, new Map(200));
+        games = new HashMap<>();
+        games.put(1, new Game(maps.get(1), null, null));
     }
 
     private static void loadAllUsers() {
@@ -88,6 +97,17 @@ public class Database {
         }
         return null;
     }
+
+    @Nullable
+    public static Game getGameById(int id){
+        return games.get(id);
+    }
+
+    @Nullable
+    public static Map getMapById(int id){
+        return maps.get(id);
+    }
+
 
     public static ArrayList<User> sortUserByRank() {
         ArrayList<User> sortedUserByRank = new ArrayList<>(allUsers);

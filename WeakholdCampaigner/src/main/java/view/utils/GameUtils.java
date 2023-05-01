@@ -10,8 +10,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class GameUtils {
+public class GameUtils extends Utils {
+    public static void enterGame(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"--id"}, new String[]{},
+                new String[]{"--id"});
 
+        if (options == null) {
+            invalidFormatError("enter game --id <game id>");
+            return;
+        }
+
+        if (!GameMenuController.loadGame(Integer.parseInt(options.get("--id")))) {
+            System.out.println("No game with this id exists.");
+            return;
+        }
+
+        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        System.out.println("entered game_menu");
+    }
 
     public static void showMap(ParsedLine parsedLine) {
         String X = null, Y = null;

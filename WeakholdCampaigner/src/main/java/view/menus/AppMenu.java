@@ -45,7 +45,7 @@ public class AppMenu extends AbstractMenu{
             commands.add((new Command("exit", "map_menu", GameUtils::exitFromMapMenu)));
         } else if (menuName == MenuName.MAIN_MENU) {
             commands.add(new Command("user", "logout", MenuUtils::userLogout));
-            commands.add(new Command("enter", "game_menu", MenuUtils::enterGameMenu));
+            commands.add(new Command("enter", "game", GameUtils::enterGame));
             commands.add(new Command("enter", "profile_menu", MenuUtils::enterProfileMenu));
         }
 

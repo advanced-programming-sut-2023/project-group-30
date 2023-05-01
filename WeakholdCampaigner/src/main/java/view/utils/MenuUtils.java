@@ -215,11 +215,6 @@ public class MenuUtils {
         LoginMenuController.userLogOut();
     }
 
-    public static void enterGameMenu(ParsedLine parsedLine) {
-        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
-        System.out.println("entered game_menu");
-    }
-
     public static void enterProfileMenu(ParsedLine parsedLine) {
         MainController.setCurrentMenu(AppMenu.MenuName.PROFILE_MENU);
         System.out.println("enter profile_menu");

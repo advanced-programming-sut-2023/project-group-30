@@ -1,9 +1,19 @@
 package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
+import model.Database;
+import model.Game;
 import model.User;
 
 public class GameMenuController {
+    private static Game currentGame;
+
+    public static boolean loadGame(int gameId){
+        currentGame = Database.getGameById(gameId);
+
+        return currentGame != null;
+    }
+
     public static MenuMessages showMap(int x, int y) {
         return MenuMessages.OK;
     }
