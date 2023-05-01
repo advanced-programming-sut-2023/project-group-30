@@ -450,7 +450,7 @@ public class MenuUtils {
     }
 
     public static void saveAndExit(ParsedLine parsedLine) {
-        MainController.setCurrentMenu(null);
+        MainController.setCurrentMenu((AppMenu.MenuName) null);
         //TODO: save.
     }
 }

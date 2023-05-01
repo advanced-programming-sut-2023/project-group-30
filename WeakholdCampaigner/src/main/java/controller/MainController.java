@@ -2,17 +2,21 @@ package controller;
 
 import model.Database;
 import model.User;
+import model.game_entities.GameEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu;
+import view.menus.GameEntityMenu;
 
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class MainController {
-    private static final HashMap<AppMenu.MenuName, AppMenu> menus = new HashMap<>();
-    private static AbstractMenu currentMenu; //TODO: should this be an AbstractMenu or an AppMenu ? on the 1st and 4th usages.
+    private static final HashMap<AppMenu.MenuName, AppMenu> menus = new HashMap<>(); //TODO: rename this to appMenus and/or rename the class AppMenu to something
+    private static AbstractMenu currentMenu;
     private static User currentUser;
-    private final Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public void initializeApp() {
         menus.put(AppMenu.MenuName.SIGNUP_MENU, AppMenu.getMenu(AppMenu.MenuName.SIGNUP_MENU, scanner));
@@ -36,8 +40,12 @@ public class MainController {
         }
     }
 
-    public static void setCurrentMenu(AppMenu.MenuName menuName) {
+    public static void setCurrentMenu(@Nullable AppMenu.MenuName menuName) {
         currentMenu = menus.get(menuName);
+    }
+
+    public static void setCurrentMenu(@NotNull GameEntity gameEntity){
+        currentMenu = GameEntityMenu.getGameEntityMenu(gameEntity, scanner);
     }
 
     public static AbstractMenu getCurrentMenu() {

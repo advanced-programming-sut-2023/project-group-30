@@ -1,8 +1,6 @@
 package view.menus;
 
-import controller.MainController;
 import view.Command;
-import view.ParsedLine;
 import view.utils.GameUtils;
 import view.utils.MenuUtils;
 
