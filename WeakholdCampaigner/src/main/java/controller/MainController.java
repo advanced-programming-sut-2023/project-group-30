@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class MainController {
     private static final HashMap<AppMenu.MenuName, AppMenu> menus = new HashMap<>();
-    private static AppMenu currentMenu;
+    private static AbstractMenu currentMenu; //TODO: should this be an AbstractMenu or an AppMenu ? on the 1st and 4th usages.
     private static User currentUser;
     private final Scanner scanner = new Scanner(System.in);
 
@@ -40,7 +40,7 @@ public class MainController {
         currentMenu = menus.get(menuName);
     }
 
-    public static AppMenu getCurrentMenu() {
+    public static AbstractMenu getCurrentMenu() {
         return currentMenu;
     }
 

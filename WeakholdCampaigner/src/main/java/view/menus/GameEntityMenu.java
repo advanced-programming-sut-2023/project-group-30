@@ -1,13 +1,11 @@
 package view.menus;
 
-import controller.menu_controllers.GameEntityController;
 import model.attributes.Attribute;
 import model.attributes.building_attributes.*;
 import model.attributes.unit_attributes.*;
 import model.game_entities.*;
 import view.Command;
 import view.utils.GameEntityUtils;
-import view.utils.MenuUtils;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -51,9 +49,8 @@ public class GameEntityMenu extends AbstractMenu {
             }
         }
 
-        commands.add(new Command("show", "current_menu", MenuUtils::showCurrentMenu));
         commands.add(new Command("exit", "entity_menu", GameEntityUtils::exitEntityMenu));
-        //TODO: instead of many exit/enter menu commands, only have one in Utils.
+        //TODO: combine the many exit/enter menu commands into one thing.
 
         return new AppMenu(commands, scanner, MenuName.ENTITY_MENU);
     }

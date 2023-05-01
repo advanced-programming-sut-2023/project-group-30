@@ -34,7 +34,16 @@ public abstract class AbstractMenu {
         }
     }
 
-    protected static void showCommands(ParsedLine parsedLine){
+    protected static ArrayList<Command> getCommonCommands(){
+        ArrayList<Command> commonCommands = new ArrayList<>();
+
+        commonCommands.add(new Command("show", "commands", AbstractMenu::showCommands));
+        commonCommands.add(new Command("show", "current_menu", AbstractMenu::showCurrentMenu));
+
+        return commonCommands;
+    }
+
+    private static void showCommands(ParsedLine parsedLine){
         for (Command command :
                 MainController.getCurrentMenu().commands) {
             String subcommand = command.subcommand;
@@ -42,15 +51,36 @@ public abstract class AbstractMenu {
         }
     }
 
-    protected static ArrayList<Command> getCommonCommands(){
-        ArrayList<Command> commonCommands = new ArrayList<>();
-
-        commonCommands.add(new Command("show", "commands", AbstractMenu::showCommands));
-
-        return commonCommands;
+    private static void showCurrentMenu(ParsedLine parsedLine) {
+        System.out.println("You are currently in " + MainController.getCurrentMenu().menuName.nameString);
     }
 
     public static void show(String output) {
         System.out.println(output);
+    }
+
+    public void run() {
+        AbstractMenu tempMenu = MainController.getCurrentMenu();
+        while (tempMenu.equals(MainController.getCurrentMenu())) {
+            ParsedLine parsedLine = ParsedLine.parseLine(scanner.nextLine());
+            if (parsedLine == null) System.out.println("Error: Invalid command structure.\n" +
+                    "A command should have the following structure: <command> [<subcommand>] [<options>]\n" +
+                    "An option should have the following form and cannot have more than one argument: " +
+                    "(-<shortOption>|--<longOption>) [<argument>]\n" +
+                    "An argument cannot contain whitespace unless given inside quotation marks");
+            else {
+                boolean isValid = false;
+                for (Command command :
+                        commands)
+                    if (command.command.equals(parsedLine.command) && (
+                            (command.subcommand == null && parsedLine.subCommand == null) ||
+                                    (command.subcommand != null && command.subcommand.equals(parsedLine.subCommand)))) {
+                        command.util.accept(parsedLine);
+                        isValid = true;
+                        break;
+                    }
+                if (!isValid) System.out.println("Error: Invalid command.");
+            }
+        }
     }
 }

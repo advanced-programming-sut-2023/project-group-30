@@ -51,36 +51,9 @@ public class AppMenu extends AbstractMenu{
             commands.add(new Command("enter", "profile_menu", MenuUtils::enterProfileMenu));
         }
 
-        commands.add(new Command("show", "current_menu", MenuUtils::showCurrentMenu));
         commands.add(new Command("save_and_exit", null, MenuUtils::saveAndExit));
 
         return new AppMenu(commands, scanner, menuName);
-    }
-
-    public void run() {
-        AppMenu tempMenu = MainController.getCurrentMenu();
-        while (tempMenu.equals(MainController.getCurrentMenu())) {
-            ParsedLine parsedLine = ParsedLine.parseLine(scanner.nextLine());
-            if (parsedLine == null) System.out.println("Error: Invalid command structure.\n" +
-                    "A command should have the following structure: <command> [<subcommand>] [<options>]\n" +
-                    "An option should have the following form and cannot have more than one argument: " +
-                    "(-<shortOption>|--<longOption>) [<argument>]\n" +
-                    "An argument cannot contain whitespace unless given inside quotation marks");
-            else {
-                boolean isValid = false;
-                for (Command command :
-                        commands)
-                    if (command.command.equals(parsedLine.command) && (
-                            (command.subcommand == null && parsedLine.subCommand == null) ||
-                                    (command.subcommand != null && command.subcommand.equals(parsedLine.subCommand)))) {
-                        command.util.accept(parsedLine);
-                        isValid = true;
-                        break;
-                    }
-                if (!isValid) System.out.println("Error: Invalid command.");
-            }
-        }
-
     }
 
     public static String getOneLine(String prompt) {
