@@ -12,13 +12,13 @@ import view.utils.MenuUtils;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GameEntityMenu extends AppMenu {
+public class GameEntityMenu extends AbstractMenu {
     private GameEntityMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
         super(commands, scanner, menuName);
     }
 
     public static AppMenu getGameEntityMenu(GameEntity gameEntity, Scanner scanner) {
-        ArrayList<Command> commands = new ArrayList<>();
+        ArrayList<Command> commands = new ArrayList<>(getCommonCommands());
 
         if (gameEntity instanceof Unit) {
             commands.add(new Command("unit", "move_to", GameEntityUtils::moveUnit));

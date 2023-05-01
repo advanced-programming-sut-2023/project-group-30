@@ -93,7 +93,7 @@ public class MenuUtils {
                 System.out.println("Your password doesn't have any number");
                 break;
             case NO_NON_WORD_NUMBER_CHARACTER:
-                System.out.println("Your password doesn't have any character");
+                System.out.println("Your password doesn't have any special characters.");
                 break;
             case WRONG_PASSWORD_CONFIRMATION:
                 System.out.println("Your password confirmation is wrong!");

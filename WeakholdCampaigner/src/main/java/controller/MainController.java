@@ -2,6 +2,7 @@ package controller;
 
 import model.Database;
 import model.User;
+import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 
 import java.util.HashMap;
@@ -28,6 +29,8 @@ public class MainController {
     }
 
     public void run() {
+        AbstractMenu.show("Welcome to Weakhold Campaigner!\n" +
+                "To see what commands are available to you at anytime, type: \"show commands\"");
         while (currentMenu != null) {
             currentMenu.run();
         }

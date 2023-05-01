@@ -9,19 +9,13 @@ import view.utils.MenuUtils;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AppMenu {
-    protected final ArrayList<Command> commands = new ArrayList<>();
-    protected static Scanner scanner = null;
-    public final MenuName menuName;
-
+public class AppMenu extends AbstractMenu{
     protected AppMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
-        this.menuName = menuName;
-        this.scanner = scanner;
-        this.commands.addAll(commands);
+        super(commands, scanner, menuName);
     }
 
     public static AppMenu getMenu(MenuName menuName, Scanner scanner) {
-        ArrayList<Command> commands = new ArrayList<>();
+        ArrayList<Command> commands = new ArrayList<>(getCommonCommands());
 
         if (menuName == MenuName.SIGNUP_MENU) {
             commands.add(new Command("user", "create", MenuUtils::userCreate));
@@ -63,17 +57,15 @@ public class AppMenu {
         return new AppMenu(commands, scanner, menuName);
     }
 
-    public static void show(String output) {
-        System.out.println(output);
-    }
-
     public void run() {
         AppMenu tempMenu = MainController.getCurrentMenu();
         while (tempMenu.equals(MainController.getCurrentMenu())) {
             ParsedLine parsedLine = ParsedLine.parseLine(scanner.nextLine());
-            if (parsedLine == null) System.out.println("Error: Invalid command structure.\nA command should" +
-                    " have the following structure: <command> [<subcommand>] [<options>]\nAn option should have the" +
-                    " following form and cannot have more than one argument: (-<shortOption>|--<longOption>) [<argument>]");
+            if (parsedLine == null) System.out.println("Error: Invalid command structure.\n" +
+                    "A command should have the following structure: <command> [<subcommand>] [<options>]\n" +
+                    "An option should have the following form and cannot have more than one argument: " +
+                    "(-<shortOption>|--<longOption>) [<argument>]\n" +
+                    "An argument cannot contain whitespace unless given inside quotation marks");
             else {
                 boolean isValid = false;
                 for (Command command :
@@ -94,21 +86,5 @@ public class AppMenu {
     public static String getOneLine(String prompt) {
         System.out.println(prompt);
         return scanner.nextLine();
-    }
-
-    public enum MenuName {
-        LOGIN_MENU("Login Menu"),
-        SIGNUP_MENU("Signup Menu"),
-        MAIN_MENU("Main Menu"),
-        PROFILE_MENU("Profile Menu"),
-        GAME_MENU("Game Menu"),
-        MAP_MENU("Map Menu"),
-        ENTITY_MENU("Entity Menu");
-
-        public final String nameString;
-
-        MenuName(String nameString) {
-            this.nameString = nameString;
-        }
     }
 }
