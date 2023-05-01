@@ -25,7 +25,9 @@ public abstract class AbstractMenu {
         PROFILE_MENU("Profile Menu"),
         GAME_MENU("Game Menu"),
         MAP_MENU("Map Menu"),
-        ENTITY_MENU("Entity Menu");
+        ENTITY_MENU("Entity Menu"),
+        TRAD_MENU("Trad Menu"),
+        SHOP_MENU("shop menu");
 
         public final String nameString;
 
