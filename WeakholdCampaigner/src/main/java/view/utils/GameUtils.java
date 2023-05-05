@@ -55,9 +55,26 @@ public class GameUtils extends Utils {
         }
         if (checkStrIsNumberAndNotNullForAllEntrance(X, Y)) {
             int x = Integer.parseInt(X), y = Integer.parseInt(Y);
-            switch (GameMenuController.showMap(x, y)) {
+            switch (MapController.showMap(x, y)) {
                 case OK:
                     MainController.setCurrentMenu(AppMenu.MenuName.MAP_MENU);
+                    int row = 20;
+                    int column = 40;
+                    for(int i = 0;i<= row;i++){
+                        for(int j = 0;j <= column;j++){
+                            if(i % 4 == 0){
+                                System.out.print("-");
+                            }else if(j % 8 == 0){
+                                System.out.print("|");
+                            } else if (i % 20 == 13 && j % 8 == 4) {
+                                System.out.print("S");
+                            } else {
+                                System.out.print(" ");
+                            }
+                        }
+                        System.out.println();
+                    }
+
                     break;
                 case INVALID_LOCATION:
                     System.out.println("Error: please enter valid location");

@@ -28,9 +28,6 @@ public class GameMenuController {
         //TODO
     }
 
-    public static MenuMessages showMap(int x, int y) {
-        return MenuMessages.OK;
-    }
 
     public static void showPopularityFactor() {
     }
