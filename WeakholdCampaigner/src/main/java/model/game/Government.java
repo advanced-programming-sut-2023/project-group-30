@@ -1,5 +1,6 @@
 package model.game;
 
+import controller.menu_controllers.GameMenuController;
 import model.User;
 import model.enums.Food;
 import model.enums.Resource;
@@ -18,9 +19,9 @@ public class Government {
     private int taxRate;
     private int fearRate;
     //we want main castle but concept is unknown  //TODO
-    private ArrayList<Trade> tradeList = new ArrayList<>();
-    private ArrayList<Trade> tradeHistory = new ArrayList<>();
-    private ArrayList<Trade> tradeNotification = new ArrayList<>();
+    private ArrayList<Trade> tradeList;
+    private ArrayList<Trade> tradeHistory;
+    private ArrayList<Trade> tradeNotification;
     private User owner;
     private HashMap<Resource, Integer> resources = new HashMap<>();
 
@@ -39,6 +40,9 @@ public class Government {
 
     public Government(User owner) {
         this.owner = owner;
+        tradeList = new ArrayList<>();
+        tradeHistory = new ArrayList<>();
+        tradeNotification = new ArrayList<>();
         installResource();
     }
 
@@ -158,5 +162,13 @@ public class Government {
 
     public void setResources(HashMap<Resource, Integer> resources) {
         this.resources = resources;
+    }
+    public int getGold() {
+        return GameMenuController.getCurrentGame().getCurrentGovernment().getResources().get(Resource.GOLD_COIN);
+    }
+    public void addGold(int gold) {
+        GameMenuController.getCurrentGame().getCurrentGovernment().getResources().put(Resource.GOLD_COIN,
+                getGold() + gold);
+
     }
 }

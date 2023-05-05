@@ -429,4 +429,65 @@ public class GameUtils extends Utils {
         }
         ShopMenuController.showPriceList();
     }
+
+    public static void buyItem(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-i", "-a"}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("buy -i <item’s name> -a <item’s amount>");
+            return;
+        }
+        switch (ShopMenuController.buyItem(Integer.parseInt(options.get("-a")), options.get("-i"))) {
+            case INVALID_RESOURCE:
+                System.out.println("shop doesn't have this resource");
+                break;
+            case INVALID_AMOUNT:
+                System.out.println("shop doesn't have enough amount of this resource");
+                break;
+            case INVALID_MONEY:
+                System.out.println("you doesn't have enough money for buy this item");
+                break;
+            case INVALID_COMMAND:
+                System.out.println("error: you entered your confirmation incorrect");
+                break;
+            case CANCEL:
+                System.out.println("your purchase canceled successfully");
+                break;
+            case OK:
+                System.out.println("you purchased successfully");
+                break;
+        }
+
+    }
+
+    public static void sellItem(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-i", "-a"}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("sell -i <item’s name> -a <item’s amount>");
+            return;
+        }
+        switch (ShopMenuController.sellItem(Integer.parseInt(options.get("-a")), options.get("-i"))) {
+            case INVALID_RESOURCE:
+                System.out.println("you doesn't have this resource");
+                break;
+            case INVALID_AMOUNT:
+                System.out.println("you doesn't have enough amount");
+                break;
+            case CANCEL:
+                System.out.println("you successfully canceled this item");
+                break;
+            case INVALID_COMMAND:
+                System.out.println("error: you entered your confirmation incorrect");
+                break;
+            case OK:
+                System.out.println("you sold successfully");
+                break;
+
+
+        }
+
+    }
 }

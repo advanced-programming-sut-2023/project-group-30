@@ -38,4 +38,6 @@ public enum MenuMessages {
     INVALID_RESOURCE,
     INVALID_AMOUNT,
     INVALID_MONEY,
+    CANCEL,
+    INVALID_COMMAND,
 }

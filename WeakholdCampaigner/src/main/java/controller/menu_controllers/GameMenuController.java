@@ -17,17 +17,6 @@ public class GameMenuController {
         return currentGame != null;
     }
 
-    public static ArrayList<Government> getGovernments() {
-        //return governments;
-        //TODO
-        return null;
-    }
-
-    public static void addGovernment(Government government) {
-        //governments.add(government);
-        //TODO
-    }
-
     public static MenuMessages showMap(int x, int y) {
         return MenuMessages.OK;
     }
@@ -67,5 +56,13 @@ public class GameMenuController {
 
     public static MenuMessages selectBuilding(int x, int y) {
         return MenuMessages.OK;
+    }
+
+    public static Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public static void setCurrentGame(Game currentGame) {
+        GameMenuController.currentGame = currentGame;
     }
 }

@@ -1,6 +1,7 @@
 package view.utils;
 
 import controller.MainController;
+import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.LoginMenuController;
 import controller.menu_controllers.ProfileMenuController;
 import controller.menu_controllers.SignupMenuController;
