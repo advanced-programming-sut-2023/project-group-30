@@ -37,7 +37,7 @@ public class ShopMenuController {
             return MenuMessages.CANCEL;
         else if (!answer.equals("yes"))
             return MenuMessages.INVALID_COMMAND;
-        Integer previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment().getResources()
+        Double previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment().getResources()
                 .get(getResourceByName(item));
         GameMenuController.getCurrentGame().getCurrentGovernment().getResources().put(getResourceByName(item)
                 , previousAmount + amount);
@@ -50,7 +50,7 @@ public class ShopMenuController {
         if (getResourceByName(item) == null || getResourceByName(item) == GOLD)
             return MenuMessages.INVALID_RESOURCE;
         ShopItem shopItem = Shop.getShopItemByName(getResourceByName(item));
-        Integer previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment().getResources()
+        Double previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment().getResources()
                 .get(getResourceByName(item));
         if (amount > previousAmount)
             return MenuMessages.INVALID_AMOUNT;

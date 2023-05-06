@@ -5,6 +5,7 @@ import model.Database;
 import model.game.Game;
 import model.game.Government;
 import model.User;
+import view.menus.AppMenu;
 
 import java.util.ArrayList;
 
@@ -22,13 +23,19 @@ public class GameMenuController {
     }
 
     public static void showPopularityFactor() {
+        Government government = currentGame.getCurrentGovernment();
+        AppMenu.show("food :  " + government.getPopularityOfFood());
+        AppMenu.show("tax :  " + government.getPopularityOfTax());
+        AppMenu.show("religion :  " + government.getReligionRate());
+        AppMenu.show("fear :  " + government.getPopularityOfFear());
     }
 
-    public static int showPopularity(User currentUser) {
-        return 1;
+    public static int showPopularity() {
+        return currentGame.getCurrentGovernment().getPopularity();
     }
 
     public static void showFoodList() {
+
 
     }
 
@@ -64,5 +71,12 @@ public class GameMenuController {
 
     public static void setCurrentGame(Game currentGame) {
         GameMenuController.currentGame = currentGame;
+    }
+
+    public static void nextTurn() {
+        ArrayList<Government> governments = currentGame.getGovernments();
+        for (Government i : governments)
+            i.updateAllForNextTurn();
+
     }
 }

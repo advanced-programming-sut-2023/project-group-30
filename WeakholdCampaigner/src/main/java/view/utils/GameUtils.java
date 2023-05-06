@@ -200,7 +200,7 @@ public class GameUtils extends Utils {
         if (signForFactors)
             GameMenuController.showPopularityFactor();
         else {
-            System.out.println(GameMenuController.showPopularity(MainController.getCurrentUser()));
+            System.out.println(GameMenuController.showPopularity());
         }
     }
 

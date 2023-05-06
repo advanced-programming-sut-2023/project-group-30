@@ -7,13 +7,12 @@ import model.enums.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Government {
-    private int popularity;
-    private ArrayList<Food> foods;
-    private int foodAmountInStorage;
+    private int popularity = 0;
     private int foodRate;
-    private int religionRate;
+    private int religionRate = 0;
     private int population;
     private int numOfVillagers;
     private int taxRate;
@@ -23,19 +22,31 @@ public class Government {
     private ArrayList<Trade> tradeHistory;
     private ArrayList<Trade> tradeNotification;
     private User owner;
-    private HashMap<Resource, Integer> resources = new HashMap<>();
+    private HashMap<Resource, Double> resources = new HashMap<>();
+    private int foodVariety;
+    private HashMap<Food, Double> foods = new HashMap<>();
+    private int suitableBuildings = 0;
+    private int unSuitableBuildings = 0;
+
 
     private void installResource() {
-        resources.put(Resource.GOLD_COIN, 20);
-        resources.put(Resource.GOLD, 0);
-        resources.put(Resource.BREAD, 0);
-        resources.put(Resource.FLOUR, 0);
-        resources.put(Resource.GRAIN, 0);
-        resources.put(Resource.IRON, 0);
-        resources.put(Resource.STONE, 0);
-        resources.put(Resource.WHEAT, 0);
-        resources.put(Resource.WINE, 0);
-        resources.put(Resource.WOOD, 10);
+        resources.put(Resource.GOLD_COIN, 20.0);
+        resources.put(Resource.GOLD, (double) 0);
+        resources.put(Resource.BREAD, (double) 0);
+        resources.put(Resource.FLOUR, (double) 0);
+        resources.put(Resource.GRAIN, (double) 0);
+        resources.put(Resource.IRON, (double) 0);
+        resources.put(Resource.STONE, (double) 0);
+        resources.put(Resource.WHEAT, (double) 0);
+        resources.put(Resource.WINE, (double) 0);
+        resources.put(Resource.WOOD, 10.0);
+    }
+
+    private void installFoods() {
+        foods.put(Food.BREAD, (double) 0);
+        foods.put(Food.APPLE, (double) 0);
+        foods.put(Food.MEAT, (double) 0);
+        foods.put(Food.CHEESE, (double) 0);
     }
 
     public Government(User owner) {
@@ -44,11 +55,9 @@ public class Government {
         tradeHistory = new ArrayList<>();
         tradeNotification = new ArrayList<>();
         installResource();
+        installFoods();
     }
 
-    public void getPopularity() {
-
-    }
 
     public ArrayList<Trade> getTradeList() {
         return tradeList;
@@ -70,21 +79,6 @@ public class Government {
         this.popularity = popularity;
     }
 
-    public ArrayList<Food> getFoods() {
-        return foods;
-    }
-
-    public void setFoods(ArrayList<Food> foods) {
-        this.foods = foods;
-    }
-
-    public int getFoodAmountInStorage() {
-        return foodAmountInStorage;
-    }
-
-    public void setFoodAmountInStorage(int foodAmountInStorage) {
-        this.foodAmountInStorage = foodAmountInStorage;
-    }
 
     public int getFoodRate() {
         return foodRate;
@@ -126,10 +120,6 @@ public class Government {
         this.taxRate = taxRate;
     }
 
-    public int getFearRate() {
-        return fearRate;
-    }
-
     public void setFearRate(int fearRate) {
         this.fearRate = fearRate;
     }
@@ -156,19 +146,135 @@ public class Government {
     }
 
 
-    public HashMap<Resource, Integer> getResources() {
+    public HashMap<Resource, Double> getResources() {
         return resources;
     }
 
-    public void setResources(HashMap<Resource, Integer> resources) {
+    public void setResources(HashMap<Resource, Double> resources) {
         this.resources = resources;
     }
-    public int getGold() {
+
+    public Double getGold() {
         return GameMenuController.getCurrentGame().getCurrentGovernment().getResources().get(Resource.GOLD_COIN);
     }
-    public void addGold(int gold) {
+
+    public void addGold(double gold) {
         GameMenuController.getCurrentGame().getCurrentGovernment().getResources().put(Resource.GOLD_COIN,
                 getGold() + gold);
 
     }
+
+    public HashMap<Food, Double> getFoods() {
+        return foods;
+    }
+
+
+    public int getPopularityOfFood() {
+        return foodRate * 4 + (foodVariety - 1);
+    }
+
+    public Double consumableFood() {
+        return (0.5 * foodRate + 1) * population;
+    }
+
+    public int getPopularityOfTax() {
+        if (taxRate >= -3 && taxRate <= 0)
+            return -1 * (taxRate * 2) + 1;
+        else if (taxRate >= 1 && taxRate <= 4)
+            return taxRate * 2;
+        return (taxRate - 2) * 4;
+    }
+
+    public Double getTax() {
+        if (taxRate == -3) return (double) (-1 * population);
+        if (taxRate == -2) return 0.8 * (-1) * population;
+        if (taxRate == -1) return -1 * 0.6 * population;
+        if (taxRate == 0) return (double) 0;
+        if (taxRate >= 1 && taxRate <= 8) return (0.2 * taxRate + 0.4) * population;
+        return null;
+
+    }
+
+    public void addPopularityOfReligion(int amount) {
+        religionRate = religionRate + amount;
+    }
+
+    public int getFearRate() {
+        return fearRate + unSuitableBuildings - suitableBuildings;
+    }
+
+    public int getPopularityOfFear() {
+        return (-1 * fearRate) - unSuitableBuildings + suitableBuildings;
+    }
+
+    public int getPopularity() {
+        int sum = getPopularityOfFear() + getReligionRate();
+        if (getFoodUnit() < consumableFood())
+            sum += (-8);
+        else sum += getPopularityOfFood();
+        if (getTax() > getGold()) sum += 1;
+        else sum += getTaxRate();
+
+        return sum;
+    }
+
+    public void setFoodVariety() {
+        int i = 0;
+        for (Double d : foods.values()) {
+            if (!d.equals(0))
+                i++;
+        }
+        foodVariety = i;
+    }
+
+    public void decreaseFood() {
+        Double foodConsumer = consumableFood();
+        String doubleAsString = String.valueOf(foodConsumer);
+        int indexOfDecimal = doubleAsString.indexOf(".");
+        int part = Integer.parseInt(doubleAsString.substring(0, indexOfDecimal));
+        double decimal = Double.parseDouble(doubleAsString.substring(indexOfDecimal));
+        decreaseDecimalPartOfConsumedFood(decimal);
+        decreasePart(part);
+    }
+
+    public void decreaseDecimalPartOfConsumedFood(double decimal) {
+        for (Food d : foods.keySet()) {
+            if (!foods.get(d).equals(0) && foods.get(d) >= decimal) {
+                foods.put(d, foods.get(d) - decimal);
+                break;
+            }
+        }
+    }
+
+    public void decreasePart(int part) {
+        int i = part;
+        while (i != 0) {
+            for (Map.Entry<Food, Double> entry :
+                    foods.entrySet()) {
+                if (entry.getValue() >= 1) {
+                    foods.put(entry.getKey(), entry.getValue() - 1);
+                    i--;
+                    if (i == 0) break;
+                }
+            }
+        }
+    }
+
+    public double getFoodUnit() {
+        double i = 0;
+        for (Map.Entry<Food, Double> entry :
+                foods.entrySet()) {
+            i += entry.getValue();
+        }
+        return i;
+    }
+
+    public void updateAllForNextTurn() {
+        setFoodVariety();
+        if (getFoodUnit() >= consumableFood()) decreaseFood();
+        popularity += getPopularity();
+        if (getTax() <= getGold()) addGold(getTax());
+    }
+
+
 }
