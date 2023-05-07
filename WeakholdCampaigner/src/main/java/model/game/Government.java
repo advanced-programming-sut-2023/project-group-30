@@ -22,6 +22,7 @@ public class Government {
     private ArrayList<Trade> tradeHistory = new ArrayList<>();
     private ArrayList<Trade> tradeNotification = new ArrayList<>();
     private User owner;
+    private final GovernmentColor color;
     private HashMap<Resource, Integer> resources = new HashMap<>();
 
     private void installResource() {
@@ -37,9 +38,10 @@ public class Government {
         resources.put(Resource.WOOD, 10);
     }
 
-    public Government(User owner) {
+    public Government(User owner, int index) {
         this.owner = owner;
         installResource();
+        this.color = GovernmentColor.values()[index];
     }
 
     public void getPopularity() {
@@ -158,5 +160,25 @@ public class Government {
 
     public void setResources(HashMap<Resource, Integer> resources) {
         this.resources = resources;
+    }
+
+    public boolean purchase(HashMap<Resource, Integer> productionCost) {
+        //TODO: return true if there is enough resources and reduce them accordingly. otherwise return false
+        return true;
+    }
+
+    public GovernmentColor getColor (){
+        return this.color;
+    }
+
+    public enum GovernmentColor {
+        RED,
+        GREEN,
+        BLUE,
+        PURPLE,
+        ORANGE,
+        CYAN,
+        YELLOW,
+        GRAY
     }
 }

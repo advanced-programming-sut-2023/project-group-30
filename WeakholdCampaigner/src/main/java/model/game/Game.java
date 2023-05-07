@@ -1,7 +1,11 @@
 package model.game;
 
+import model.game.game_entities.Building;
 import model.game.map.Map;
 import model.User;
+import model.game.map.MapCell;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,5 +21,32 @@ public class Game {
         this.map = map;
         this.governments = governments;
         this.currentGovernment = governments.get(0);
+    }
+
+    public int getMapX() {
+        return map.getWidth();
+    }
+
+    public int getMapY() {
+        return map.getWidth();
+    }
+
+    @Nullable
+    public Building getBuilding(int x, int y) {
+        return map.getCell(x, y).getBuilding();
+    }
+
+    public void dropBuilding(Building building, int x, int y) {
+        building.setGovernmentColor(currentGovernment.getColor());
+        map.getCell(x, y).setBuilding(building);
+    }
+
+    @NotNull
+    public MapCell.Texture getTexture(int x, int y) {
+        return map.getCell(x, y).getTexture();
+    }
+
+    public Government getCurrentGovernment() {
+        return currentGovernment;
     }
 }

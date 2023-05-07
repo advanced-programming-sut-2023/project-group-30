@@ -13,9 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static view.utils.Utils.formatOptions;
-import static view.utils.Utils.invalidFormatError;
-
 public class GameUtils extends Utils {
     public static void createGame(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"--mapId"}, new String[]{},
@@ -45,7 +42,7 @@ public class GameUtils extends Utils {
             case USERNAME_DOES_NOT_EXIST:
                 AppMenu.show("Error: At least one of the usernames does not exist.");
                 break;
-            case GAME_CREATED_SUCCESSFULLY:
+            case SUCCESS:
                 AppMenu.show("Game created successfully. Use the above id to enter it.");
                 break;
         }
@@ -320,38 +317,38 @@ public class GameUtils extends Utils {
     }
 
     public static void dropBuilding(ParsedLine parsedLine) {
-        String X = null, Y = null, type = null;
-        HashMap<String, String> options = parsedLine.options;
-        for (Map.Entry<String, String> entry :
-                options.entrySet()) {
-            String option = entry.getKey(), argument = entry.getValue();
-            switch (option) {
-                case "-x":
-                    X = argument;
-                    break;
-                case "-y":
-                    Y = argument;
-                    break;
-                case "--type":
-                    type = argument;
-                    break;
-                default:
-                    System.out.println("Error: This command should have the following format:\n" +
-                            "drop building -x [x] -y [y] --type [type]");
-                    return;
-            }
-        }
-        if (checkStrIsNumberAndNotNullForAllEntrance(X, Y) && type != null) {
-            int x = Integer.parseInt(X), y = Integer.parseInt(Y);
-            switch (GameMenuController.dropBuilding(x, y, type)) {
-                case OK:
-                    break;
-                case INVALID_LOCATION:
-                    System.out.println("Error: please enter valid location");
-                    break;
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "--type"},
+                new String[]{"--isFree"}, new String[]{"-x", "-y"});
 
-            }
-        } else System.out.println("Error: please enter location or type correctly");
+        if (options == null) {
+            invalidFormatError("drop building -x <x> -y <y> --type <type> [--isFree <true>]");
+            return;
+        }
+
+        String tempFree = options.get("--isFree");
+        boolean isFree = tempFree != null && tempFree.equals("true");
+
+        switch (
+                GameMenuController.dropBuilding(Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")),
+                options.get("--type"),
+                        isFree)
+        ) {
+            case INVALID_LOCATION:
+                AppMenu.show("Error: Location is out of bounds.");
+                break;
+            case CELL_IS_FULL:
+                AppMenu.show("Error: There is already a building in that location.");
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                AppMenu.show("Error: The cell has an incompatible texture.");
+                break;
+            case NOT_ENOUGH_RESOURCES:
+                AppMenu.show("Error: Your government does not have enough resources.");
+                AppMenu.show("You can drop this building for free using the '--isFree true' flag.");
+            case SUCCESS:
+                AppMenu.show("Building dropped successfully.");
+        }
     }
 
     public static void selectBuilding(ParsedLine parsedLine) {

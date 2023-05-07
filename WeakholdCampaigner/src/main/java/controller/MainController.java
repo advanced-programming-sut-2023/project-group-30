@@ -34,9 +34,6 @@ public class MainController {
         currentUser = null;
 
         Database.loadData();
-        //for test shop
-        GameMenuController.addGovernment(new Government(Database.getAllUsers().get(0)));
-        GameMenuController.addGovernment(new Government(Database.getAllUsers().get(1)));
     }
 
     public void run() {

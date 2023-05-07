@@ -1,4 +1,4 @@
 package model.attributes;
 
-public abstract class Attribute {
+public interface Attribute {
 }

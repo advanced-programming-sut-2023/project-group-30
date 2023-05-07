@@ -31,6 +31,10 @@ public class MapCell {
         return building;
     }
 
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
     public enum Texture{
         LAND,
         GRAVEL,

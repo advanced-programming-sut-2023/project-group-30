@@ -3,9 +3,12 @@ package controller.menu_controllers;
 import controller.MainController; //TODO: check every import on every file, and attempt to reduce dependencies.
 import controller.messages.MenuMessages;
 import model.Database;
+import model.attributes.Attribute;
+import model.attributes.building_attributes.NeedsSpecialPlacement;
 import model.game.Game;
 import model.game.Government;
 import model.User;
+import model.game.game_entities.Building;
 import view.menus.AbstractMenu;
 
 import java.util.ArrayList;
@@ -33,16 +36,17 @@ public class GameMenuController {
 
         //create a government for each user
         ArrayList<Government> governments = new ArrayList<>();
+        int colorIndex = 0;
         for (User user :
                 users) {
-            governments.add(new Government(user));
+            governments.add(new Government(user, colorIndex++));
         }
 
         AbstractMenu.show("Game id: " +
                 Database.addGame(
                         new Game(Database.getMapById(mapId), governments)
                 ).toString());
-        return MenuMessages.GAME_CREATED_SUCCESSFULLY;
+        return MenuMessages.SUCCESS;
     }
 
     public static boolean loadGame(int gameId) {
@@ -55,11 +59,6 @@ public class GameMenuController {
         //return governments;
         //TODO
         return null;
-    }
-
-    public static void addGovernment(Government government) {
-        //governments.add(government);
-        //TODO
     }
 
     public static MenuMessages showMap(int x, int y) {
@@ -95,8 +94,33 @@ public class GameMenuController {
         return MenuMessages.OK;
     }
 
-    public static MenuMessages dropBuilding(int x, int y, String type) {
-        return MenuMessages.OK;
+    public static MenuMessages dropBuilding(int x, int y, String type, boolean isFree) {
+        if (currentGame.getMapX() < x || 1 > x || currentGame.getMapY() < y || 1 > y)
+            return MenuMessages.INVALID_LOCATION;
+        //x and y are indexed from 1 for the user and from 0 for the calculations.
+        x--; y--;
+
+        Building building = Building.getInstance(type);
+        if (building == null) return MenuMessages.INVALID_TYPE;
+
+        if (currentGame.getBuilding(x, y) != null) return MenuMessages.CELL_IS_FULL;
+
+        for (Attribute attribute :
+                building.getAttributes())
+            if (attribute instanceof NeedsSpecialPlacement)
+                if (
+                        !((NeedsSpecialPlacement) attribute).canBePlacedIn(currentGame.getTexture(x - 1, y - 1))
+                ) {
+                    AbstractMenu.show(type + " needs to be placed in a cell with " +
+                            ((NeedsSpecialPlacement) attribute).getNeededTexture() + "texture");
+                    return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
+                }
+
+        if (!isFree && !currentGame.getCurrentGovernment().purchase(building.getProductionCost()))
+            return MenuMessages.NOT_ENOUGH_RESOURCES;
+
+        currentGame.dropBuilding(building, x, y);
+        return MenuMessages.SUCCESS;
     }
 
     public static MenuMessages selectBuilding(int x, int y) {
