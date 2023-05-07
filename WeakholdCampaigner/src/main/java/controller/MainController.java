@@ -49,7 +49,7 @@ public class MainController {
     }
 
     public static void setCurrentMenu(@NotNull GameEntity gameEntity) {
-        currentMenu = GameEntityMenu.getGameEntityMenu(gameEntity, scanner);
+        currentMenu = GameEntityMenu.getGameEntityMenu(gameEntity);
     }
 
     public static AbstractMenu getCurrentMenu() {

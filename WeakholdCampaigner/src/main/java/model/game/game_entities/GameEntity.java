@@ -3,6 +3,7 @@ package model.game.game_entities;
 import model.enums.Resource;
 import model.attributes.Attribute;
 import model.game.Government.GovernmentColor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,11 @@ public abstract class GameEntity {
 
     public void setGovernmentColor(GovernmentColor governmentColor) { //This is expected to be called (?)
         this.governmentColor = governmentColor;
+    }
+
+    @NotNull
+    public GovernmentColor getGovernmentColor() {
+        return governmentColor;
     }
 
     public ArrayList<Attribute> getAttributes() {

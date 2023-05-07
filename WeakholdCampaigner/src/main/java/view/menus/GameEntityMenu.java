@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameEntityMenu extends AbstractMenu {
-    private GameEntityMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
-        super(commands, scanner, menuName);
+    private GameEntityMenu(ArrayList<Command> commands, MenuName menuName) {
+        super(commands, menuName);
     }
 
-    public static AppMenu getGameEntityMenu(GameEntity gameEntity, Scanner scanner) {
+    public static GameEntityMenu getGameEntityMenu(final GameEntity gameEntity) {
         ArrayList<Command> commands = new ArrayList<>(getCommonCommands());
 
         if (gameEntity instanceof Unit) {
@@ -56,6 +56,6 @@ public class GameEntityMenu extends AbstractMenu {
         commands.add(new Command("exit", "entity_menu", GameEntityUtils::exitEntityMenu));
         //TODO: combine the many exit/enter menu commands into one thing.
 
-        return new AppMenu(commands, scanner, MenuName.ENTITY_MENU);
+        return new GameEntityMenu(commands, MenuName.ENTITY_MENU);
     }
 }

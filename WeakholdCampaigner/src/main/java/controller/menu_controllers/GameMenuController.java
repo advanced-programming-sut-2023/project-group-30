@@ -95,10 +95,8 @@ public class GameMenuController {
     }
 
     public static MenuMessages dropBuilding(int x, int y, String type, boolean godMode) {
-        if (currentGame.getMapX() < x || 1 > x || currentGame.getMapY() < y || 1 > y)
+        if (!checkLocation(x, y))
             return MenuMessages.INVALID_LOCATION;
-        //x and y are indexed from 1 for the user and from 0 for the calculations.
-        x--; y--;
 
         Building building = Building.getInstance(type);
         if (building == null) return MenuMessages.INVALID_TYPE;
@@ -128,6 +126,21 @@ public class GameMenuController {
     }
 
     public static MenuMessages selectBuilding(int x, int y) {
-        return MenuMessages.OK;
+        if (!checkLocation(x, y))
+            return MenuMessages.INVALID_LOCATION;
+
+        Building building = currentGame.getBuilding(x, y);
+        if (building == null) return MenuMessages.CELL_IS_EMPTY;
+
+        if (!building.getGovernmentColor().equals(currentGame.getCurrentGovernment().getColor()))
+            return MenuMessages.NOT_THE_OWNER;
+
+        MainController.setCurrentMenu(building);
+        return MenuMessages.SUCCESS;
+    }
+
+    private static boolean checkLocation(int x, int y) {
+        //x and y must be indexed from 0.
+        return currentGame.getMapX() > x && 0 <= x && currentGame.getMapY() > y && 0 <= y;
     }
 }

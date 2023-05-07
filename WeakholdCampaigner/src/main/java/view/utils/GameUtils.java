@@ -361,35 +361,31 @@ public class GameUtils extends Utils {
     }
 
     public static void selectBuilding(ParsedLine parsedLine) {
-        String X = null, Y = null;
-        HashMap<String, String> options = parsedLine.options;
-        for (Map.Entry<String, String> entry :
-                options.entrySet()) {
-            String option = entry.getKey(), argument = entry.getValue();
-            switch (option) {
-                case "-x":
-                    X = argument;
-                    break;
-                case "-y":
-                    Y = argument;
-                    break;
-                default:
-                    System.out.println("Error: This command should have the following format:\n" +
-                            "select building -x [x] -y [y]");
-                    return;
-            }
-        }
-        if (checkStrIsNumberAndNotNullForAllEntrance(X, Y)) {
-            int x = Integer.parseInt(X), y = Integer.parseInt(Y);
-            switch (GameMenuController.selectBuilding(x, y)) {
-                case OK:
-                    break;
-                case INVALID_LOCATION:
-                    System.out.println("Error: please enter valid location");
-                    break;
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y"},
+                new String[]{}, new String[]{"-x", "-y"});
 
-            }
-        } else System.out.println("Error: please enter location correctly");
+        if (options == null) {
+            invalidFormatError("select building -x <x> -y <y>");
+            return;
+        }
+
+        switch (GameMenuController.selectBuilding(
+                Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y"))
+        )) {
+            case INVALID_LOCATION:
+                AppMenu.show("Error: Location is out of bounds.");
+                break;
+            case CELL_IS_EMPTY:
+                AppMenu.show("Error: There is no building in that cell.");
+                break;
+            case NOT_THE_OWNER:
+                AppMenu.show("Error: You do not own that building.");
+                break;
+            case SUCCESS:
+                AppMenu.show("Entered Entity Menu.");
+                break;
+        }
     }
 
     public static void enterTradMenu(ParsedLine parsedLine) {
