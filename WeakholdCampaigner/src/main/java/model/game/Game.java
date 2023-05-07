@@ -9,7 +9,7 @@ public class Game {
     private int currentTurn;
     private Map map;
     private LinkedHashMap<User, Government> governments;
-    private User currentPlayer;
+    private Government currentGovernment;
 
     public Game(Map map, LinkedHashMap<User, Government> governments, User currentPlayer) {
         this.currentTurn = 0;
