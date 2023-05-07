@@ -38,6 +38,7 @@ public class AppMenu extends AbstractMenu {
             commands.add(new Command("fear", "rate", GameUtils::fearRate));
             commands.add(new Command("drop", "building", GameUtils::dropBuilding));
             commands.add(new Command("select", "building", GameUtils::selectBuilding));
+            commands.add(new Command("select", "unit", GameUtils::selectUnit));
             commands.add(new Command("exit", "game_menu", MenuUtils::enterMainMenu));
             commands.add(new Command("enter", "trade_menu", GameUtils::enterTradMenu));
             commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));

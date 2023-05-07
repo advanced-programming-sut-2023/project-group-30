@@ -48,7 +48,7 @@ public class MainController {
         currentMenu = menus.get(menuName);
     }
 
-    public static void setCurrentMenu(@NotNull GameEntity gameEntity) {
+    public static void setCurrentMenu(@NotNull final GameEntity gameEntity) {
         currentMenu = GameEntityMenu.getGameEntityMenu(gameEntity);
     }
 

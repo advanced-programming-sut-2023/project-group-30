@@ -388,6 +388,36 @@ public class GameUtils extends Utils {
         }
     }
 
+    public static void selectUnit(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "--type"},
+                new String[]{}, new String[]{"-x", "-y"});
+
+        if (options == null) {
+            invalidFormatError("select building -x <x> -y <y> --type <unit type>");
+            return;
+        }
+
+        String type = options.get("--type");
+        switch (GameMenuController.selectUnit(
+                Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")),
+                type
+        )) {
+            case INVALID_LOCATION:
+                AppMenu.show("Error: Location is out of bounds.");
+                break;
+            case INVALID_TYPE:
+                AppMenu.show("Error: Invalid Unit type.");
+                break;
+            case NO_MATCHING_UNIT:
+                AppMenu.show("Error: There is no unit of type <" + type + "> that belongs to you in that cell.");
+                break;
+            case SUCCESS:
+                AppMenu.show("Entered Entity Menu.");
+                break;
+        }
+    }
+
     public static void enterTradMenu(ParsedLine parsedLine) {
         TradeMenuController.enterTradeMenu();
     }

@@ -9,6 +9,8 @@ import model.game.Game;
 import model.game.Government;
 import model.User;
 import model.game.game_entities.Building;
+import model.game.game_entities.Unit;
+import model.game.game_entities.UnitName;
 import view.menus.AbstractMenu;
 
 import java.util.ArrayList;
@@ -137,6 +139,23 @@ public class GameMenuController {
 
         MainController.setCurrentMenu(building);
         return MenuMessages.SUCCESS;
+    }
+
+    public static MenuMessages selectUnit(int x, int y, String type) {
+        if (!checkLocation(x, y))
+            return MenuMessages.INVALID_LOCATION;
+
+        if (UnitName.getUnitName(type) == null) return MenuMessages.INVALID_TYPE;
+
+        for (Unit unit :
+                currentGame.getUnits(x, y))
+            if (unit.unitName.name.equals(type))
+                if (unit.getGovernmentColor().equals(currentGame.getCurrentGovernment().getColor())) {
+                    MainController.setCurrentMenu(unit);
+                    return MenuMessages.SUCCESS;
+                }
+
+        return MenuMessages.NO_MATCHING_UNIT;
     }
 
     private static boolean checkLocation(int x, int y) {

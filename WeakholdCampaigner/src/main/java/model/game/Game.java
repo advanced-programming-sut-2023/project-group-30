@@ -1,6 +1,7 @@
 package model.game;
 
 import model.game.game_entities.Building;
+import model.game.game_entities.Unit;
 import model.game.map.Map;
 import model.User;
 import model.game.map.MapCell;
@@ -39,6 +40,11 @@ public class Game {
     public void dropBuilding(Building building, int x, int y) {
         building.setGovernmentColor(currentGovernment.getColor());
         map.getCell(x, y).setBuilding(building);
+    }
+
+    @NotNull
+    public ArrayList<Unit> getUnits(int x, int y) {
+        return map.getCell(x, y).getUnits();
     }
 
     @NotNull
