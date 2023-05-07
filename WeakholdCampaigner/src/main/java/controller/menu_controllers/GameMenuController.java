@@ -11,6 +11,7 @@ import model.User;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 import model.game.game_entities.UnitName;
+import model.game.map.MapCell;
 import view.menus.AbstractMenu;
 
 import java.util.ArrayList;
@@ -109,11 +110,14 @@ public class GameMenuController {
 
         if (currentGame.getBuilding(x, y) != null) return MenuMessages.CELL_IS_FULL;
 
+        MapCell.Texture texture = currentGame.getTexture(x, y);
+        if (texture.equals(MapCell.Texture.STONE))
+            return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
         for (Attribute attribute :
                 building.getAttributes())
             if (attribute instanceof NeedsSpecialPlacement)
                 if (
-                        !((NeedsSpecialPlacement) attribute).canBePlacedIn(currentGame.getTexture(x - 1, y - 1))
+                        !((NeedsSpecialPlacement) attribute).canBePlacedIn(texture)
                 ) {
                     AbstractMenu.show(type + " needs to be placed in a cell with " +
                             ((NeedsSpecialPlacement) attribute).getNeededTexture() + "texture");
@@ -156,6 +160,24 @@ public class GameMenuController {
                 }
 
         return MenuMessages.NO_MATCHING_UNIT;
+    }
+
+    public static MenuMessages dropUnit(int x, int y, String type, boolean godMode) {
+        if (!checkLocation(x, y))
+            return MenuMessages.INVALID_LOCATION;
+
+        Unit unit = Unit.getInstance(type);
+        if (unit == null) return MenuMessages.INVALID_TYPE;
+
+        MapCell.Texture texture = currentGame.getTexture(x, y);
+        if (texture.equals(MapCell.Texture.DEEP_WATER) || texture.equals(MapCell.Texture.STONE))
+            return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
+
+        if (!godMode && !currentGame.getCurrentGovernment().purchase(unit.getProductionCost()))
+            return MenuMessages.NOT_ENOUGH_RESOURCES;
+
+        currentGame.dropUnit(unit, x, y);
+        return MenuMessages.SUCCESS;
     }
 
     private static boolean checkLocation(int x, int y) {

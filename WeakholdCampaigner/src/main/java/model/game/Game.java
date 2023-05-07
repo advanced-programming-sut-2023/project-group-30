@@ -46,6 +46,10 @@ public class Game {
     public ArrayList<Unit> getUnits(int x, int y) {
         return map.getCell(x, y).getUnits();
     }
+    public void dropUnit(Unit unit, int x, int y) {
+        unit.setGovernmentColor(currentGovernment.getColor());
+        map.getCell(x, y).addUnit(unit);
+    }
 
     @NotNull
     public MapCell.Texture getTexture(int x, int y) {

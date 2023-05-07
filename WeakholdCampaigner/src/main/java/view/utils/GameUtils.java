@@ -418,6 +418,41 @@ public class GameUtils extends Utils {
         }
     }
 
+    public static void dropUnit(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "-t"},
+                new String[]{"--godMode"}, new String[]{"-x", "-y"});
+
+        if (options == null) {
+            invalidFormatError("drop unit -x <x> -y <y> -t <type> [--godMode <on>]");
+            return;
+        }
+
+        String tempGodMode = options.get("--godMode");
+        boolean isFree = tempGodMode != null && tempGodMode.equals("on");
+
+        switch (
+                GameMenuController.dropUnit(Integer.parseInt(options.get("-x")),
+                        Integer.parseInt(options.get("-y")),
+                        options.get("-t"),
+                        isFree)
+        ) {
+            case INVALID_LOCATION:
+                AppMenu.show("Error: Location is out of bounds.");
+                break;
+            case INVALID_TYPE:
+                AppMenu.show("Error: Invalid unit type."); //TODO: show all available units
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                AppMenu.show("Error: The cell has an incompatible texture.");
+                break;
+            case NOT_ENOUGH_RESOURCES:
+                AppMenu.show("Error: Your government does not have enough resources.");
+                AppMenu.show("You can drop this unit for free using the '--godMode on' flag.");
+            case SUCCESS:
+                AppMenu.show("Unit dropped successfully.");
+        }
+    }
+
     public static void enterTradMenu(ParsedLine parsedLine) {
         TradeMenuController.enterTradeMenu();
     }

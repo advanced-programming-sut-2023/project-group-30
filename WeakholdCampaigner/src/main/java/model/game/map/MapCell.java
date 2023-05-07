@@ -38,6 +38,9 @@ public class MapCell {
     public void setBuilding(Building building) {
         this.building = building;
     }
+    public void addUnit(Unit unit) {
+        this.units.add(unit);
+    }
 
     public enum Texture{
         LAND,
