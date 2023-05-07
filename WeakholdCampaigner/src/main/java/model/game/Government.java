@@ -273,7 +273,7 @@ public class Government {
         setFoodVariety();
         if (getFoodUnit() >= consumableFood()) decreaseFood();
         popularity += getPopularity();
-        if (getTax() <= getGold()) addGold(getTax());
+        if ((getTax() * (-1)) <= getGold()) addGold(getTax());
     }
 
 

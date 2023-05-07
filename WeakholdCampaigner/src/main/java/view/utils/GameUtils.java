@@ -218,6 +218,10 @@ public class GameUtils extends Utils {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.foodRate(rate)) {
                     case OK:
+                        System.out.println("set food rate");
+                        break;
+                    case OUT_OF_BOUNDS:
+                        System.out.println("food rate must be between 2 & -2");
                         break;
                 }
             } else System.out.println("Error: please enter rateNumber correctly");
@@ -239,7 +243,10 @@ public class GameUtils extends Utils {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.taxRate(rate)) {
                     case OK:
+                        System.out.println("set tax rate");
                         break;
+                    case OUT_OF_BOUNDS:
+                        System.out.println("tax rate must be between 8 & -3");
                 }
             } else System.out.println("Error: please enter rateNumber correctly");
 
@@ -260,6 +267,10 @@ public class GameUtils extends Utils {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.setFearRate(rate)) {
                     case OK:
+                        System.out.println("set fear rate");
+                        break;
+                    case OUT_OF_BOUNDS:
+                        System.out.println("fear rate must be between 5 & -5");
                         break;
                 }
             } else System.out.println("Error: please enter rateNumber correctly");
