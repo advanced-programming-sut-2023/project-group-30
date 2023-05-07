@@ -5,9 +5,10 @@ import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
 import controller.menu_controllers.ShopMenuController;
 import controller.menu_controllers.TradeMenuController;
-import view.menus.AppMenu;
+import view.menus.AppMenu; //TODO: it is better to put AbstractMenu instead ?
 import view.ParsedLine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -16,6 +17,40 @@ import static view.utils.Utils.formatOptions;
 import static view.utils.Utils.invalidFormatError;
 
 public class GameUtils extends Utils {
+    public static void createGame(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"--mapId"}, new String[]{},
+                new String[]{"--mapId"});
+
+        if (options == null) {
+            invalidFormatError("create game --mapId <map id>");
+            return;
+        }
+
+        AppMenu.show("Please enter the players' usernames below. Type !q when you are done.");
+        ArrayList<String> usernames = new ArrayList<>();
+        int i = 0;
+        while (true) {
+            String username = AppMenu.getOneLine("player" + (++i + 1) + ": ");
+            if (username.equals("!q")) break;
+            usernames.add(username);
+        }
+
+        switch (GameMenuController.createGame(Integer.parseInt(options.get("--mapID")), usernames)) {
+            case MAP_DOES_NOT_EXIST:
+                AppMenu.show("Error: No map with this id exists."); //TODO: show available map ids.
+                break;
+            case INVALID_NUMBER_OF_PLAYERS:
+                AppMenu.show("Error: Each game can have 2 to 8 players, including you.");
+                break;
+            case USERNAME_DOES_NOT_EXIST:
+                AppMenu.show("Error: At least one of the usernames does not exist.");
+                break;
+            case GAME_CREATED_SUCCESSFULLY:
+                AppMenu.show("Game created successfully. Use the above id to enter it.");
+                break;
+        }
+    }
+
     public static void enterGame(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"--id"}, new String[]{},
                 new String[]{"--id"});

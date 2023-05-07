@@ -150,7 +150,7 @@ public class MenuUtils {
             return;
         }
         switch (LoginMenuController.userLogin(username, password, stayLoggedIn)) {
-            case NO_USER_WITH_USERNAME:
+            case USERNAME_DOES_NOT_EXIST:
                 System.out.println("Error: this username not exist");
                 break;
             case PASSWORD_INCORRECT:
