@@ -1,6 +1,7 @@
 package model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import controller.MainController;
 import model.game.Game;
@@ -73,11 +74,17 @@ public class Database {
 
     public static void loadMap() {
         Gson gson = new Gson();
+        Gson secGson = new Gson();
+        Gson thirdGson = new Gson();
+        Gson forthGson = new Gson();
         Map map = new Map(200);
+        Map map2 = new Map(200);
+        Map map3 = new Map(200);
+        Map map4 = new Map(200);
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 10; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.DEEP_WATER);
+                    map.getCell(i, j).setTexture(MapCell.Texture.SLATE);
                 }
             }
 
@@ -85,7 +92,7 @@ public class Database {
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 15; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.BEACH);
+                    map.getCell(i, j).setTexture(MapCell.Texture.IRON);
                 }
             }
 
@@ -93,7 +100,7 @@ public class Database {
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 30; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.PLAIN);
+                    map.getCell(i, j).setTexture(MapCell.Texture.SHALLOW_WATER);
                 }
             }
 
@@ -109,7 +116,7 @@ public class Database {
         for (int i = 199; i > 170; i--) {
             for (int j = 0; j < 20; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.MEADOW);
+                    map.getCell(i, j).setTexture(MapCell.Texture.GRASS);
 
                 }
             }
@@ -117,58 +124,336 @@ public class Database {
         for (int i = 199; i > 130; i--) {
             for (int j = 0; j < 25; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.GRASSLAND);
+                    map.getCell(i, j).setTexture(MapCell.Texture.DEEP_WATER);
                 }
             }
         }
         for (int i = 199; i > 80; i--) {
             for (int j = 0; j < 30; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.STONE);
+                    map.getCell(i, j).setTexture(MapCell.Texture.BEACH);
                 }
             }
         }
         for (int i = 0; i < 20; i++) {
             for (int j = 31; j < 80; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.IRON);
+                    map.getCell(i, j).setTexture(MapCell.Texture.MEADOW);
                 }
             }
         }
         for (int i = 0; i < 40; i++) {
             for (int j = 31; j < 80; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.GRASS);
+                    map.getCell(i, j).setTexture(MapCell.Texture.GRASSLAND);
                 }
             }
         }
         for (int i = 0; i < 70; i++) {
             for (int j = 31; j < 100; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.GRAVEL);
+                    map.getCell(i, j).setTexture(MapCell.Texture.STONE);
                 }
             }
         }
         for (int i = 0; i < 80; i++) {
             for (int j = 31; j < 120; j++) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.SHALLOW_WATER);
+                    map.getCell(i, j).setTexture(MapCell.Texture.GRAVEL);
                 }
             }
         }
         for (int i = 199; i > 180; i--) {
             for (int j = 199; j > 190; j--) {
                 if (map.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
-                    map.getCell(i, j).setTexture(MapCell.Texture.SLATE);
+                    map.getCell(i, j).setTexture(MapCell.Texture.OIL);
                 }
             }
         }
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.DEEP_WATER);
+                }
+            }
 
-        String json = gson.toJson(map);
+        }
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.BEACH);
+                }
+            }
+
+        }
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 30; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.PLAIN);
+                }
+            }
+
+        }
+        for (int i = 0; i < 200; i++) {
+            for (int j = 29; j < 31; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.RIVER);
+                }
+
+            }
+        }
+        for (int i = 199; i > 170; i--) {
+            for (int j = 0; j < 20; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.MEADOW);
+
+                }
+            }
+        }
+        for (int i = 199; i > 130; i--) {
+            for (int j = 0; j < 25; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.GRASSLAND);
+                }
+            }
+        }
+        for (int i = 199; i > 80; i--) {
+            for (int j = 0; j < 30; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.STONE);
+                }
+            }
+        }
+        for (int i = 0; i < 20; i++) {
+            for (int j = 31; j < 80; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.IRON);
+                }
+            }
+        }
+        for (int i = 0; i < 40; i++) {
+            for (int j = 31; j < 80; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.GRASS);
+                }
+            }
+        }
+        for (int i = 0; i < 70; i++) {
+            for (int j = 31; j < 100; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.GRAVEL);
+                }
+            }
+        }
+        for (int i = 0; i < 80; i++) {
+            for (int j = 31; j < 120; j++) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.SHALLOW_WATER);
+                }
+            }
+        }
+        for (int i = 199; i > 180; i--) {
+            for (int j = 199; j > 190; j--) {
+                if (map2.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map2.getCell(i, j).setTexture(MapCell.Texture.SLATE);
+                }
+            }
+        }
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.DEEP_WATER);
+                }
+            }
+
+        }
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.BEACH);
+                }
+            }
+
+        }
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 30; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.STONE);
+                }
+            }
+
+        }
+        for (int i = 0; i < 200; i++) {
+            for (int j = 29; j < 31; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.GRASSLAND);
+                }
+
+            }
+        }
+        for (int i = 199; i > 170; i--) {
+            for (int j = 0; j < 20; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.MEADOW);
+                }
+            }
+        }
+        for (int i = 199; i > 130; i--) {
+            for (int j = 0; j < 25; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.GRASS);
+                }
+            }
+        }
+        for (int i = 199; i > 80; i--) {
+            for (int j = 0; j < 30; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.SHALLOW_WATER);
+                }
+            }
+        }
+        for (int i = 0; i < 20; i++) {
+            for (int j = 31; j < 80; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.SLATE);
+                }
+            }
+        }
+        for (int i = 0; i < 40; i++) {
+            for (int j = 31; j < 80; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.OIL);
+                }
+            }
+        }
+        for (int i = 0; i < 70; i++) {
+            for (int j = 31; j < 100; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.IRON);
+                }
+            }
+        }
+        for (int i = 0; i < 80; i++) {
+            for (int j = 31; j < 120; j++) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.RIVER);
+                }
+            }
+        }
+        for (int i = 199; i > 180; i--) {
+            for (int j = 199; j > 190; j--) {
+                if (map3.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map3.getCell(i, j).setTexture(MapCell.Texture.GRAVEL);
+                }
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.RIVER);
+                }
+            }
+
+        }
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.OIL);
+                }
+            }
+
+        }
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 30; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.PLAIN);
+                }
+            }
+
+        }
+        for (int i = 0; i < 200; i++) {
+            for (int j = 29; j < 31; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.STONE);
+                }
+
+            }
+        }
+        for (int i = 199; i > 170; i--) {
+            for (int j = 0; j < 20; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.GRASS);
+
+                }
+            }
+        }
+        for (int i = 199; i > 130; i--) {
+            for (int j = 0; j < 25; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.GRASSLAND);
+                }
+            }
+        }
+        for (int i = 199; i > 80; i--) {
+            for (int j = 0; j < 30; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.SLATE);
+                }
+            }
+        }
+        for (int i = 0; i < 20; i++) {
+            for (int j = 31; j < 80; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.IRON);
+                }
+            }
+        }
+        for (int i = 0; i < 40; i++) {
+            for (int j = 31; j < 80; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.DEEP_WATER);
+                }
+            }
+        }
+        for (int i = 0; i < 70; i++) {
+            for (int j = 31; j < 100; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.BEACH);
+                }
+            }
+        }
+        for (int i = 0; i < 80; i++) {
+            for (int j = 31; j < 120; j++) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.MEADOW);
+                }
+            }
+        }
+        for (int i = 199; i > 180; i--) {
+            for (int j = 199; j > 190; j--) {
+                if (map4.getCell(i, j).getTexture().equals(MapCell.Texture.LAND)) {
+                    map4.getCell(i, j).setTexture(MapCell.Texture.SHALLOW_WATER);
+                }
+            }
+        }
+        String json = gson.toJson(gson);
+        String secJson = gson.toJson(secGson);
+        String thirdJson = gson.toJson(thirdGson);
+        String forthJson = gson.toJson(forthGson);
         try {
-            FileWriter writer = new FileWriter("src/main/resources/defaultMaps.json");
+            FileWriter writer = new FileWriter("src/main/resources/firstDefaultMap.json");
             writer.write(json);
             writer.close();
+            FileWriter secWriter = new FileWriter("src/main/resources/secondDefaultMap.json");
+            secWriter.write(secJson);
+            secWriter.close();
+            FileWriter thirdWriter = new FileWriter("src/main/resources/thirdDefaultMap.json");
+            thirdWriter.write(thirdJson);
+            thirdWriter.close();
+            FileWriter forthWriter = new FileWriter("src/main/resources/forthDefaultMap.json");
+            forthWriter.write(forthJson);
+            forthWriter.close();
+            System.out.println(map3.getCell(3, 103).getTexture());
         } catch (IOException e) {
             e.printStackTrace();
         }
