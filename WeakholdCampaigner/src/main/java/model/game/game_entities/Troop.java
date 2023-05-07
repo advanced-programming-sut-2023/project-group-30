@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Troop extends Unit {
-    private Troop(HashMap<Resource, Integer> productionCost, EntityName name, ArrayList<Attribute> attributes) {
-        super(productionCost, name, attributes);
+    private Troop(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes) {
+        super(productionCost, attributes);
     }
 
     public static Unit getInstance(EntityName entityName) {
@@ -20,6 +20,6 @@ public class Troop extends Unit {
                 break;
         }
 
-        return new Troop(productionCost, entityName, attributes);
+        return new Troop(productionCost, attributes);
     }
 }

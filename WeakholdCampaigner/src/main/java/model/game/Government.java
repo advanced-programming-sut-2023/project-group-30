@@ -24,6 +24,7 @@ public class Government {
     private User owner;
     private final GovernmentColor color;
     private HashMap<Resource, Integer> resources = new HashMap<>();
+    private boolean hasPlacedKeep;
 
     private void installResource() {
         resources.put(Resource.GOLD_COIN, 20);
@@ -42,6 +43,7 @@ public class Government {
         this.owner = owner;
         installResource();
         this.color = GovernmentColor.values()[index];
+        this.hasPlacedKeep = false;
     }
 
     public void getPopularity() {
@@ -165,6 +167,14 @@ public class Government {
     public boolean purchase(HashMap<Resource, Integer> productionCost) {
         //TODO: return true if there is enough resources and reduce them accordingly. otherwise return false
         return true;
+    }
+
+    public boolean hasPlacedKeep() {
+        return hasPlacedKeep;
+    }
+
+    public void toggleHasPlacedKeep() {
+        hasPlacedKeep = !hasPlacedKeep;
     }
 
     public GovernmentColor getColor (){

@@ -9,15 +9,13 @@ import java.util.HashMap;
 
 public abstract class GameEntity {
     protected HashMap<Resource, Integer> productionCost;
-    protected EntityName name;
     protected ArrayList<Attribute> attributes;
     protected GovernmentColor governmentColor;
 
-    public GameEntity(HashMap<Resource, Integer> productionCost, EntityName name, ArrayList<Attribute> attributes) {
+    public GameEntity(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes) {
         this.productionCost = productionCost;
-        this.name = name;
         this.attributes = attributes;
-        this.governmentColor = null;
+        this.governmentColor = null; //you should always call setGovernmentColor ?
     }
 
     public void setGovernmentColor(GovernmentColor governmentColor) { //This is expected to be called (?)

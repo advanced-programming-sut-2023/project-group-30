@@ -8,6 +8,7 @@ import model.game.game_entities.GameEntity;
 import model.game.game_entities.Unit;
 import view.Command;
 import view.utils.GameEntityUtils;
+import view.utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -42,12 +43,13 @@ public class GameEntityMenu extends AbstractMenu {
         }
 
         if (gameEntity instanceof Building) {
+            commands.add(new Command("repair", null, GameEntityUtils::repair));
             for (Attribute attribute :
                     gameEntity.getAttributes()) {
                 if (attribute instanceof CreateUnit)
                     commands.add(new Command("create", "unit", GameEntityUtils::createUnit));
-                else if (attribute instanceof HasHP)
-                    commands.add(new Command("repair", null, GameEntityUtils::repair));
+                else if (attribute instanceof ChangeTaxRate)
+                    commands.add(new Command("tax", "rate", GameUtils::taxRate));
             }
         }
 

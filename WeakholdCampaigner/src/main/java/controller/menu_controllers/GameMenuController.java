@@ -94,7 +94,7 @@ public class GameMenuController {
         return MenuMessages.OK;
     }
 
-    public static MenuMessages dropBuilding(int x, int y, String type, boolean isFree) {
+    public static MenuMessages dropBuilding(int x, int y, String type, boolean godMode) {
         if (currentGame.getMapX() < x || 1 > x || currentGame.getMapY() < y || 1 > y)
             return MenuMessages.INVALID_LOCATION;
         //x and y are indexed from 1 for the user and from 0 for the calculations.
@@ -102,6 +102,10 @@ public class GameMenuController {
 
         Building building = Building.getInstance(type);
         if (building == null) return MenuMessages.INVALID_TYPE;
+
+        if (type.equals("keep")) if (currentGame.getCurrentGovernment().hasPlacedKeep())
+            return MenuMessages.ALREADY_HAS_KEEP;
+        else if (!currentGame.getCurrentGovernment().hasPlacedKeep()) return MenuMessages.HAS_NOT_PLACED_KEEP;
 
         if (currentGame.getBuilding(x, y) != null) return MenuMessages.CELL_IS_FULL;
 
@@ -116,7 +120,7 @@ public class GameMenuController {
                     return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
                 }
 
-        if (!isFree && !currentGame.getCurrentGovernment().purchase(building.getProductionCost()))
+        if (!godMode && !currentGame.getCurrentGovernment().purchase(building.getProductionCost()))
             return MenuMessages.NOT_ENOUGH_RESOURCES;
 
         currentGame.dropBuilding(building, x, y);

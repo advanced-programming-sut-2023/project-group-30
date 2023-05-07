@@ -318,15 +318,15 @@ public class GameUtils extends Utils {
 
     public static void dropBuilding(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "--type"},
-                new String[]{"--isFree"}, new String[]{"-x", "-y"});
+                new String[]{"--godMode"}, new String[]{"-x", "-y"});
 
         if (options == null) {
-            invalidFormatError("drop building -x <x> -y <y> --type <type> [--isFree <true>]");
+            invalidFormatError("drop building -x <x> -y <y> --type <type> [--godMode <on>]");
             return;
         }
 
-        String tempFree = options.get("--isFree");
-        boolean isFree = tempFree != null && tempFree.equals("true");
+        String tempGodMode = options.get("--godMode");
+        boolean isFree = tempGodMode != null && tempGodMode.equals("on");
 
         switch (
                 GameMenuController.dropBuilding(Integer.parseInt(options.get("-x")),
@@ -337,6 +337,15 @@ public class GameUtils extends Utils {
             case INVALID_LOCATION:
                 AppMenu.show("Error: Location is out of bounds.");
                 break;
+            case INVALID_TYPE:
+                AppMenu.show("Error: Invalid building type."); //TODO: show all available buildings
+                break;
+            case ALREADY_HAS_KEEP:
+                AppMenu.show("Error: You can have only one Keep.");
+                break;
+            case HAS_NOT_PLACED_KEEP:
+                AppMenu.show("Error: You must Place your Keep before any other building.");
+                break;
             case CELL_IS_FULL:
                 AppMenu.show("Error: There is already a building in that location.");
                 break;
@@ -345,7 +354,7 @@ public class GameUtils extends Utils {
                 break;
             case NOT_ENOUGH_RESOURCES:
                 AppMenu.show("Error: Your government does not have enough resources.");
-                AppMenu.show("You can drop this building for free using the '--isFree true' flag.");
+                AppMenu.show("You can drop this building for free using the '--godMode on' flag.");
             case SUCCESS:
                 AppMenu.show("Building dropped successfully.");
         }

@@ -10,8 +10,8 @@ public abstract class Unit extends GameEntity {
     private int defence, speed, fieldOfView;
     private UnitStance unitStance;
 
-    protected Unit(HashMap<Resource, Integer> productionCost, EntityName name, ArrayList<Attribute> attributes) {
-        super(productionCost, name, attributes);
+    protected Unit(HashMap<Resource, Integer> productionCost , ArrayList<Attribute> attributes) {
+        super(productionCost, attributes);
     }
 
     public enum UnitStance {
