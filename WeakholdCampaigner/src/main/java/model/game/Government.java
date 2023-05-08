@@ -186,12 +186,13 @@ public class Government {
     }
 
     public int getPopularityOfTax() {
-        if (getTax() <= getGold()){
-        if (taxRate >= -3 && taxRate <= 0)
-            return -1 * (taxRate * 2) + 1;
-        else if (taxRate >= 1 && taxRate <= 4)
-            return taxRate * 2;
-        return (taxRate - 2) * 4;}
+        if (((-1) * getTax()) <= getGold()) {
+            if (taxRate >= -3 && taxRate <= 0)
+                return (-1 * taxRate * 2) + 1;
+            else if (taxRate >= 1 && taxRate <= 4)
+                return (-1) * taxRate * 2;
+            return (taxRate - 2) * 4;
+        }
         return 1;
     }
 
