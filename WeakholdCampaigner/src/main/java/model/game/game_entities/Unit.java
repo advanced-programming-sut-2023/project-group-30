@@ -78,7 +78,11 @@ public class Unit extends GameEntity {
         return speed;
     }
 
-    public void move() {
+    public void setPatrolling(boolean patrolling) {
+        this.isPatrolling = patrolling;
+    }
 
+    public boolean isPatrolling() {
+        return isPatrolling;
     }
 }

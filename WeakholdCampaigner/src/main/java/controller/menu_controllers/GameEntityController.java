@@ -25,6 +25,9 @@ public class GameEntityController extends GameController {
         if (!currentUnit.canGoTo(currentGame.getTexture(destinationX, destinationY)))
             return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
 
+        if (currentUnit.isPatrolling())
+            return MenuMessages.IS_PATROLLING;
+
         int[] tempDestination = currentGame.move(
                 currentUnit.getCurrentX(), currentUnit.getCurrentY(), destinationX, destinationY,
                 currentUnit.getSpeed());
@@ -34,8 +37,17 @@ public class GameEntityController extends GameController {
         return MenuMessages.SUCCESS;
     }
 
-    public static void patrolUnit(int fromX, int fromY, int toX, int toY) {
+    public static MenuMessages patrolUnit(int fromX, int fromY, int toX, int toY) {
+        if (!checkLocation(fromX, fromY) || !checkLocation(toX, toY))
+            return MenuMessages.INVALID_LOCATION;
 
+        if (!Unit.canGoTo(currentGame.getTexture(fromX, fromY)) || !Unit.canGoTo(currentGame.getTexture(toX, toY)))
+            return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
+
+        currentUnit.setPatrolling(true);
+        currentUnit.addDestination(fromX, fromY);
+        currentUnit.addDestination(toX, toY);
+        return MenuMessages.SUCCESS;
     }
 
     public static void setStance(String stance) {
