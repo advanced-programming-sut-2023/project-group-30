@@ -232,7 +232,7 @@ public class GameUtils extends Utils {
         if (signForFactors)
             GameMenuController.showPopularityFactor();
         else {
-            System.out.println(GameMenuController.showPopularity(MainController.getCurrentUser()));
+            System.out.println(GameMenuController.showPopularity());
         }
     }
 
@@ -250,6 +250,10 @@ public class GameUtils extends Utils {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.foodRate(rate)) {
                     case OK:
+                        System.out.println("set food rate");
+                        break;
+                    case OUT_OF_BOUNDS:
+                        System.out.println("food rate must be between 2 & -2");
                         break;
                 }
             } else System.out.println("Error: please enter rateNumber correctly");
@@ -271,7 +275,10 @@ public class GameUtils extends Utils {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.taxRate(rate)) {
                     case OK:
+                        System.out.println("set tax rate");
                         break;
+                    case OUT_OF_BOUNDS:
+                        System.out.println("tax rate must be between 8 & -3");
                 }
             } else System.out.println("Error: please enter rateNumber correctly");
 
@@ -292,6 +299,10 @@ public class GameUtils extends Utils {
                 int rate = Integer.parseInt(Rate);
                 switch (GameMenuController.setFearRate(rate)) {
                     case OK:
+                        System.out.println("set fear rate");
+                        break;
+                    case OUT_OF_BOUNDS:
+                        System.out.println("fear rate must be between 5 & -5");
                         break;
                 }
             } else System.out.println("Error: please enter rateNumber correctly");
@@ -530,5 +541,66 @@ public class GameUtils extends Utils {
             return;
         }
         ShopMenuController.showPriceList();
+    }
+
+    public static void buyItem(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-i", "-a"}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("buy -i <item’s name> -a <item’s amount>");
+            return;
+        }
+        switch (ShopMenuController.buyItem(Integer.parseInt(options.get("-a")), options.get("-i"))) {
+            case INVALID_RESOURCE:
+                System.out.println("shop doesn't have this resource");
+                break;
+            case INVALID_AMOUNT:
+                System.out.println("shop doesn't have enough amount of this resource");
+                break;
+            case INVALID_MONEY:
+                System.out.println("you doesn't have enough money for buy this item");
+                break;
+            case INVALID_COMMAND:
+                System.out.println("error: you entered your confirmation incorrect");
+                break;
+            case CANCEL:
+                System.out.println("your purchase canceled successfully");
+                break;
+            case OK:
+                System.out.println("you purchased successfully");
+                break;
+        }
+
+    }
+
+    public static void sellItem(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-i", "-a"}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("sell -i <item’s name> -a <item’s amount>");
+            return;
+        }
+        switch (ShopMenuController.sellItem(Integer.parseInt(options.get("-a")), options.get("-i"))) {
+            case INVALID_RESOURCE:
+                System.out.println("you doesn't have this resource");
+                break;
+            case INVALID_AMOUNT:
+                System.out.println("you doesn't have enough amount");
+                break;
+            case CANCEL:
+                System.out.println("you successfully canceled this item");
+                break;
+            case INVALID_COMMAND:
+                System.out.println("error: you entered your confirmation incorrect");
+                break;
+            case OK:
+                System.out.println("you sold successfully");
+                break;
+
+
+        }
+
     }
 }

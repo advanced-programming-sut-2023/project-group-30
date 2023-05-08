@@ -61,6 +61,8 @@ public class AppMenu extends AbstractMenu {
         } else if (menuName == MenuName.SHOP_MENU) {
             commands.add(new Command("exit", "shop_menu", GameUtils::exitShopMenu));
             commands.add(new Command("show", "price_list", GameUtils::showPriceList));
+            commands.add(new Command("buy", null, GameUtils::buyItem));
+            commands.add(new Command("sell", null, GameUtils::sellItem));
 
         }
 

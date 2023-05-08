@@ -91,4 +91,8 @@ public class Game {
 
         return new int[] {fromX, fromY};
     }
+
+    public  ArrayList<Government> getGovernments() {
+        return governments;
+    }
 }

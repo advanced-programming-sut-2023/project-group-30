@@ -19,6 +19,15 @@ public class Shop {
         shopItems.add(new ShopItem(Resource.WOOD, 12, 5, 30));
     }
 
+    public static ShopItem getShopItemByName(Resource resource) {
+        for (int i = 0; i < shopItems.size(); i++) {
+            if (shopItems.get(i).getResource().equals(resource))
+                return shopItems.get(i);
+        }
+        return null;
+
+    }
+
     public static ArrayList<ShopItem> getShopItems() {
         return shopItems;
     }
