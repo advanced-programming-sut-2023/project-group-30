@@ -1,8 +1,6 @@
 package model.attributes.unit_attributes;
 
-import model.attributes.UnitAttribute;
-
-public class RangedAttack extends UnitAttribute {
+public class RangedAttack implements UnitAttribute {
     private double precision;
     private int range;
 }

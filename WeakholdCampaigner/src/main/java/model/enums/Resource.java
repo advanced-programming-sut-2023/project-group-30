@@ -20,5 +20,13 @@ public enum Resource {
     public String getNameString() {
         return nameString;
     }
+    public static Resource getResourceByName(String name) {
+        Resource resources[] = Resource.values();
+        for (Resource resource : resources) {
+            if (resource.getNameString().equals(name))
+                return resource;
+        }
+        return null;
+    }
 
 }

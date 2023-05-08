@@ -2,6 +2,8 @@ package model.game.map;
 
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -23,13 +25,23 @@ public class MapCell {
         return defenceFactor;
     }
 
+    @NotNull
     public ArrayList<Unit> getUnits() {
         return units;
     }
 
+    @Nullable
     public Building getBuilding() {
         return building;
     }
+
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+    public void addUnit(Unit unit) {
+        this.units.add(unit);
+    }
+
     public enum Texture{
         LAND,
         GRAVEL,

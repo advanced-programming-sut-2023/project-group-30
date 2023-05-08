@@ -12,7 +12,7 @@ public class LoginMenuController {
     public static MenuMessages userLogin(String username, String password, Boolean stayLoggedIn) {
         User user = Database.getUserByName(username);
         if (user == null)
-            return MenuMessages.NO_USER_WITH_USERNAME;
+            return MenuMessages.USERNAME_DOES_NOT_EXIST;
         else if (!user.getPassword().equals(password)) {
             if (attemptNumber >= 1) {
                 AppMenu.show("you entered password incorrect " + LoginMenuController.getAttemptNumber()
@@ -34,7 +34,7 @@ public class LoginMenuController {
     public static MenuMessages forgotPassword(String username) {
         User user = Database.getUserByName(username);
         if (user == null)
-            return MenuMessages.NO_USER_WITH_USERNAME;
+            return MenuMessages.USERNAME_DOES_NOT_EXIST;
         else {
             String answer = AppMenu.getOneLine(user.getSecurityQuestion().getQuestion());
             if (answer.equals(user.getSecurityQuestion().getAnswer())) {

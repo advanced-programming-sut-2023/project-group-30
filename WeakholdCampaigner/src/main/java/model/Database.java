@@ -42,7 +42,12 @@ public class Database {
         maps = new HashMap<>();
         maps.put(1, new Map(200));
         games = new HashMap<>();
-        games.put(1, new Game(maps.get(1), null, null));
+    }
+
+    public static Integer addGame(Game game){
+        int id = games.size() + 1;
+        games.put(id, game);
+        return id;
     }
 
     private static void loadAllUsers() {

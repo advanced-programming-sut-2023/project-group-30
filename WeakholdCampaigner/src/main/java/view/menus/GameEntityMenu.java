@@ -8,21 +8,23 @@ import model.game.game_entities.GameEntity;
 import model.game.game_entities.Unit;
 import view.Command;
 import view.utils.GameEntityUtils;
+import view.utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameEntityMenu extends AbstractMenu {
-    private GameEntityMenu(ArrayList<Command> commands, Scanner scanner, MenuName menuName) {
-        super(commands, scanner, menuName);
+    private GameEntityMenu(ArrayList<Command> commands, MenuName menuName) {
+        super(commands, menuName);
     }
 
-    public static AppMenu getGameEntityMenu(GameEntity gameEntity, Scanner scanner) {
+    public static GameEntityMenu getGameEntityMenu(final GameEntity gameEntity) {
         ArrayList<Command> commands = new ArrayList<>(getCommonCommands());
 
         if (gameEntity instanceof Unit) {
             commands.add(new Command("unit", "move_to", GameEntityUtils::moveUnit));
             commands.add(new Command("unit", "patrol", GameEntityUtils::patrolUnit));
+            commands.add(new Command("unit", "halt", GameEntityUtils::halt));
             commands.add(new Command("set", "stance", GameEntityUtils::setStance));
             commands.add(new Command("unit", "disband", GameEntityUtils::disbandUnit));
 
@@ -42,18 +44,21 @@ public class GameEntityMenu extends AbstractMenu {
         }
 
         if (gameEntity instanceof Building) {
+            commands.add(new Command("repair", null, GameEntityUtils::repair));
             for (Attribute attribute :
                     gameEntity.getAttributes()) {
                 if (attribute instanceof CreateUnit)
                     commands.add(new Command("create", "unit", GameEntityUtils::createUnit));
-                else if (attribute instanceof HasHP)
-                    commands.add(new Command("repair", null, GameEntityUtils::repair));
+                else if (attribute instanceof ChangeTaxRate)
+                    commands.add(new Command("tax", "rate", GameUtils::taxRate));
+                else if (attribute instanceof Shop)
+                    commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
             }
         }
 
         commands.add(new Command("exit", "entity_menu", GameEntityUtils::exitEntityMenu));
         //TODO: combine the many exit/enter menu commands into one thing.
 
-        return new AppMenu(commands, scanner, MenuName.ENTITY_MENU);
+        return new GameEntityMenu(commands, MenuName.ENTITY_MENU);
     }
 }

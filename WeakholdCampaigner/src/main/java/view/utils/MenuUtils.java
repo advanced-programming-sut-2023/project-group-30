@@ -1,6 +1,7 @@
 package view.utils;
 
 import controller.MainController;
+import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.LoginMenuController;
 import controller.menu_controllers.ProfileMenuController;
 import controller.menu_controllers.SignupMenuController;
@@ -150,7 +151,7 @@ public class MenuUtils {
             return;
         }
         switch (LoginMenuController.userLogin(username, password, stayLoggedIn)) {
-            case NO_USER_WITH_USERNAME:
+            case USERNAME_DOES_NOT_EXIST:
                 System.out.println("Error: this username not exist");
                 break;
             case PASSWORD_INCORRECT:

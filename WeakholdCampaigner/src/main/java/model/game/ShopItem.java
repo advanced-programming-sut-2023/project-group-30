@@ -30,4 +30,9 @@ public class ShopItem {
     public int getResourceAmount() {
         return resourceAmount;
     }
+
+    public void setResourceAmount(int resourceAmount) {
+        this.resourceAmount = resourceAmount;
+    }
+
 }

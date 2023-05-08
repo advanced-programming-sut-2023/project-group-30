@@ -34,9 +34,6 @@ public class MainController {
         currentUser = null;
 
         Database.loadData();
-        //for test shop
-        GameMenuController.addGovernment(new Government(Database.getAllUsers().get(0)));
-        GameMenuController.addGovernment(new Government(Database.getAllUsers().get(1)));
     }
 
     public void run() {
@@ -52,8 +49,8 @@ public class MainController {
         currentMenu = menus.get(menuName);
     }
 
-    public static void setCurrentMenu(@NotNull GameEntity gameEntity) {
-        currentMenu = GameEntityMenu.getGameEntityMenu(gameEntity, scanner);
+    public static void setCurrentMenu(@NotNull final GameEntity gameEntity) {
+        currentMenu = GameEntityMenu.getGameEntityMenu(gameEntity);
     }
 
     public static AbstractMenu getCurrentMenu() {

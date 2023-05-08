@@ -18,6 +18,11 @@ public abstract class AbstractMenu {
         this.commands.addAll(commands);
     }
 
+    protected AbstractMenu(ArrayList<Command> commands, AppMenu.MenuName menuName) {
+        this.menuName = menuName;
+        this.commands.addAll(commands);
+    }
+
     public enum MenuName {
         LOGIN_MENU("Login Menu"),
         SIGNUP_MENU("Signup Menu"),

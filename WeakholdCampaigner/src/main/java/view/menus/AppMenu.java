@@ -38,6 +38,8 @@ public class AppMenu extends AbstractMenu {
             commands.add(new Command("fear", "rate", GameUtils::fearRate));
             commands.add(new Command("drop", "building", GameUtils::dropBuilding));
             commands.add(new Command("select", "building", GameUtils::selectBuilding));
+            commands.add(new Command("select", "unit", GameUtils::selectUnit));
+            commands.add(new Command("drop", "unit", GameUtils::dropUnit));
             commands.add(new Command("exit", "game_menu", MenuUtils::enterMainMenu));
             commands.add(new Command("enter", "trade_menu", GameUtils::enterTradMenu));
             commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
@@ -47,6 +49,7 @@ public class AppMenu extends AbstractMenu {
             commands.add((new Command("exit", "map_menu", GameUtils::exitFromMapMenu)));
         } else if (menuName == MenuName.MAIN_MENU) {
             commands.add(new Command("user", "logout", MenuUtils::userLogout));
+            commands.add(new Command("create", "game", GameUtils::createGame));
             commands.add(new Command("enter", "game", GameUtils::enterGame));
             commands.add(new Command("enter", "profile_menu", MenuUtils::enterProfileMenu));
         } else if (menuName == MenuName.TRAD_MENU) {
@@ -58,6 +61,8 @@ public class AppMenu extends AbstractMenu {
         } else if (menuName == MenuName.SHOP_MENU) {
             commands.add(new Command("exit", "shop_menu", GameUtils::exitShopMenu));
             commands.add(new Command("show", "price_list", GameUtils::showPriceList));
+            commands.add(new Command("buy", null, GameUtils::buyItem));
+            commands.add(new Command("sell", null, GameUtils::sellItem));
 
         }
 

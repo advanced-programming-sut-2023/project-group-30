@@ -3,7 +3,7 @@ package view.utils;
 import controller.MainController;
 import controller.menu_controllers.GameEntityController;
 import view.ParsedLine;
-import view.menus.AppMenu;
+import view.menus.AbstractMenu;
 
 import java.util.HashMap;
 
@@ -41,7 +41,23 @@ public class GameEntityUtils extends Utils {
             return;
         }
 
-        GameEntityController.moveUnitTo(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")));
+        switch (GameEntityController.moveUnitTo(
+                Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y"))
+        )) {
+            case INVALID_LOCATION:
+                AbstractMenu.show("Error: Location out of bounds.");
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                AbstractMenu.show("Error: The destination is unreachable due to its texture.");
+                break;
+            case IS_PATROLLING:
+                AbstractMenu.show("Error: The Unit is currently patrolling.");
+                AbstractMenu.show("You can use 'unit halt' to end its patrol.");
+                break;
+            case SUCCESS:
+                AbstractMenu.show("Unit moved successfully.");
+                break;
+        }
     }
 
     public static void patrolUnit(ParsedLine parsedLine) {
@@ -55,13 +71,30 @@ public class GameEntityUtils extends Utils {
             return;
         }
 
-        GameEntityController.patrolUnit(
+        switch (GameEntityController.patrolUnit(
                 Integer.parseInt(options.get("-x1")),
                 Integer.parseInt(options.get("-y1")),
                 Integer.parseInt(options.get("-x2")),
-                Integer.parseInt(options.get("-y2")));
+                Integer.parseInt(options.get("-y2")))
+        ) {
+            case INVALID_LOCATION:
+                AbstractMenu.show("Error: At least one location is out of bounds.");
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                AbstractMenu.show("Error: At least one destination is unreachable due to its texture.");
+                break;
+            case SUCCESS:
+                AbstractMenu.show("Success. Unit will start patrolling at the end of the turn.");
+                AbstractMenu.show("You can use 'unit halt' to stop the unit's movement.");
+                break;
+        }
     }
 
+    public static void halt(ParsedLine parsedLine) {
+        GameEntityController.halt();
+
+        AbstractMenu.show("Unit halted successfully.");
+    }
 
     public static void setStance(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(
@@ -151,7 +184,7 @@ public class GameEntityUtils extends Utils {
     }
 
     public static void exitEntityMenu(ParsedLine parsedLine) {
-        MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
+        MainController.setCurrentMenu(AbstractMenu.MenuName.GAME_MENU);
         System.out.println("Entered Game Menu.");
     }
 }
