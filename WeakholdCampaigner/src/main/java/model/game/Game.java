@@ -14,12 +14,19 @@ import java.util.LinkedHashMap;
 public class Game {
     private int currentTurn;
     private Map map;
+    private Integer mapID;
+
+    public Integer getMapID() {
+        return mapID;
+    }
+
     private ArrayList<Government> governments;
     private Government currentGovernment;
 
-    public Game(Map map, ArrayList<Government> governments) {
+    public Game(Map map, ArrayList<Government> governments, Integer mapID) {
         this.currentTurn = 0;
         this.map = map;
+        this.mapID = mapID;
         this.governments = governments;
         this.currentGovernment = governments.get(0);
     }

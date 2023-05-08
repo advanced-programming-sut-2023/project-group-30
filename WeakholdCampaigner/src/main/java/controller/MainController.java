@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 import view.menus.GameEntityMenu;
+import view.utils.GameUtils;
 
 import java.util.HashMap;
 import java.util.Scanner;

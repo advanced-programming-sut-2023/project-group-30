@@ -21,7 +21,7 @@ public class Database {
     private static ArrayList<PasswordRecoveryQNA> securityQuestions = new ArrayList<>();
     private static ArrayList<String> slogans = new ArrayList<>();
     private static HashMap<Integer, Game> games; //each game must have a unique id.
-    private static HashMap<Integer, Map> maps; //each map must have a unique id.
+    private static HashMap<Integer, Map> maps = new HashMap<>(); //each map must have a unique id.
 
     public static void saveAllUsers() {
         Gson gson = new Gson();
@@ -37,10 +37,10 @@ public class Database {
         Database.loadSlogan();
         Database.loadAllUsers();
         Database.loadStayLogin();
+        Database.loadMap();
 
-        //TODO: loadMaps, loadGames :
+        //TODO: loadGames :
         maps = new HashMap<>();
-        maps.put(1, new Map(200));
         games = new HashMap<>();
     }
 

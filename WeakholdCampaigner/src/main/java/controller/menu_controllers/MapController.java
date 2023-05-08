@@ -17,10 +17,17 @@ public class MapController {
         return MenuMessages.OK;
     }
     public static boolean InvalidCoordinate(int x, int y){
-        if(x < 0 || x > 200)
-            return false;
-        if(y < 0 || y > 200)
-            return false;
+        if(GameMenuController.getCurrentGame().getMapID() == 5){
+            if(y < 0 || y > 400)
+                return false;
+            if(x < 0 || x > 400)
+                return false;
+        }else {
+            if(y < 0 || y > 200)
+                return false;
+            if(x < 0 || x > 200)
+                return false;
+        }
         return true;
     }
 }

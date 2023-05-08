@@ -11,13 +11,23 @@ import java.util.HashMap;
 public class Building extends GameEntity {
     private Category category;
     private int maxHP, HP;
+    private BuildingName buildingName;
 
-    protected Building(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
+    protected Building(BuildingName buildingName,HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
                        Category category, int maxHP) {
         super(productionCost, attributes);
         this.category = category;
         this.maxHP = maxHP;
         this.HP = maxHP;
+        this.buildingName = buildingName;
+    }
+
+    public BuildingName getBuildingName() {
+        return buildingName;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     @Nullable
@@ -84,9 +94,18 @@ public class Building extends GameEntity {
                 attributes.add(new NeedWorker(1));
                 attributes.add(new Shop());
                 break;
+            case CHERRY_TREE:
+            case OLIVE_TREE:
+            case COCONUT_TREE:
+            case DATE_TREE:
+            case DESERT_SHRUB:
+                HP = 50;
+                category = Category.TREE;
+                break;
+
         }
 
-        return new Building(productionCost, attributes, category, HP);
+        return new Building(buildingName, productionCost, attributes, category, HP);
     }
 
     public enum Category {
@@ -96,6 +115,7 @@ public class Building extends GameEntity {
         TOWN,
         WEAPONS,
         FOOD_PROCESSING,
+        TREE,
         OTHER
     }
 }
