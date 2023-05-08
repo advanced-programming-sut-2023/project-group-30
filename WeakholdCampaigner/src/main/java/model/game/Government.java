@@ -11,19 +11,19 @@ import java.util.Map;
 
 public class Government {
     private int popularity = 0;
-    private int foodRate;
+    private int foodRate = -2;
     private int religionRate = 0;
-    private int population;
+    private int population = 2;
     private int numOfVillagers;
-    private int taxRate;
-    private int fearRate;
+    private int taxRate = 0;
+    private int fearRate = 0;
     //we want main castle but concept is unknown  //TODO
     private ArrayList<Trade> tradeList;
     private ArrayList<Trade> tradeHistory;
     private ArrayList<Trade> tradeNotification;
     private User owner;
     private HashMap<Resource, Double> resources = new HashMap<>();
-    private int foodVariety;
+    private int foodVariety = 0;
     private HashMap<Food, Double> foods = new HashMap<>();
     private int suitableBuildings = 0;
     private int unSuitableBuildings = 0;
@@ -43,9 +43,9 @@ public class Government {
     }
 
     private void installFoods() {
-        foods.put(Food.BREAD, (double) 0);
+        foods.put(Food.BREAD, (double) 10);
         foods.put(Food.APPLE, (double) 0);
-        foods.put(Food.MEAT, (double) 0);
+        foods.put(Food.MEAT, (double) 20);
         foods.put(Food.CHEESE, (double) 0);
     }
 
@@ -170,7 +170,11 @@ public class Government {
 
 
     public int getPopularityOfFood() {
-        return foodRate * 4 + (foodVariety - 1);
+        if (consumableFood() <= getFoodUnit()) {
+        if (foodVariety > 0)
+            return foodRate * 4 + (foodVariety - 1);
+        return foodRate * 4;}
+        return -8;
     }
 
     public Double consumableFood() {
@@ -178,11 +182,13 @@ public class Government {
     }
 
     public int getPopularityOfTax() {
+        if (getTax() <= getGold()){
         if (taxRate >= -3 && taxRate <= 0)
             return -1 * (taxRate * 2) + 1;
         else if (taxRate >= 1 && taxRate <= 4)
             return taxRate * 2;
-        return (taxRate - 2) * 4;
+        return (taxRate - 2) * 4;}
+        return 1;
     }
 
     public Double getTax() {
@@ -213,7 +219,7 @@ public class Government {
             sum += (-8);
         else sum += getPopularityOfFood();
         if (getTax() > getGold()) sum += 1;
-        else sum += getTaxRate();
+        else sum += getPopularityOfTax();
 
         return sum;
     }

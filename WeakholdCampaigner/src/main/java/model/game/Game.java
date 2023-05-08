@@ -12,7 +12,7 @@ public class Game {
     private ArrayList<Government> governments = new ArrayList<>();
     private  Government currentGovernment;
 
-    public Game(Map map, ArrayList<Government> governments, User currentPlayer) {
+    public Game(Map map, ArrayList<Government> governments, Government currentPlayer) {
         this.currentTurn = 0;
         this.map = map;
         //this.governments = //governments;
