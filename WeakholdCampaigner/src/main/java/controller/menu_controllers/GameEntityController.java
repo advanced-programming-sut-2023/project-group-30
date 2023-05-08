@@ -50,6 +50,11 @@ public class GameEntityController extends GameController {
         return MenuMessages.SUCCESS;
     }
 
+    public static void halt() {
+        currentUnit.setPatrolling(false);
+        currentUnit.clearDestinations();
+    }
+
     public static void setStance(String stance) {
 
     }

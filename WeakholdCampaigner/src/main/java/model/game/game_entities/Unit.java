@@ -55,6 +55,10 @@ public class Unit extends GameEntity {
         destinations.add(new int[] {x, y});
     }
 
+    public void clearDestinations() {
+        destinations.clear();
+    }
+
     public static boolean canGoTo(MapCell.Texture texture) {
         return !texture.equals(MapCell.Texture.DEEP_WATER) &&
                 !texture.equals(MapCell.Texture.STONE) &&

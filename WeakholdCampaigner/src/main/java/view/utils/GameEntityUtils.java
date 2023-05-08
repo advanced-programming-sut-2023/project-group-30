@@ -52,7 +52,7 @@ public class GameEntityUtils extends Utils {
                 break;
             case IS_PATROLLING:
                 AbstractMenu.show("Error: The Unit is currently patrolling.");
-                AbstractMenu.show("You can use ... to end its patrol."); //TODO
+                AbstractMenu.show("You can use 'unit halt' to end its patrol.");
                 break;
             case SUCCESS:
                 AbstractMenu.show("Unit moved successfully.");
@@ -85,10 +85,16 @@ public class GameEntityUtils extends Utils {
                 break;
             case SUCCESS:
                 AbstractMenu.show("Success. Unit will start patrolling at the end of the turn.");
+                AbstractMenu.show("You can use 'unit halt' to stop the unit's movement.");
                 break;
         }
     }
 
+    public static void halt(ParsedLine parsedLine) {
+        GameEntityController.halt();
+
+        AbstractMenu.show("Unit halted successfully.");
+    }
 
     public static void setStance(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(

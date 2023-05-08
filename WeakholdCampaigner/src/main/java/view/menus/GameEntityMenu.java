@@ -24,6 +24,7 @@ public class GameEntityMenu extends AbstractMenu {
         if (gameEntity instanceof Unit) {
             commands.add(new Command("unit", "move_to", GameEntityUtils::moveUnit));
             commands.add(new Command("unit", "patrol", GameEntityUtils::patrolUnit));
+            commands.add(new Command("unit", "halt", GameEntityUtils::halt));
             commands.add(new Command("set", "stance", GameEntityUtils::setStance));
             commands.add(new Command("unit", "disband", GameEntityUtils::disbandUnit));
 
