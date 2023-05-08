@@ -21,7 +21,7 @@ public enum BuildingName {
     OLIVE_TREE("olive tree"),
     CHERRY_TREE("cherry tree"),
     COCONUT_TREE("coconut tree"),
-    DATE_TREE("date_tree"),
+    DATE_TREE("date tree"),
     ROCK("rock"),
 
     ;
