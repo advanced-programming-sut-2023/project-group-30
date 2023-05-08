@@ -10,14 +10,16 @@ import java.util.HashMap;
 
 public class Building extends GameEntity {
     private Category category;
+    private BuildingName buildingName;
     private int maxHP, HP;
 
-    protected Building(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
+    protected Building(BuildingName buildingName, HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
                        Category category, int maxHP) {
         super(productionCost, attributes);
         this.category = category;
         this.maxHP = maxHP;
         this.HP = maxHP;
+        this.buildingName = buildingName;
     }
 
     @Nullable
@@ -122,7 +124,11 @@ public class Building extends GameEntity {
 
         }
 
-        return new Building(productionCost, attributes, category, HP);
+        return new Building(buildingName ,productionCost, attributes, category, HP);
+    }
+
+    public BuildingName getBuildingName() {
+        return buildingName;
     }
 
     public enum Category {
