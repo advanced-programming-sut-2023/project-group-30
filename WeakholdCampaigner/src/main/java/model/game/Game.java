@@ -59,4 +59,36 @@ public class Game {
     public Government getCurrentGovernment() {
         return currentGovernment;
     }
+
+    public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) {
+        if ((fromX == toX && fromY == toY) || numOfSteps == 0)
+            return new int[] {fromX, fromX};
+
+
+        if (toX > fromX) if (Unit.canGoTo(
+                map.getCell(fromX + 1, fromY).getTexture()
+        )) {
+            int[] temp = move(fromX + 1, fromY, toX, toY, numOfSteps - 1);
+            if (temp[0] != fromX || temp[1] != fromY) return temp;
+        }
+
+        if (toX < fromX) if (Unit.canGoTo(
+                map.getCell(fromX - 1, fromY).getTexture()
+        )) {
+            int[] temp = move(fromX - 1, fromY, toX, toY, numOfSteps - 1);
+            if (temp[0] != fromX || temp[1] != fromY) return temp;
+        }
+
+        if (toY > fromY) if (Unit.canGoTo(
+                map.getCell(fromX, fromY + 1).getTexture()
+        ))
+            return move(fromX, fromY + 1, toX, toY, numOfSteps - 1);
+
+        if (toY < fromY) if (Unit.canGoTo(
+                map.getCell(fromX, fromY - 1).getTexture()
+        ))
+            return move(fromX, fromY - 1, toX, toY, numOfSteps - 1);
+
+        return new int[] {fromX, fromY};
+    }
 }

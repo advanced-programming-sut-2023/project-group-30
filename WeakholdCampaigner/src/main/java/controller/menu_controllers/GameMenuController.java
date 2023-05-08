@@ -16,9 +16,7 @@ import view.menus.AbstractMenu;
 
 import java.util.ArrayList;
 
-public class GameMenuController {
-    private static Game currentGame;
-
+public class GameMenuController extends GameController {
     public static MenuMessages createGame(int mapId, ArrayList<String> usernames){
         if (Database.getMapById(mapId) == null) return MenuMessages.MAP_DOES_NOT_EXIST;
 
@@ -156,6 +154,7 @@ public class GameMenuController {
             if (unit.unitName.name.equals(type))
                 if (unit.getGovernmentColor().equals(currentGame.getCurrentGovernment().getColor())) {
                     MainController.setCurrentMenu(unit);
+                    GameEntityController.setCurrentUnit(unit);
                     return MenuMessages.SUCCESS;
                 }
 
@@ -166,7 +165,7 @@ public class GameMenuController {
         if (!checkLocation(x, y))
             return MenuMessages.INVALID_LOCATION;
 
-        Unit unit = Unit.getInstance(type);
+        Unit unit = Unit.getInstance(type, x, y);
         if (unit == null) return MenuMessages.INVALID_TYPE;
 
         MapCell.Texture texture = currentGame.getTexture(x, y);
@@ -178,10 +177,5 @@ public class GameMenuController {
 
         currentGame.dropUnit(unit, x, y);
         return MenuMessages.SUCCESS;
-    }
-
-    private static boolean checkLocation(int x, int y) {
-        //x and y must be indexed from 0.
-        return currentGame.getMapX() > x && 0 <= x && currentGame.getMapY() > y && 0 <= y;
     }
 }
