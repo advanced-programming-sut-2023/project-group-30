@@ -14,6 +14,9 @@ public class MapController {
     }
 
     public static MenuMessages showDetails(int x, int y) {
+        if(InvalidCoordinate(x, y)){
+            return MenuMessages.INVALID_LOCATION;
+        }
         return MenuMessages.OK;
     }
     public static boolean InvalidCoordinate(int x, int y){

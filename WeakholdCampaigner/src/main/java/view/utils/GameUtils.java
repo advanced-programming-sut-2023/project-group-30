@@ -8,6 +8,7 @@ import controller.menu_controllers.TradeMenuController;
 import model.Database;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
+import model.game.game_entities.UnitName;
 import model.game.map.MapCell;
 import view.menus.AppMenu; //TODO: it is better to put AbstractMenu instead ?
 import view.ParsedLine;
@@ -491,6 +492,18 @@ public class GameUtils extends Utils {
             int x = Integer.parseInt(X), y = Integer.parseInt(Y);
             switch (MapController.showDetails(x, y)) {
                 case OK:
+                    System.out.println("Texture : " + GameMenuController.getCurrentGame().getTexture(x, y));
+                    if(GameMenuController.getCurrentGame().getUnits(x, y).size() != 0) {
+                        System.out.println("Unit types are :");
+                        for (Unit unit : GameMenuController.getCurrentGame().getUnits(x, y)) {
+                            System.out.println(unit.getUnitName());
+                        }
+                    }
+                    System.out.println("Number of units : "+ GameMenuController.getCurrentGame().getUnits(x ,y).size());
+                    if(GameMenuController.getCurrentGame().getBuilding(x, y) != null){
+                        System.out.println("Building is : "
+                                + GameMenuController.getCurrentGame().getBuilding(x, y).getBuildingName());
+                    }
                     break;
                 case INVALID_LOCATION:
                     System.out.println("Error: please enter valid location");
