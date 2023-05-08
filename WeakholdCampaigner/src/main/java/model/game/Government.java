@@ -286,6 +286,9 @@ public class Government {
         popularity += getPopularity();
         if ((getTax() * (-1)) <= getGold()) addGold(getTax());
     }
+    public void addPopularity(int amount) {
+        popularity += amount;
+    }
 
 
 

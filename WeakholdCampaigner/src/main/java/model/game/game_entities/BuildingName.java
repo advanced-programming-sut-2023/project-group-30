@@ -13,6 +13,9 @@ public enum BuildingName {
     SQUARE_TOWER("square tower"),
     ROUND_TOWER("round tower"),
     SHOP("shop"),
+    BARRACKS("Barracks"),
+    KILLING_PIT("Killing pit"),
+    MOTEL("motel"),
 
     ;
     private final String name;

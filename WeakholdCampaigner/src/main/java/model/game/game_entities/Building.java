@@ -40,17 +40,20 @@ public class Building extends GameEntity {
             case SMALL_GATEHOUSE:
                 HP = 100;
                 category = Category.CASTLE;
+                attributes.add(new ChangeTaxRate());
                 attributes.add(new HousePeasant(8));
                 break;
             case BIG_GATEHOUSE:
                 HP = 100;
                 productionCost.put(Resource.STONE, 20);
                 category = Category.CASTLE;
+                attributes.add(new ChangeTaxRate());
                 attributes.add(new HousePeasant(10));
                 break;
             case DRAWBRIDGE:
                 HP = 100;
                 productionCost.put(Resource.WOOD, 10);
+                attributes.add(new BridgeMobility(true));
                 category = Category.CASTLE;
                 break;
             case LOOKOUT_TOWER: case PERIMETER_TOWER:
@@ -84,6 +87,21 @@ public class Building extends GameEntity {
                 attributes.add(new NeedWorker(1));
                 attributes.add(new Shop());
                 break;
+            case KILLING_PIT:
+                HP = 100;
+                category = Category.CASTLE;
+                productionCost.put(Resource.WOOD, 6);
+                attributes.add(new Trap());
+                break;
+            case MOTEL:
+                HP = 100;
+                category = Category.FOOD_PROCESSING;
+                productionCost.put(Resource.WOOD, 20);
+                productionCost.put(Resource.GOLD, 100);
+                attributes.add(new NeedWorker(1));
+
+
+
         }
 
         return new Building(productionCost, attributes, category, HP);
