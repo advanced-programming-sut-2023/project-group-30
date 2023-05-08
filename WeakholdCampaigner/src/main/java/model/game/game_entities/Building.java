@@ -2,6 +2,7 @@ package model.game.game_entities;
 
 import model.attributes.Attribute;
 import model.attributes.building_attributes.*;
+import model.attributes.building_attributes.Process;
 import model.enums.Resource;
 import org.jetbrains.annotations.Nullable;
 
@@ -109,7 +110,7 @@ public class Building extends GameEntity {
                 category = Category.FOOD_PROCESSING;
                 productionCost.put(Resource.WOOD, 20);
                 attributes.add(new NeedWorker(3));
-                attributes.add(new Harvesting(Resource.WHEAT, Resource.FLOUR));
+                attributes.add(new Process(Resource.WHEAT, Resource.FLOUR));
                 break;
             case DESERT_SHRUB:
             case CHERRY_TREE:

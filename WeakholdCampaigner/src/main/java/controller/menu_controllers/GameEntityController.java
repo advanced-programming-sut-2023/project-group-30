@@ -1,13 +1,24 @@
 package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
+import model.attributes.Attribute;
+import model.attributes.building_attributes.Process;
+import model.enums.Resource;
+import model.game.Game;
+import model.game.Government;
+import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 
 public class GameEntityController extends GameController {
     private static Unit currentUnit; //is set whenever user selects a Unit
+    private static Building currentBuilding;
 
     public static void setCurrentUnit(Unit unit) {
         currentUnit = unit;
+    }
+
+    public static void setCurrentBuilding(Building building) {
+        currentBuilding = building;
     }
 
     public static void createUnit(String type, int count) {
@@ -81,5 +92,37 @@ public class GameEntityController extends GameController {
 
     public static void disbandUnit() {
 
+    }
+
+    public static MenuMessages serveDrink(int amount) {
+        Game game = GameMenuController.getCurrentGame();
+        Government government = game.getCurrentGovernment();
+        Double wine = government.getResources().get(Resource.WINE);
+        if (wine < amount) return MenuMessages.NOT_ENOUGH_RESOURCES;
+        government.addResources(Resource.WINE, -amount);
+        government.addPopularity(amount);
+        return MenuMessages.OK;
+    }
+
+    public static MenuMessages process(int amount) {
+        Process process = getProcess();
+        Game game = GameMenuController.getCurrentGame();
+        Government government = game.getCurrentGovernment();
+        if (government.getResources().get(process.getPrimarySubstance()) < amount)
+            return MenuMessages.NOT_ENOUGH_RESOURCES;
+        government.addResources(process.getPrimarySubstance(), -amount);
+        government.addResources(process.getFinallySubstance(), amount);
+        return MenuMessages.OK;
+
+
+    }
+
+    public static Process getProcess() {
+        for (Attribute i : currentBuilding.getAttributes()) {
+            if (i instanceof Process) {
+                return (Process) i;
+            }
+        }
+        return null;
     }
 }

@@ -5,7 +5,7 @@ import controller.messages.MenuMessages;
 import model.Database;
 import model.attributes.Attribute;
 import model.attributes.building_attributes.NeedsSpecialPlacement;
-import model.enums.Food;
+import model.enums.Resource;
 import model.game.Game;
 import model.game.Government;
 import model.User;
@@ -65,10 +65,11 @@ public class GameMenuController extends GameController {
 
     public static void showPopularityFactor() {
         Government government = currentGame.getCurrentGovernment();
-        AppMenu.show("food :  " + government.getPopularityOfFood());
-        AppMenu.show("tax :  " + government.getPopularityOfTax());
-        AppMenu.show("religion :  " + government.getReligionRate());
-        AppMenu.show("fear :  " + government.getPopularityOfFear());
+        AppMenu.show("food :  " + government.getFoodPopularity());
+        AppMenu.show("tax :  " + government.getTaxPopularity());
+        AppMenu.show("religion :  " + government.getReligionPopularity());
+        AppMenu.show("fear :  " + government.getFearPopularity());
+        AppMenu.show("other : " + government.getOtherPopularity());
     }
 
     public static int showPopularity() {
@@ -76,7 +77,7 @@ public class GameMenuController extends GameController {
     }
 
     public static void showFoodList() {
-        for (Map.Entry<Food, Double> entry :
+        for (Map.Entry<Resource, Double> entry :
                 currentGame.getCurrentGovernment().getFoods().entrySet())
             AppMenu.show(entry.getKey() + " : " + entry.getValue());
     }
@@ -161,6 +162,7 @@ public class GameMenuController extends GameController {
             return MenuMessages.NOT_THE_OWNER;
 
         MainController.setCurrentMenu(building);
+        GameEntityController.setCurrentBuilding(building);
         return MenuMessages.SUCCESS;
     }
 

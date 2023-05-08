@@ -188,14 +188,38 @@ public class GameEntityUtils extends Utils {
         System.out.println("Entered Game Menu.");
     }
 
-    public static void grind(ParsedLine parsedLine) {
+
+    public static void serveDrink(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(
                 parsedLine.options, new String[]{"-a"}, new String[]{}, new String[]{"-a"});
 
         if (options == null) {
-            invalidFormatError("grind -a <amount>");
+            invalidFormatError("serve drink -a <amount>");
             return;
         }
+        switch (GameEntityController.serveDrink(Integer.parseInt(options.get("-a")))) {
+            case NOT_ENOUGH_RESOURCES:
+                System.out.println("you don't have enough wine");
+                break;
+            case OK:
+                break;
+        }
+    }
 
+    public static void process(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-a"}, new String[]{}, new String[]{"-a"});
+
+        if (options == null) {
+            invalidFormatError("process -a <amount>");
+            return;
+        }
+        switch (GameEntityController.process(Integer.parseInt(options.get("-a")))) {
+            case NOT_ENOUGH_RESOURCES:
+                System.out.println("you don't have this amount");
+                break;
+            case OK:
+                break;
+        }
     }
 }

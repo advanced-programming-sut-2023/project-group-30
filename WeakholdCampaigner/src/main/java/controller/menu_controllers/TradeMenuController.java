@@ -73,19 +73,16 @@ public class TradeMenuController {
         if (trade.getResourceAmount() > government.getResources().get(trade.getResourceType()))
             return MenuMessages.INVALID_AMOUNT;
 
-        government.getResources().put(trade.getResourceType(), government.getResources().get(trade.getResourceType()) -
-                trade.getResourceAmount());
+        government.addResources(trade.getResourceType(), -trade.getResourceAmount());
 
         removeFromTradList(trade.getId());
 
         government.addToTradeHistory(new Trade(trade.getApplicant(), trade.getResourceAmount(),
                 trade.getResourceType(), trade.getPrice(), message));
 
-        applicantGovernment.getResources().put(Resource.GOLD_COIN,
-                applicantGovernment.getResources().get(Resource.GOLD_COIN) - trade.getPrice());
+        applicantGovernment.addGold(-trade.getPrice());
+        government.addGold(trade.getPrice());
 
-        government.getResources().put(Resource.GOLD_COIN,
-                government.getResources().get(Resource.GOLD_COIN) + trade.getPrice());
 
 
         return MenuMessages.OK;

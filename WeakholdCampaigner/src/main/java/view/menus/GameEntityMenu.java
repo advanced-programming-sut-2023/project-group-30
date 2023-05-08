@@ -2,6 +2,7 @@ package view.menus;
 
 import model.attributes.Attribute;
 import model.attributes.building_attributes.*;
+import model.attributes.building_attributes.Process;
 import model.attributes.unit_attributes.*;
 import model.game.game_entities.Building;
 import model.game.game_entities.GameEntity;
@@ -11,7 +12,6 @@ import view.utils.GameEntityUtils;
 import view.utils.GameUtils;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class GameEntityMenu extends AbstractMenu {
     private GameEntityMenu(ArrayList<Command> commands, MenuName menuName) {
@@ -53,8 +53,10 @@ public class GameEntityMenu extends AbstractMenu {
                     commands.add(new Command("tax", "rate", GameUtils::taxRate));
                 else if (attribute instanceof Shop)
                     commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
-                else if (attribute instanceof Harvesting)
-                    commands.add(new Command("grind", null, GameEntityUtils::grind));
+                else if (attribute instanceof DrinkServing)
+                    commands.add(new Command("serve","drink",GameEntityUtils::serveDrink));
+                else if (attribute instanceof Process)
+                    commands.add(new Command("process", null, GameEntityUtils::process));
             }
         }
 
