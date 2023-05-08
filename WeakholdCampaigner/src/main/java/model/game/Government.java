@@ -154,8 +154,8 @@ public class Government {
         return resources;
     }
 
-    public void setResources(HashMap<Resource, Double> resources) {
-        this.resources = resources;
+    public void addResources(Resource resource, double amount) {
+        resources.put(resource, resources.get(resource) + amount);
     }
 
     public Double getGold() {

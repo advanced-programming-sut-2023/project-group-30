@@ -56,7 +56,8 @@ public class Building extends GameEntity {
                 attributes.add(new BridgeMobility(true));
                 category = Category.CASTLE;
                 break;
-            case LOOKOUT_TOWER: case PERIMETER_TOWER:
+            case LOOKOUT_TOWER:
+            case PERIMETER_TOWER:
                 HP = 100;
                 productionCost.put(Resource.STONE, 10);
                 category = Category.CASTLE;
@@ -99,6 +100,23 @@ public class Building extends GameEntity {
                 productionCost.put(Resource.WOOD, 20);
                 productionCost.put(Resource.GOLD, 100);
                 attributes.add(new NeedWorker(1));
+                attributes.add(new DrinkServing());
+                break;
+            case MILL:
+                HP = 100;
+                category = Category.FOOD_PROCESSING;
+                productionCost.put(Resource.WOOD, 20);
+                attributes.add(new NeedWorker(3));
+                attributes.add(new Harvesting(Resource.WHEAT, Resource.FLOUR));
+                break;
+            case DESERT_SHRUB:
+            case CHERRY_TREE:
+            case DATE_TREE:
+            case COCONUT_TREE:
+            case OLIVE_TREE:
+            case ROCK:
+                category = Category.OTHER;
+                break;
 
 
 

@@ -16,6 +16,13 @@ public enum BuildingName {
     BARRACKS("Barracks"),
     KILLING_PIT("Killing pit"),
     MOTEL("motel"),
+    MILL("mill"),
+    DESERT_SHRUB("desert shrub"),
+    OLIVE_TREE("olive tree"),
+    CHERRY_TREE("cherry tree"),
+    COCONUT_TREE("coconut tree"),
+    DATE_TREE("date_tree"),
+    ROCK("rock"),
 
     ;
     private final String name;

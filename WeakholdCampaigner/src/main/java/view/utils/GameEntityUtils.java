@@ -187,4 +187,15 @@ public class GameEntityUtils extends Utils {
         MainController.setCurrentMenu(AbstractMenu.MenuName.GAME_MENU);
         System.out.println("Entered Game Menu.");
     }
+
+    public static void grind(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-a"}, new String[]{}, new String[]{"-a"});
+
+        if (options == null) {
+            invalidFormatError("grind -a <amount>");
+            return;
+        }
+
+    }
 }

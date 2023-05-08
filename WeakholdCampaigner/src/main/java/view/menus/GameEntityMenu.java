@@ -53,6 +53,8 @@ public class GameEntityMenu extends AbstractMenu {
                     commands.add(new Command("tax", "rate", GameUtils::taxRate));
                 else if (attribute instanceof Shop)
                     commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
+                else if (attribute instanceof Harvesting)
+                    commands.add(new Command("grind", null, GameEntityUtils::grind));
             }
         }
 
