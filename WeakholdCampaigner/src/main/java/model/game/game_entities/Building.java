@@ -1,9 +1,7 @@
 package model.game.game_entities;
 
 import model.attributes.Attribute;
-import model.attributes.building_attributes.ChangeTaxRate;
-import model.attributes.building_attributes.HousePeasant;
-import model.attributes.building_attributes.Tower;
+import model.attributes.building_attributes.*;
 import model.enums.Resource;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,11 +70,20 @@ public class Building extends GameEntity {
                 productionCost.put(Resource.STONE, 35);
                 category = Category.CASTLE;
                 attributes.add(new Tower(5, 5));
+                break;
             case ROUND_TOWER:
                 HP = 150;
                 productionCost.put(Resource.STONE, 40);
                 category = Category.CASTLE;
                 attributes.add(new Tower(5, 5));
+                break;
+            case SHOP:
+                HP = 100;
+                productionCost.put(Resource.WOOD, 5);
+                category = Category.INDUSTRY;
+                attributes.add(new NeedWorker(1));
+                attributes.add(new Shop());
+                break;
         }
 
         return new Building(productionCost, attributes, category, HP);

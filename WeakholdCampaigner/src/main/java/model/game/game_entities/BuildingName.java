@@ -12,6 +12,7 @@ public enum BuildingName {
     DEFENCE_TURRET("defence turret"),
     SQUARE_TOWER("square tower"),
     ROUND_TOWER("round tower"),
+    SHOP("shop"),
 
     ;
     private final String name;
