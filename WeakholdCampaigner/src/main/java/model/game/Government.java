@@ -163,10 +163,10 @@ public class Government {
     }
 
     public void addResources(Resource resource, double amount) {
-        resources.put(resource, resources.get(resource) + amount);
         if(resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
                 || resource == Resource.CHEESE)
             foods.put(resource, amount + foods.get(resource));
+        else resources.put(resource, resources.get(resource) + amount);
     }
 
     public Double getGold() {

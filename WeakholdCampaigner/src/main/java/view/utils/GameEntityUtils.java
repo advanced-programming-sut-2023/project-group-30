@@ -223,22 +223,5 @@ public class GameEntityUtils extends Utils {
         }
     }
 
-    public static void harvest(ParsedLine parsedLine) {
-        HashMap<String, String> options = formatOptions(
-                parsedLine.options, new String[]{"-a"}, new String[]{}, new String[]{"-a"});
 
-        if (options == null) {
-            invalidFormatError("harvest -a <amount>");
-            return;
-        }
-        switch (GameEntityController.harvest(Integer.parseInt(options.get("-a")))) {
-            case INVALID_AMOUNT:
-                System.out.println("you cant harvest this amount");
-                break;
-            case OK:
-                break;
-
-        }
-
-    }
 }

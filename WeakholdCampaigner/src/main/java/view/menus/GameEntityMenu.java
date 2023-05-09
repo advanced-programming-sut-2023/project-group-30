@@ -57,8 +57,7 @@ public class GameEntityMenu extends AbstractMenu {
                     commands.add(new Command("serve","drink",GameEntityUtils::serveDrink));
                 else if (attribute instanceof Process)
                     commands.add(new Command("process", null, GameEntityUtils::process));
-                else if (attribute instanceof Harvesting)
-                    commands.add(new Command("harvest", null, GameEntityUtils::harvest));
+
             }
         }
 

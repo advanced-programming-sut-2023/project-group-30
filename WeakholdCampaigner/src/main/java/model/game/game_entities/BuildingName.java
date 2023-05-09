@@ -24,6 +24,15 @@ public enum BuildingName {
     DATE_TREE("date tree"),
     ROCK("rock"),
     IRON_MINE("iron mine"),
+    STONE_MINE("stone mine"),
+    CHURCH("church"),
+    APPLE_GARDEN("apple garden"),
+    DIARY_FARMER("Diary farmer"),
+    WHEAT_FIELD("wheat field"),
+    BAKERY("bakery"),
+    GRAIN_FIELD("grain field"),
+    BREWING("brewing"),
+
 
     ;
     private final String name;

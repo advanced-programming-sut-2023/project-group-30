@@ -122,18 +122,77 @@ public class Building extends GameEntity {
                 category = Category.OTHER;
                 break;
             case IRON_MINE:
+                HP = 100;
                 category = Category.INDUSTRY;
                 productionCost.put(Resource.WOOD, 20);
                 attributes.add(new NeedWorker(2));
                 attributes.add(new NeedsSpecialPlacement(MapCell.Texture.IRON));
-                attributes.add(new Harvesting(Resource.IRON));
+                attributes.add(new Harvesting(Resource.IRON, 1));
                 break;
+            case STONE_MINE:
+                HP = 100;
+                category = Category.INDUSTRY;
+                productionCost.put(Resource.WOOD, 20);
+                attributes.add(new NeedWorker(3));
+                attributes.add(new Harvesting(Resource.STONE, 1));
+                break;
+            case CHURCH:
+                HP = 100;
+                category = Category.TOWN;
+                productionCost.put(Resource.GOLD_COIN, 250);
+                attributes.add(new IncreasePopularity(2));
+                break;
+            case APPLE_GARDEN:
+                HP = 100;
+                category = Category.FOOD_PROCESSING;
+                productionCost.put(Resource.WOOD, 5);
+                attributes.add(new Harvesting(Resource.APPLE, 1));
+                attributes.add(new NeedWorker(1));
+                break;
+            case DIARY_FARMER:
+                HP = 100;
+                category = Category.FOOD_PROCESSING;
+                productionCost.put(Resource.WOOD, 10);
+                attributes.add(new NeedWorker(1));
+                attributes.add(new Harvesting(Resource.CHEESE, 0.5));
+                break;
+            case WHEAT_FIELD:
+                HP = 100;
+                category = Category.FARM;
+                productionCost.put(Resource.WOOD, 15);
+                attributes.add(new NeedWorker(1));
+                attributes.add(new Harvesting(Resource.WHEAT, 1));
+                break;
+            case BAKERY:
+                HP = 100;
+                category = Category.FOOD_PROCESSING;
+                productionCost.put(Resource.WOOD, 10);
+                attributes.add(new NeedWorker(1));
+                attributes.add(new Process(Resource.FLOUR, Resource.BREAD));
+                break;
+            case GRAIN_FIELD:
+                HP = 100;
+                category = Category.FARM;
+                productionCost.put(Resource.WOOD, 15);
+                attributes.add(new NeedWorker(1));
+                attributes.add(new Harvesting(Resource.GRAIN, 1));
+                break;
+            case BREWING:
+                HP = 100;
+                category = Category.FOOD_PROCESSING;
+                productionCost.put(Resource.WOOD, 10);
+                attributes.add(new NeedWorker(1));
+                attributes.add(new Process(Resource.GRAIN, Resource.WINE));
+                break;
+
+
+
 
 
 
         }
 
-        return new Building(buildingName ,productionCost, attributes, category, HP);
+        return new Building(buildingName, productionCost, attributes, category, HP);
     }
 
     public BuildingName getBuildingName() {

@@ -127,22 +127,4 @@ public class GameEntityController extends GameController {
         return null;
     }
 
-    public static MenuMessages harvest(int amount) {
-        //TODO : check capacity
-        Harvesting harvesting = getHarvesting();
-        Game game = GameMenuController.getCurrentGame();
-        Government government = game.getCurrentGovernment();
-        if (amount > 30)
-            return MenuMessages.INVALID_AMOUNT;
-        government.addResources(harvesting.getHarvestedResource(), amount);
-        return MenuMessages.OK;
-    }
-    public static Harvesting getHarvesting() {
-        for (Attribute i : currentBuilding.getAttributes()) {
-            if (i instanceof Harvesting) {
-                return (Harvesting) i;
-            }
-        }
-        return null;
-    }
 }
