@@ -4,6 +4,7 @@ import model.attributes.Attribute;
 import model.attributes.building_attributes.*;
 import model.attributes.building_attributes.Process;
 import model.enums.Resource;
+import model.game.map.MapCell;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -119,6 +120,13 @@ public class Building extends GameEntity {
             case OLIVE_TREE:
             case ROCK:
                 category = Category.OTHER;
+                break;
+            case IRON_MINE:
+                category = Category.INDUSTRY;
+                productionCost.put(Resource.WOOD, 20);
+                attributes.add(new NeedWorker(2));
+                attributes.add(new NeedsSpecialPlacement(MapCell.Texture.IRON));
+                attributes.add(new Harvesting(Resource.IRON));
                 break;
 
 

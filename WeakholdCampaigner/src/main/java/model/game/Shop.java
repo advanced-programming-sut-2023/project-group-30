@@ -17,6 +17,9 @@ public class Shop {
         shopItems.add(new ShopItem(Resource.WHEAT, 13, 6, 30));
         shopItems.add(new ShopItem(Resource.WINE, 20, 7, 30));
         shopItems.add(new ShopItem(Resource.WOOD, 12, 5, 30));
+        shopItems.add(new ShopItem(Resource.MEAT, 12, 5, 30));
+        shopItems.add(new ShopItem(Resource.CHEESE, 12, 5, 30));
+        shopItems.add(new ShopItem(Resource.APPLE, 12, 5, 30));
     }
 
     public static ShopItem getShopItemByName(Resource resource) {

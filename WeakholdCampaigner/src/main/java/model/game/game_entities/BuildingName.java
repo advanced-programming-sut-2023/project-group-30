@@ -23,6 +23,7 @@ public enum BuildingName {
     COCONUT_TREE("coconut tree"),
     DATE_TREE("date tree"),
     ROCK("rock"),
+    IRON_MINE("iron mine"),
 
     ;
     private final String name;

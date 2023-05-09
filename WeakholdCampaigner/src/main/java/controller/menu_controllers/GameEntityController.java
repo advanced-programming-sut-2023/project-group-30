@@ -2,6 +2,7 @@ package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
 import model.attributes.Attribute;
+import model.attributes.building_attributes.Harvesting;
 import model.attributes.building_attributes.Process;
 import model.enums.Resource;
 import model.game.Game;
@@ -121,6 +122,25 @@ public class GameEntityController extends GameController {
         for (Attribute i : currentBuilding.getAttributes()) {
             if (i instanceof Process) {
                 return (Process) i;
+            }
+        }
+        return null;
+    }
+
+    public static MenuMessages harvest(int amount) {
+        //TODO : check capacity
+        Harvesting harvesting = getHarvesting();
+        Game game = GameMenuController.getCurrentGame();
+        Government government = game.getCurrentGovernment();
+        if (amount > 30)
+            return MenuMessages.INVALID_AMOUNT;
+        government.addResources(harvesting.getHarvestedResource(), amount);
+        return MenuMessages.OK;
+    }
+    public static Harvesting getHarvesting() {
+        for (Attribute i : currentBuilding.getAttributes()) {
+            if (i instanceof Harvesting) {
+                return (Harvesting) i;
             }
         }
         return null;
