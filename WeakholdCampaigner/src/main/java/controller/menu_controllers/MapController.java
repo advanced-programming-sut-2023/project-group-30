@@ -2,7 +2,11 @@ package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
 import model.Database;
+import model.game.game_entities.Building;
 import model.game.map.MapCell;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MapController {
     public static MenuMessages showMap(int x, int y) {
@@ -133,5 +137,36 @@ public class MapController {
         GameMenuController.getCurrentGame().getMap().getCell(x, y).setBuilding(null);
         GameMenuController.getCurrentGame().getMap().getCell(x, y).setUnits(null);
         return MenuMessages.OK;
+    }
+    public static MenuMessages dropRock(int x, int y, String direction){
+        if (secondInvalidCoordinate(x, y)) {
+            return MenuMessages.INVALID_LOCATION;
+        }
+        if(!isDirectionTrue(direction)){
+            return MenuMessages.INVALID_DIRECTION;
+        }
+        if(direction.equals("r")){
+            ArrayList<String> directionslist = new ArrayList<>();
+            directionslist.add("n");
+            directionslist.add("e");
+            directionslist.add("w");
+            directionslist.add("s");
+            Random random = new Random();
+            String d = directionslist.get(random.nextInt(4));
+            GameMenuController.getCurrentGame().getBuilding(x, y).setDirection(d);
+        }else {
+            GameMenuController.getCurrentGame().getBuilding(x, y).setDirection(direction);
+        }
+        Building building = Building.getInstance("rock");
+        GameMenuController.getCurrentGame().dropBuilding(building, x, y);
+        return MenuMessages.OK;
+    }
+    public static boolean isDirectionTrue(String direction){
+        String []directions = new String[]{"n", "e", "w", "s", "r"};
+        for (String d : directions){
+            if(direction.equals(d))
+                return true;
+        }
+        return false;
     }
 }

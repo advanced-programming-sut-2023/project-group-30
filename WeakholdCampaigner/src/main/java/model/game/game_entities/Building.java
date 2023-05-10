@@ -12,8 +12,13 @@ public class Building extends GameEntity {
     private Category category;
     private int maxHP, HP;
     private BuildingName buildingName;
+    private String direction = null;
 
-    protected Building(BuildingName buildingName,HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+    protected Building(BuildingName buildingName, HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
                        Category category, int maxHP) {
         super(productionCost, attributes);
         this.category = category;
@@ -101,7 +106,9 @@ public class Building extends GameEntity {
             case DESERT_SHRUB:
                 category = Category.TREE;
                 break;
-
+            case ROCK:
+                category = Category.OTHER;
+                break;
         }
 
         return new Building(buildingName, productionCost, attributes, category, HP);

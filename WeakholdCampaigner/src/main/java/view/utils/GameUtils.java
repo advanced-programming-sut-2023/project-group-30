@@ -959,4 +959,26 @@ public class GameUtils extends Utils {
                 break;
         }
     }
+    public static void dropRock(ParsedLine parsedLine){
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "-d"}
+                , new String[]{}, new String[]{"-x", "-y"});
+        if (options == null) {
+            invalidFormatError("drop rock -x [x] -y [y] -d <direction of the rock>");
+        }
+        switch (MapController.dropRock(Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")), options.get("-d"))){
+            case INVALID_LOCATION:
+                System.out.println("Wrong location");
+                break;
+            case OK:
+                System.out.println("Done!");
+                break;
+            case INVALID_DIRECTION:
+                System.out.println("Your direction should be between these character : r <random> , n, e, w, s");
+                break;
+        }
+    }
+    public static void dropTree(ParsedLine parsedLine){
+
+    }
 }

@@ -54,4 +54,5 @@ public enum MenuMessages {
     NO_MATCHING_UNIT,
     IS_PATROLLING,
     BUILDING_EXISTENCE,
+    INVALID_DIRECTION,
 }
