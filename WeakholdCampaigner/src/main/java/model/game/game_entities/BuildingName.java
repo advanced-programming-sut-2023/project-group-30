@@ -32,6 +32,17 @@ public enum BuildingName {
     BAKERY("bakery"),
     GRAIN_FIELD("grain field"),
     BREWING("brewing"),
+    ARMORY("armory"),
+    STORE("store"),
+    FOOD_STORE("food store"),
+    ARMOR("armor"),
+    BLACKSMITH("blacksmith"),
+
+    FLETCHER("fletcher"),
+    POLETURNER("poleturner"),
+    HOUSE("house"),
+    WOOD_CUTTER("wood cutter"),
+
 
 
     ;

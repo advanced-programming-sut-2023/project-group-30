@@ -18,7 +18,7 @@ public class Harvesting implements BuildingAttribute {
     public Resource getHarvestedResource() {
         return harvestedResource;
     }
-    public void harvestForNextTurn() {
+    public void nextTurn() {
         //TODO : check capacity
 
         Game game = GameMenuController.getCurrentGame();

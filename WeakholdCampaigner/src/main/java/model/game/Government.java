@@ -2,7 +2,7 @@ package model.game;
 
 import controller.menu_controllers.GameMenuController;
 import model.User;
-import model.enums.Resource;
+import model.attributes.building_attributes.Capacity;
 import model.enums.Resource;
 
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ public class Government {
     private HashMap<Resource, Double> resources = new HashMap<>();
     private int foodVariety = 0;
     private HashMap<Resource, Double> foods = new HashMap<>();
+    private HashMap<Resource, Integer> weapons = new HashMap<>();
     private int suitableBuildings = 0;
     private int unSuitableBuildings = 0;
 
@@ -39,7 +40,6 @@ public class Government {
     private void installResource() {
         resources.put(Resource.GOLD_COIN, 20.0);
         resources.put(Resource.GOLD, (double) 0);
-        resources.put(Resource.BREAD, (double) 0);
         resources.put(Resource.FLOUR, (double) 0);
         resources.put(Resource.GRAIN, (double) 0);
         resources.put(Resource.IRON, (double) 0);
@@ -47,9 +47,11 @@ public class Government {
         resources.put(Resource.WHEAT, (double) 0);
         resources.put(Resource.WINE, (double) 0);
         resources.put(Resource.WOOD, 10.0);
-        resources.put(Resource.APPLE, (double) 0);
-        resources.put(Resource.MEAT, (double) 0);
-        resources.put(Resource.CHEESE, (double) 0);
+        weapons.put(Resource.ARMOR, 0);
+        weapons.put(Resource.SWORD, 0);
+        weapons.put(Resource.BOW, 0);
+        weapons.put(Resource.SPEAR, 0);
+
     }
 
     private void installFoods() {
@@ -158,24 +160,34 @@ public class Government {
     }
 
 
-    public HashMap<Resource, Double> getResources() {
-        return resources;
-    }
+
 
     public void addResources(Resource resource, double amount) {
-        if(resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
+        if (resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
                 || resource == Resource.CHEESE)
             foods.put(resource, amount + foods.get(resource));
+        else if (resource == Resource.BOW || resource == Resource.SWORD || resource == Resource.ARMOR
+                || resource == Resource.SPEAR)
+            weapons.put(resource, (int) (amount + weapons.get(resource)));
         else resources.put(resource, resources.get(resource) + amount);
+    }
+    public double getResources(Resource resource) {
+        if (resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
+                || resource == Resource.CHEESE)
+            return foods.get(resource);
+        else if (resource == Resource.BOW || resource == Resource.SWORD || resource == Resource.ARMOR
+                || resource == Resource.SPEAR)
+            return weapons.get(resource);
+        else return resources.get(resource);
+
     }
 
     public Double getGold() {
-        return GameMenuController.getCurrentGame().getCurrentGovernment().getResources().get(Resource.GOLD_COIN);
+        return GameMenuController.getCurrentGame().getCurrentGovernment().getResources(Resource.GOLD_COIN);
     }
 
     public void addGold(double gold) {
-        GameMenuController.getCurrentGame().getCurrentGovernment().getResources().put(Resource.GOLD_COIN,
-                getGold() + gold);
+        GameMenuController.getCurrentGame().getCurrentGovernment().addResources(Resource.GOLD_COIN, gold);
 
     }
 
@@ -315,11 +327,27 @@ public class Government {
 
     public void addPopularity(int amount) {
         popularity += amount;
-        otherPopularity++;
+        otherPopularity += amount;
     }
 
     public int getOtherPopularity() {
         return otherPopularity;
+    }
+
+    public double getStoredUnit(Capacity.Stored stored) {
+        double sum = 0;
+        if (stored == Capacity.Stored.WEAPON) {
+            for (Integer i : weapons.values())
+                sum += i;
+        } else if (stored == Capacity.Stored.FOOD) {
+            for (double i : foods.values())
+                sum += i;
+        } else {
+            for (double i : resources.values())
+                sum += i;
+        }
+
+        return sum;
     }
 
     public boolean purchase(HashMap<Resource, Integer> productionCost) {

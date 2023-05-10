@@ -20,6 +20,10 @@ public class Shop {
         shopItems.add(new ShopItem(Resource.MEAT, 12, 5, 30));
         shopItems.add(new ShopItem(Resource.CHEESE, 12, 5, 30));
         shopItems.add(new ShopItem(Resource.APPLE, 12, 5, 30));
+        shopItems.add(new ShopItem(Resource.BOW, 22, 15, 30));
+        shopItems.add(new ShopItem(Resource.SPEAR, 22, 15, 30));
+        shopItems.add(new ShopItem(Resource.ARMOR, 22, 15, 30));
+        shopItems.add(new ShopItem(Resource.SWORD, 22, 15, 30));
     }
 
     public static ShopItem getShopItemByName(Resource resource) {

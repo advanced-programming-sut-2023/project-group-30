@@ -18,7 +18,7 @@ public class ShopMenuController {
         for (ShopItem shopItem : Shop.getShopItems()) {
             AppMenu.show(i + ": " + shopItem.getResource() + ", purchase_price: " + shopItem.getPurchasePrice() +
                     ", sales_price: " + shopItem.getSalesPrice() + ", you have "
-                    + government.getResources().get(shopItem.getResource()) + " number");
+                    + government.getResources(shopItem.getResource()) + " number");
             i++;
         }
     }
@@ -37,8 +37,8 @@ public class ShopMenuController {
             return MenuMessages.CANCEL;
         else if (!answer.equals("yes"))
             return MenuMessages.INVALID_COMMAND;
-        Double previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment().getResources()
-                .get(getResourceByName(item));
+        Double previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment()
+                .getResources(getResourceByName(item));
         GameMenuController.getCurrentGame().getCurrentGovernment().addResources(getResourceByName(item), amount);
         shopItem.setResourceAmount(shopItem.getResourceAmount() - amount);
         GameMenuController.getCurrentGame().getCurrentGovernment().addGold((-1) * amount * shopItem.getPurchasePrice());
@@ -49,8 +49,8 @@ public class ShopMenuController {
         if (getResourceByName(item) == null || getResourceByName(item) == GOLD)
             return MenuMessages.INVALID_RESOURCE;
         ShopItem shopItem = Shop.getShopItemByName(getResourceByName(item));
-        Double previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment().getResources()
-                .get(getResourceByName(item));
+        Double previousAmount = GameMenuController.getCurrentGame().getCurrentGovernment()
+                .getResources(getResourceByName(item));
         if (amount > previousAmount)
             return MenuMessages.INVALID_AMOUNT;
         String answer = AppMenu.getOneLine("are you suer? \n -yes   -no");

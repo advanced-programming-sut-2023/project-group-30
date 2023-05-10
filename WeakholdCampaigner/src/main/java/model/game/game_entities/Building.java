@@ -102,7 +102,7 @@ public class Building extends GameEntity {
                 HP = 100;
                 category = Category.FOOD_PROCESSING;
                 productionCost.put(Resource.WOOD, 20);
-                productionCost.put(Resource.GOLD, 100);
+                productionCost.put(Resource.GOLD_COIN, 100);
                 attributes.add(new NeedWorker(1));
                 attributes.add(new DrinkServing());
                 break;
@@ -184,6 +184,77 @@ public class Building extends GameEntity {
                 attributes.add(new NeedWorker(1));
                 attributes.add(new Process(Resource.GRAIN, Resource.WINE));
                 break;
+            case ARMORY:
+                HP = 100;
+                productionCost.put(Resource.WOOD, 5);
+                category = Category.CASTLE;
+                attributes.add(new Capacity(40, Capacity.Stored.WEAPON));
+                break;
+            case STORE:
+                HP = 100;
+                category = Category.INDUSTRY;
+                attributes.add(new Capacity(100, Capacity.Stored.RECOURSE));
+                break;
+            case FOOD_STORE:
+                HP = 100;
+                category = Category.FOOD_PROCESSING;
+                attributes.add(new Capacity(100, Capacity.Stored.FOOD));
+                attributes.add(new ChangeFoodRate());
+                productionCost.put(Resource.WOOD, 5);
+                break;
+            case ARMOR:
+                HP = 100;
+                category = Category.WEAPONS;
+                attributes.add(new Process(Resource.IRON, Resource.ARMOR));
+                productionCost.put(Resource.GOLD_COIN, 100);
+                productionCost.put(Resource.WOOD, 20);
+                attributes.add(new NeedWorker(1));
+                break;
+            case BLACKSMITH:
+                HP = 100;
+                category = Category.WEAPONS;
+                attributes.add(new Process(Resource.IRON, Resource.SWORD));
+                productionCost.put(Resource.GOLD_COIN, 100);
+                productionCost.put(Resource.WOOD, 20);
+                attributes.add(new NeedWorker(1));
+                break;
+            case POLETURNER:
+                HP = 100;
+                category = Category.WEAPONS;
+                attributes.add(new Process(Resource.IRON, Resource.SPEAR));
+                productionCost.put(Resource.GOLD_COIN, 100);
+                productionCost.put(Resource.WOOD, 20);
+                attributes.add(new NeedWorker(1));
+                break;
+            case FLETCHER:
+                HP = 100;
+                category = Category.WEAPONS;
+                attributes.add(new Process(Resource.IRON, Resource.BOW));
+                productionCost.put(Resource.GOLD_COIN, 100);
+                productionCost.put(Resource.WOOD, 20);
+                attributes.add(new NeedWorker(1));
+                break;
+            case HOUSE:
+                HP = 100;
+                category = Category.TOWN;
+                attributes.add(new HousePeasant(8));
+                productionCost.put(Resource.WOOD, 6);
+                break;
+            case WOOD_CUTTER:
+                HP = 100;
+                category = Category.INDUSTRY;
+                productionCost.put(Resource.WOOD, 3);
+                attributes.add(new NeedWorker(1));
+                attributes.add(new Harvesting(Resource.WOOD, 1));
+                break;
+            case BARRACKS:
+                HP = 100;
+                category = Category.CASTLE;
+                productionCost.put(Resource.STONE, 15);
+                attributes.add(new CreateUnit());
+                break;
+
+
 
 
 

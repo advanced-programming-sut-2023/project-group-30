@@ -70,7 +70,7 @@ public class TradeMenuController {
         Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
         Government applicantGovernment = getGovernmentByUser(trade.getApplicant());
 
-        if (trade.getResourceAmount() > government.getResources().get(trade.getResourceType()))
+        if (trade.getResourceAmount() > government.getResources(trade.getResourceType()))
             return MenuMessages.INVALID_AMOUNT;
 
         government.addResources(trade.getResourceType(), -trade.getResourceAmount());

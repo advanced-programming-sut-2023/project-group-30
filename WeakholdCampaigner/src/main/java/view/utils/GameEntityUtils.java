@@ -16,8 +16,18 @@ public class GameEntityUtils extends Utils {
             invalidFormatError("create unit -t <type> -c <count>");
             return;
         }
+        switch (GameEntityController.createUnit(options.get("-t"), Integer.parseInt(options.get("-c")))) {
+            case INVALID_TYPE:
+                System.out.println("this unit does not exist");
+                break;
+            case INVALID_AMOUNT:
+                System.out.println("we have not enough production cost");
+                break;
+            case OK:
+                break;
+        }
 
-        GameEntityController.createUnit(options.get("-t"), Integer.parseInt(options.get("-c")));
+
     }
 
     public static void repair(ParsedLine parsedLine) {
@@ -221,6 +231,11 @@ public class GameEntityUtils extends Utils {
             case OK:
                 break;
         }
+    }
+
+
+    public static void showCondition(ParsedLine parsedLine) {
+        GameEntityController.showCondition();
     }
 
 
