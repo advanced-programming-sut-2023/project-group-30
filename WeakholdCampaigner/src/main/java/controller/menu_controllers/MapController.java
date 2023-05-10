@@ -1,6 +1,7 @@
 package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
+import model.Database;
 import model.game.map.MapCell;
 
 public class MapController {
@@ -100,5 +101,37 @@ public class MapController {
             default:
                 return null;
         }
+    }
+    public static MenuMessages setBlockTexture(int x,int y, int x2, int y2, String type){
+        if(secondInvalidCoordinate(x, y) || secondInvalidCoordinate(x2, y2)
+                || (x2 < x) || (y2 < y))
+            return MenuMessages.INVALID_LOCATION;
+        if(findingTextureType(type) == null){
+            return MenuMessages.INVALID_TYPE;
+        }
+        for(int i = x; i < x2; i++){
+            for (int j = y; j < y2;j++){
+                if(GameMenuController.getCurrentGame().getBuilding(i , j) != null){
+                    return MenuMessages.BUILDING_EXISTENCE;
+                }
+            }
+        }
+        for(int i = x; i < x2; i++){
+            for (int j = y; j < y2;j++){
+                GameMenuController.getCurrentGame().setTexture(i , j, findingTextureType(type));
+            }
+        }
+        return MenuMessages.OK;
+    }
+    public static MenuMessages clear(int x, int y){
+        if (secondInvalidCoordinate(x, y)) {
+            return MenuMessages.INVALID_LOCATION;
+        }
+        int mapId = GameMenuController.getCurrentGame().getMapID();
+        GameMenuController.getCurrentGame().getMap().getCell(x, y).setTexture
+                (Database.getMapById(mapId).getCell(x, y).getTexture());
+        GameMenuController.getCurrentGame().getMap().getCell(x, y).setBuilding(null);
+        GameMenuController.getCurrentGame().getMap().getCell(x, y).setUnits(null);
+        return MenuMessages.OK;
     }
 }

@@ -30,6 +30,10 @@ public class MapCell {
         return units;
     }
 
+    public void setUnits(ArrayList<Unit> units) {
+        this.units = units;
+    }
+
     public Building getBuilding() {
         return building;
     }

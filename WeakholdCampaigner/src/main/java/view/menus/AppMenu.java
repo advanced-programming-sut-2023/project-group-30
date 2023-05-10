@@ -48,6 +48,7 @@ public class AppMenu extends AbstractMenu {
             commands.add(new Command("show", "details", GameUtils::showDetails));
             commands.add(new Command("set", "cell_texture", GameUtils::setCellTexture));
             commands.add(new Command("set", "block_texture", GameUtils::setBlockTexture));
+            commands.add(new Command("clear", null, GameUtils::clear));
             commands.add((new Command("exit", "map_menu", GameUtils::exitFromMapMenu)));
         } else if (menuName == MenuName.MAIN_MENU) {
             commands.add(new Command("user", "logout", MenuUtils::userLogout));
