@@ -46,6 +46,8 @@ public class AppMenu extends AbstractMenu {
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
             commands.add(new Command("show", "details", GameUtils::showDetails));
+            commands.add(new Command("set", "cell_texture", GameUtils::setCellTexture));
+            commands.add(new Command("set", "block_texture", GameUtils::setBlockTexture));
             commands.add((new Command("exit", "map_menu", GameUtils::exitFromMapMenu)));
         } else if (menuName == MenuName.MAIN_MENU) {
             commands.add(new Command("user", "logout", MenuUtils::userLogout));

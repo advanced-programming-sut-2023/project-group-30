@@ -99,7 +99,6 @@ public class Building extends GameEntity {
             case COCONUT_TREE:
             case DATE_TREE:
             case DESERT_SHRUB:
-                HP = 50;
                 category = Category.TREE;
                 break;
 

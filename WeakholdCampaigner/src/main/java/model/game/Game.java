@@ -1,5 +1,6 @@
 package model.game;
 
+import controller.menu_controllers.GameMenuController;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 import model.game.map.Map;
@@ -15,6 +16,24 @@ public class Game {
     private int currentTurn;
     private Map map;
     private Integer mapID;
+    private int mapXPosition;
+    private int mapYPosition;
+
+    public int getMapXPosition() {
+        return mapXPosition;
+    }
+
+    public int getMapYPosition() {
+        return mapYPosition;
+    }
+
+    public void setMapXPosition(int mapXPosition) {
+        this.mapXPosition = mapXPosition;
+    }
+
+    public void setMapYPosition(int mapYPosition) {
+        this.mapYPosition = mapYPosition;
+    }
 
     public Integer getMapID() {
         return mapID;
@@ -49,7 +68,6 @@ public class Game {
         map.getCell(x, y).setBuilding(building);
     }
 
-    @NotNull
     public ArrayList<Unit> getUnits(int x, int y) {
         return map.getCell(x, y).getUnits();
     }
@@ -65,6 +83,14 @@ public class Game {
 
     public Government getCurrentGovernment() {
         return currentGovernment;
+    }
+
+    public void setTexture(int x, int y, MapCell.Texture texture){
+        map.getCell(x, y).setTexture(texture);
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) {
@@ -101,5 +127,18 @@ public class Game {
 
     public  ArrayList<Government> getGovernments() {
         return governments;
+    }
+    public Integer numberOfSpecialBuildingInGovernment(Government government, Building building){
+        Integer output = 0;
+        Map map = GameMenuController.getCurrentGame().getMap();
+        for (int i = 0;i < map.getWidth();i++) {
+            for(int j = 0; j < map.getWidth();j++) {
+                if(map.getCell(i , j).getBuilding().equals(building) &&
+                        building.getGovernmentColor().equals(government.getColor())){
+                    output++;
+                }
+            }
+        }
+        return output;
     }
 }

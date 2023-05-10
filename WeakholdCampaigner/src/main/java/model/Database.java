@@ -1,14 +1,13 @@
 package model;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import controller.MainController;
 import model.game.Game;
 import model.game.map.Map;
-import model.game.map.MapCell;
 import org.jetbrains.annotations.Nullable;
 import view.menus.AppMenu;
-
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ public class Database {
         Database.loadMap();
 
         //TODO: loadGames :
-        maps = new HashMap<>();
         games = new HashMap<>();
     }
 
@@ -98,7 +96,6 @@ public class Database {
             e.printStackTrace();
         }
     }
-
     private static void loadSlogan() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/slogan.json")) {

@@ -1,10 +1,7 @@
 package view.utils;
 
 import controller.MainController;
-import controller.menu_controllers.GameMenuController;
-import controller.menu_controllers.MapController;
-import controller.menu_controllers.ShopMenuController;
-import controller.menu_controllers.TradeMenuController;
+import controller.menu_controllers.*;
 import model.Database;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
@@ -71,7 +68,7 @@ public class GameUtils extends Utils {
         System.out.println("entered game_menu");
     }
 
-    public static String setTextureColor(MapCell.Texture texture, String input){
+    public static String setTextureColor(MapCell.Texture texture, String input) {
         final String ANSI_BLACK_BACKGROUND = "\u001B[40m";// SLATE
         final String ANSI_GREEN_BACKGROUND = "\u001B[42m";// Meadow
         final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";// GRASSLAND
@@ -87,7 +84,7 @@ public class GameUtils extends Utils {
         final String CYAN_BACKGROUND_BRIGHT = "\033[0;106m";  // RIVER
         final String WHITE_BACKGROUND_BRIGHT = "\033[0;107m";   // Beach
         final String ANSI_RESET = "\u001B[0m";
-        switch (texture){
+        switch (texture) {
             case MEADOW:
                 return ANSI_GREEN_BACKGROUND + input + ANSI_RESET;
             case LAND:
@@ -120,26 +117,220 @@ public class GameUtils extends Utils {
                 return ANSI_RESET;
         }
     }
-    public static void printMap(int x, int y){
-        if (isAnyUnitPatrolling(GameMenuController.getCurrentGame().getUnits(x, y))) {
-            System.out.println(setTextureColor
-                    (GameMenuController.getCurrentGame().getTexture(x, y), "S"));
-        }else if(GameMenuController.getCurrentGame().getBuilding(x, y) != null){
-            if(GameMenuController.getCurrentGame().getBuilding(x, y).getCategory()
-                    != Building.Category.TREE){
-                System.out.println(setTextureColor
-                        (GameMenuController.getCurrentGame().getTexture(x, y), "B"));
+
+    public static void printMapCellComponrnts(int x, int y) {
+        if (GameMenuController.getCurrentGame().getUnits(x, y) != null) {
+            if (isAnyUnitPatrolling(GameMenuController.getCurrentGame().getUnits(x, y))) {
+                System.out.print(setTextureColor
+                        (GameMenuController.getCurrentGame().getTexture(x, y), "S"));
             }
-            else {
-                System.out.println(setTextureColor
+        } else if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
+            if (GameMenuController.getCurrentGame().getBuilding(x, y).getCategory()
+                    != Building.Category.TREE) {
+                System.out.print(setTextureColor
+                        (GameMenuController.getCurrentGame().getTexture(x, y), "B"));
+            } else {
+                System.out.print(setTextureColor
                         (GameMenuController.getCurrentGame().getTexture(x, y), "T"));
             }
-        }
-        else {
-            System.out.println(setTextureColor
+        } else {
+            System.out.print(setTextureColor
                     (GameMenuController.getCurrentGame().getTexture(x, y), " "));
         }
     }
+
+    public static void printMap(int x, int y) {
+        GameMenuController.getCurrentGame().setMapXPosition(x);
+        GameMenuController.getCurrentGame().setMapYPosition(y);
+        int row = 20;
+        int column = 40;
+        for (int i = 0; i <= row; i++) {
+            for (int j = 0; j <= column; j++) {
+                if (i % 4 == 0) {
+                    System.out.print("-");
+                } else if (j % 8 == 0) {
+                    System.out.print("|");
+                } else if (16 < j && j < 24 && i > 8 && i < 12) {
+                    if (i % 20 == 10 && j % 40 == 20) {
+                        printMapCellComponrnts(x, y);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x, y), " "));
+                    }
+                } else if (16 < j && j < 24 && i > 4 && i < 8) {
+                    if (i % 20 == 6 && j % 40 == 20) {
+                        printMapCellComponrnts(x - 1, y);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 1, y), " "));
+                    }
+                } else if (16 < j && j < 24 && i > 0 && i < 4) {
+                    if (i % 20 == 2 && j % 40 == 20) {
+                        printMapCellComponrnts(x - 2, y);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 2, y), " "));
+                    }
+                } else if (16 < j && j < 24 && i > 12 && i < 16) {
+                    if (i % 20 == 14 && j % 40 == 20) {
+                        printMapCellComponrnts(x + 1, y);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 1, y), " "));
+                    }
+                } else if (16 < j && j < 24 && i > 16) {
+                    if (i % 20 == 18 && j % 40 == 20) {
+                        printMapCellComponrnts(x + 2, y);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 2, y), " "));
+                    }
+                } else if (8 < j && j < 16 && i > 0 && i < 4) {
+                    if (i % 20 == 2 && j % 40 == 12) {
+                        printMapCellComponrnts(x - 2, y - 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 2, y - 1), " "));
+                    }
+                } else if (8 < j && j < 16 && i > 4 && i < 8) {
+                    if (i % 20 == 6 && j % 40 == 12) {
+                        printMapCellComponrnts(x - 1, y - 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 1, y - 1), " "));
+                    }
+                } else if (8 < j && j < 16 && i > 8 && i < 12) {
+                    if (i % 20 == 10 && j % 40 == 12) {
+                        printMapCellComponrnts(x, y - 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x, y - 1), " "));
+                    }
+                } else if (8 < j && j < 16 && i > 12 && i < 16) {
+                    if (i % 20 == 14 && j % 40 == 12) {
+                        printMapCellComponrnts(x + 1, y - 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 1, y - 1), " "));
+                    }
+                } else if (8 < j && j < 16 && i > 16) {
+                    if (i % 20 == 18 && j % 40 == 12) {
+                        printMapCellComponrnts(x + 2, y - 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 2, y - 1), " "));
+                    }
+                } else if (0 < j && j < 8 && i > 0 && i < 4) {
+                    if (i % 20 == 2 && j % 40 == 4) {
+                        printMapCellComponrnts(x - 2, y - 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 2, y - 2), " "));
+                    }
+                } else if (0 < j && j < 8 && i > 4 && i < 8) {
+                    if (i % 20 == 6 && j % 40 == 4) {
+                        printMapCellComponrnts(x - 1, y - 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 1, y - 2), " "));
+                    }
+                } else if (0 < j && j < 8 && i > 8 && i < 12) {
+                    if (i % 20 == 10 && j % 40 == 4) {
+                        printMapCellComponrnts(x, y - 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x, y - 2), " "));
+                    }
+                } else if (0 < j && j < 8 && i > 12 && i < 16) {
+                    if (i % 20 == 14 && j % 40 == 4) {
+                        printMapCellComponrnts(x + 1, y - 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 1, y - 2), " "));
+                    }
+                } else if (0 < j && j < 8 && i > 16) {
+                    if (i % 20 == 18 && j % 40 == 4) {
+                        printMapCellComponrnts(x + 2, y - 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 2, y - 2), " "));
+                    }
+                } else if (24 < j && j < 32 && i > 0 && i < 4) {
+                    if (i % 20 == 2 && j % 40 == 28) {
+                        printMapCellComponrnts(x - 2, y + 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 2, y + 1), " "));
+                    }
+                } else if (24 < j && j < 32 && i > 4 && i < 8) {
+                    if (i % 20 == 6 && j % 40 == 28) {
+                        printMapCellComponrnts(x - 1, y + 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 1, y + 1), " "));
+                    }
+                } else if (24 < j && j < 32 && i > 8 && i < 12) {
+                    if (i % 20 == 10 && j % 40 == 28) {
+                        printMapCellComponrnts(x, y + 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x, y + 1), " "));
+                    }
+                } else if (24 < j && j < 32 && i > 12 && i < 16) {
+                    if (i % 20 == 14 && j % 40 == 28) {
+                        printMapCellComponrnts(x + 1, y + 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 1, y + 1), " "));
+                    }
+                } else if (24 < j && j < 32 && i > 16) {
+                    if (i % 20 == 18 && j % 40 == 28) {
+                        printMapCellComponrnts(x + 2, y + 1);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 2, y + 1), " "));
+                    }
+                } else if (32 < j && i > 0 && i < 4) {
+                    if (i % 20 == 2 && j % 40 == 36) {
+                        printMapCellComponrnts(x - 2, y + 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 2, y + 2), " "));
+                    }
+                } else if (32 < j && i > 4 && i < 8) {
+                    if (i % 20 == 6 && j % 40 == 36) {
+                        printMapCellComponrnts(x - 1, y + 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x - 1, y + 2), " "));
+                    }
+                } else if (32 < j && i > 8 && i < 12) {
+                    if (i % 20 == 10 && j % 40 == 36) {
+                        printMapCellComponrnts(x, y + 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x, y + 2), " "));
+                    }
+                } else if (32 < j && i > 12 && i < 16) {
+                    if (i % 20 == 14 && j % 40 == 36) {
+                        printMapCellComponrnts(x + 1, y + 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 1, y + 2), " "));
+                    }
+                } else if (32 < j && i > 16) {
+                    if (i % 20 == 18 && j % 40 == 36) {
+                        printMapCellComponrnts(x + 2, y + 2);
+                    } else {
+                        System.out.print(setTextureColor
+                                (GameMenuController.getCurrentGame().getTexture(x + 2, y + 2), " "));
+                    }
+                }
+            }
+            System.out.println();
+        }
+    }
+
     public static void showMap(ParsedLine parsedLine) {
         String X = null, Y = null;
         HashMap<String, String> options = parsedLine.options;
@@ -164,218 +355,7 @@ public class GameUtils extends Utils {
             switch (MapController.showMap(x, y)) {
                 case OK:
                     MainController.setCurrentMenu(AppMenu.MenuName.MAP_MENU);
-                    int row = 20;
-                    int column = 40;
-                    for(int i = 0;i<= row;i++){
-                        for(int j = 0;j <= column;j++){
-                            if(i % 4 == 0){
-                                System.out.print("-");
-                            }else if(j % 8 == 0){
-                                System.out.print("|");
-                            } else if (16 < j && j < 24 && i > 8 && i < 12) {
-                                if(i % 20 == 10 && j % 40 == 20) {
-                                    printMap(x, y);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x, y), " "));
-                                }
-                            } else if (16 < j && j < 24 && i > 4 && i < 8) {
-                                if(i % 20 == 6 && j % 40 == 20) {
-                                    printMap(x-1, y);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-1, y), " "));
-                                }
-                            } else if (16 < j && j < 24 && i > 0 && i < 4) {
-                                if(i % 20 == 2 && j % 40 == 20) {
-                                    printMap(x-2, y);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-2, y), " "));
-                                }
-                            } else if (16 < j && j < 24 && i > 12 && i < 16) {
-                                if(i % 20 == 14 && j % 40 == 20) {
-                                    printMap(x+1, y);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+1, y), " "));
-                                }
-                            } else if (16 < j && j < 24 && i > 16) {
-                                if(i % 20 == 18 && j % 40 == 20) {
-                                    printMap(x+2, y);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+2, y), " "));
-                                }
-                            } else if (8 < j && j < 16 && i > 0 && i < 4) {
-                                if(i % 20 == 2 && j % 40 == 12) {
-                                    printMap(x-2, y-1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-2, y-1), " "));
-                                }
-                            } else if (8 < j && j < 16 && i > 4 && i < 8) {
-                                if(i % 20 == 6 && j % 40 == 12) {
-                                    printMap(x-1, y-1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-1, y-1), " "));
-                                }
-                            } else if (8 < j && j < 16 && i > 8 && i < 12) {
-                                if(i % 20 == 10 && j % 40 == 12) {
-                                    printMap(x, y-1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x, y-1), " "));
-                                }
-                            } else if (8 < j && j < 16 && i > 12 && i < 16) {
-                                if(i % 20 == 14 && j % 40 == 12) {
-                                    printMap(x+1, y-1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+1, y-1), " "));
-                                }
-                            } else if (8 < j && j < 16 && i > 16) {
-                                if(i % 20 == 18 && j % 40 == 12) {
-                                    printMap(x+2, y-1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+2, y-1), " "));
-                                }
-                            } else if (0 < j && j < 8 && i > 0 && i < 4) {
-                                if(i % 20 == 2 && j % 40 == 4) {
-                                    printMap(x-2, y-2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-2, y-2), " "));
-                                }
-                            } else if (0 < j && j < 8 && i > 4 && i < 8) {
-                                if(i % 20 == 6 && j % 40 == 4) {
-                                    printMap(x-1, y-2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-1, y-2), " "));
-                                }
-                            } else if (0 < j && j < 8 && i > 8 && i < 12) {
-                                if(i % 20 == 10 && j % 40 == 4) {
-                                    printMap(x, y-2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x, y-2), " "));
-                                }
-                            } else if (0 < j && j < 8 && i > 12 && i < 16) {
-                                if(i % 20 == 14 && j % 40 == 4) {
-                                    printMap(x+1, y-2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+1, y-2), " "));
-                                }
-                            } else if (0 < j && j < 8 && i > 16) {
-                                if(i % 20 == 18 && j % 40 == 4) {
-                                    printMap(x+2, y-2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+2, y-2), " "));
-                                }
-                            } else if (24 < j && j < 32 && i > 0 && i < 4) {
-                                if(i % 20 == 2 && j % 40 == 28) {
-                                    printMap(x-2, y+1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-2, y+1), " "));
-                                }
-                            } else if (24 < j && j < 32 && i > 4 && i < 8) {
-                                if(i % 20 == 6 && j % 40 == 28) {
-                                    printMap(x-1, y+1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-1, y+1), " "));
-                                }
-                            } else if (24 < j && j < 32 && i > 8 && i < 12) {
-                                if(i % 20 == 10 && j % 40 == 28) {
-                                    printMap(x, y+1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x, y+1), " "));
-                                }
-                            } else if (24 < j && j < 32 && i > 12 && i < 16) {
-                                if(i % 20 == 14 && j % 40 == 28) {
-                                    printMap(x+1, y+1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+1, y+1), " "));
-                                }
-                            } else if (24 < j && j < 32 && i > 16) {
-                                if(i % 20 == 18 && j % 40 == 28) {
-                                    printMap(x+2, y+1);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+2, y+1), " "));
-                                }
-                            } else if (32 < j && i > 0 && i < 4) {
-                                if(i % 20 == 2 && j % 40 == 36) {
-                                    printMap(x-2, y+2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-2, y+2), " "));
-                                }
-                            } else if (32 < j && i > 4 && i < 8) {
-                                if(i % 20 == 6 && j % 40 == 36) {
-                                    printMap(x-1, y+2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x-1, y+2), " "));
-                                }
-                            } else if (32 < j && i > 8 && i < 12) {
-                                if(i % 20 == 10 && j % 40 == 36) {
-                                    printMap(x, y+2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x, y+2), " "));
-                                }
-                            } else if (32 < j && i > 12 && i < 16) {
-                                if(i % 20 == 14 && j % 40 == 36) {
-                                    printMap(x+1, y+2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+1, y+2), " "));
-                                }
-                            } else if (32 < j && i > 16) {
-                                if(i % 20 == 18 && j % 40 == 36) {
-                                    printMap(x+2, y+2);
-                                }
-                                else {
-                                    System.out.println(setTextureColor
-                                            (GameMenuController.getCurrentGame().getTexture(x+2, y+2), " "));
-                                }
-                            }
-                        }
-                        System.out.println();
-                    }
+                    printMap(x, y);
                     break;
                 case INVALID_LOCATION:
                     System.out.println("Error: please enter valid location");
@@ -421,9 +401,15 @@ public class GameUtils extends Utils {
             int Right = changeStrToIntForMove(right), Left = changeStrToIntForMove(left), Up = changeStrToIntForMove(up),
                     Down = changeStrToIntForMove(down);
 
-            switch (MapController.moveMap(Right, Left, Up, Down)) {
+            switch (MapController.moveMap(Right, Left, Up, Down, GameMenuController.getCurrentGame().getMapXPosition(),
+                    GameMenuController.getCurrentGame().getMapYPosition())) {
                 case OK:
+                    int newX = GameMenuController.getCurrentGame().getMapXPosition() + Down - Up;
+                    int newY = GameMenuController.getCurrentGame().getMapYPosition() + Right - Left;
+                    printMap(newX, newY);
                     break;
+                case INVALID_LOCATION:
+                    System.out.println("Your location is wrong");
             }
         } else System.out.println("Error: This command should have the following format:\n" +
                 "move map [--up [<numberOFMove>]] [--down [<numberOFMove>]] [--right [<numberOFMove>]]" +
@@ -440,9 +426,10 @@ public class GameUtils extends Utils {
         }
         return true;
     }
-    public static boolean isAnyUnitPatrolling(ArrayList<Unit> units){
-        for (Unit unit : units){
-            if(unit.isPatrolling()){
+
+    public static boolean isAnyUnitPatrolling(ArrayList<Unit> units) {
+        for (Unit unit : units) {
+            if (unit.isPatrolling()) {
                 return true;
             }
         }
@@ -493,14 +480,14 @@ public class GameUtils extends Utils {
             switch (MapController.showDetails(x, y)) {
                 case OK:
                     System.out.println("Texture : " + GameMenuController.getCurrentGame().getTexture(x, y));
-                    if(GameMenuController.getCurrentGame().getUnits(x, y).size() != 0) {
+                    if (GameMenuController.getCurrentGame().getUnits(x, y).size() != 0) {
                         System.out.println("Unit types are :");
                         for (Unit unit : GameMenuController.getCurrentGame().getUnits(x, y)) {
                             System.out.println(unit.getUnitName());
                         }
                     }
-                    System.out.println("Number of units : "+ GameMenuController.getCurrentGame().getUnits(x ,y).size());
-                    if(GameMenuController.getCurrentGame().getBuilding(x, y) != null){
+                    System.out.println("Number of units : " + GameMenuController.getCurrentGame().getUnits(x, y).size());
+                    if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
                         System.out.println("Building is : "
                                 + GameMenuController.getCurrentGame().getBuilding(x, y).getBuildingName());
                     }
@@ -647,8 +634,8 @@ public class GameUtils extends Utils {
 
         switch (
                 GameMenuController.dropBuilding(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")),
-                options.get("--type"),
+                        Integer.parseInt(options.get("-y")),
+                        options.get("--type"),
                         isFree)
         ) {
             case INVALID_LOCATION:
@@ -907,6 +894,35 @@ public class GameUtils extends Utils {
 
 
         }
+
+    }
+
+
+    public static void setCellTexture(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "-t"}
+                , new String[]{}, new String[]{"-x", "-y"});
+        if (options == null) {
+            invalidFormatError("set texture -x [x] -y [y] -t <type of new texture> or" +
+                    "set texture -x [x] -y [y] -x2 [x2] -y2 [y2] -t <type of new texture of block>");
+        }
+        switch (MapController.setCellTexture(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")),
+                options.get("-t"))) {
+            case OK:
+                System.out.println("Done!");
+                break;
+            case BUILDING_EXISTENCE:
+                System.out.println("There is a building on this tile!");
+                break;
+            case INVALID_LOCATION:
+                System.out.println("Wrong location");
+                break;
+            case INVALID_TYPE:
+                System.out.println("Your texture type is incorrect.\n The correct types are : land, gravel, slate," +
+                        "stone, iron, grass, grassland, meadow, shallow_water, deep_water, oil, beach, river, plain");
+        }
+    }
+
+    public static void setBlockTexture(ParsedLine parsedLine) {
 
     }
 }

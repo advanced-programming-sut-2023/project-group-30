@@ -8,7 +8,6 @@ public class Map {
         for (int i =0; i< mapWidth;i++){
             for (int j = 0; j < mapWidth;j++){
                 map[i][j] = new MapCell();
-                map[i][j].setTexture(MapCell.Texture.LAND);
             }
         }
     }

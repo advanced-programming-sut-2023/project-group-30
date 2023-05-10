@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class MapCell {
     private int defenceFactor;
-    private ArrayList<Unit> units;
-    private Building building;
-    private Texture texture;
+    private ArrayList<Unit> units = null;
+    private Building building = null;
+    private Texture texture = null;
 
     public Texture getTexture() {
         return texture;
@@ -25,12 +25,11 @@ public class MapCell {
         return defenceFactor;
     }
 
-    @NotNull
+
     public ArrayList<Unit> getUnits() {
         return units;
     }
 
-    @Nullable
     public Building getBuilding() {
         return building;
     }
