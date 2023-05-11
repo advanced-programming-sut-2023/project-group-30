@@ -480,16 +480,23 @@ public class GameUtils extends Utils {
             switch (MapController.showDetails(x, y)) {
                 case OK:
                     System.out.println("Texture : " + GameMenuController.getCurrentGame().getTexture(x, y));
-                    if (GameMenuController.getCurrentGame().getUnits(x, y).size() != 0) {
+                    if (GameMenuController.getCurrentGame().getUnits(x, y) != null) {
                         System.out.println("Unit types are :");
                         for (Unit unit : GameMenuController.getCurrentGame().getUnits(x, y)) {
                             System.out.println(unit.getUnitName());
                         }
                     }
-                    System.out.println("Number of units : " + GameMenuController.getCurrentGame().getUnits(x, y).size());
+                    if (GameMenuController.getCurrentGame().getUnits(x, y) != null) {
+                        System.out.println("Number of units : " + GameMenuController.getCurrentGame().getUnits(x, y).size());
+                    }
+                    else {
+                        System.out.println("Number of units : 0");
+                    }
                     if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
                         System.out.println("Building is : "
                                 + GameMenuController.getCurrentGame().getBuilding(x, y).getBuildingName());
+                    }else {
+                        System.out.println("There is no building on this cell");
                     }
                     break;
                 case INVALID_LOCATION:
@@ -903,6 +910,7 @@ public class GameUtils extends Utils {
                 , new String[]{}, new String[]{"-x", "-y"});
         if (options == null) {
             invalidFormatError("set cell_texture -x [x] -y [y] -t <type of new texture>");
+            return;
         }
         switch (MapController.setCellTexture(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")),
                 options.get("-t"))) {
@@ -922,13 +930,14 @@ public class GameUtils extends Utils {
     }
 
     public static void setBlockTexture(ParsedLine parsedLine) {
-        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y","-x2", "-y2", "-t"}
-                , new String[]{}, new String[]{"-x", "-y","-x2", "-y2"});
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "-x2", "-y2", "-t"}
+                , new String[]{}, new String[]{"-x", "-y", "-x2", "-y2"});
         if (options == null) {
             invalidFormatError("set block_texture -x [x] -y [y] -x2 [x2] -y2 [y2] -t <type of new texture of block>");
+            return;
         }
         switch (MapController.setBlockTexture(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")),
-                Integer.parseInt(options.get("-x2")), Integer.parseInt(options.get("-y2")), options.get("-t"))){
+                Integer.parseInt(options.get("-x2")), Integer.parseInt(options.get("-y2")), options.get("-t"))) {
             case BUILDING_EXISTENCE:
                 System.out.println("There is a building on these tiles!");
                 break;
@@ -944,13 +953,15 @@ public class GameUtils extends Utils {
                 break;
         }
     }
-    public static void clear(ParsedLine parsedLine){
+
+    public static void clear(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y"}
                 , new String[]{}, new String[]{"-x", "-y"});
         if (options == null) {
             invalidFormatError("clear -x [x] -y [y]");
+            return;
         }
-        switch (MapController.clear(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")))){
+        switch (MapController.clear(Integer.parseInt(options.get("-x")), Integer.parseInt(options.get("-y")))) {
             case OK:
                 System.out.println("Done!");
                 break;
@@ -959,14 +970,16 @@ public class GameUtils extends Utils {
                 break;
         }
     }
-    public static void dropRock(ParsedLine parsedLine){
+
+    public static void dropRock(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "-d"}
                 , new String[]{}, new String[]{"-x", "-y"});
         if (options == null) {
             invalidFormatError("drop rock -x [x] -y [y] -d <direction of the rock>");
+            return;
         }
         switch (MapController.dropRock(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")), options.get("-d"))){
+                Integer.parseInt(options.get("-y")), options.get("-d"))) {
             case INVALID_LOCATION:
                 System.out.println("Wrong location");
                 break;
@@ -976,9 +989,37 @@ public class GameUtils extends Utils {
             case INVALID_DIRECTION:
                 System.out.println("Your direction should be between these character : r <random> , n, e, w, s");
                 break;
+            case BUILDING_EXISTENCE:
+                System.out.println("There is a building on these tiles!");
+                break;
         }
     }
-    public static void dropTree(ParsedLine parsedLine){
 
+    public static void dropTree(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-x", "-y", "-t"}
+                , new String[]{}, new String[]{"-x", "-y"});
+        if (options == null) {
+            invalidFormatError("drop tree -x [x] -y [y] -t <type of tree>");
+            return;
+        }
+        switch (MapController.dropTree(Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")), options.get("-t"))){
+            case BUILDING_EXISTENCE:
+                System.out.println("There is a building on these tiles!");
+                break;
+            case INVALID_LOCATION:
+                System.out.println("Wrong location");
+                break;
+            case INVALID_TYPE:
+                System.out.println("Your tree type should be between desert_shrub," +
+                        " olive_tree, cherry_tree, coconut_tree, date_tree");
+                break;
+            case OK:
+                System.out.println("Done!");
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                System.out.println("The texture of cell is inappropriate for tree");
+                break;
+        }
     }
 }
