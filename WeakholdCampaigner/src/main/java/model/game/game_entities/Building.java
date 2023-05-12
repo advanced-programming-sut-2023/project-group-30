@@ -21,8 +21,8 @@ public class Building extends GameEntity {
     }
 
     protected Building(BuildingName buildingName, HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
-                       Category category, int maxHP) {
-        super(productionCost, attributes);
+                       Category category, int maxHP, int x, int y) {
+        super(productionCost, attributes, x, y);
         this.category = category;
         this.maxHP = maxHP;
         this.HP = maxHP;
@@ -30,7 +30,7 @@ public class Building extends GameEntity {
     }
 
     @Nullable
-    public static Building getInstance(String name) {
+    public static Building getInstance(String name, int x, int y) {
         BuildingName buildingName = BuildingName.getBuildingName(name);
         if (buildingName == null) return null;
 
@@ -40,7 +40,6 @@ public class Building extends GameEntity {
         int HP = 100;
 
         switch (buildingName) {
-            //TODO
             case KEEP:
                 HP = 100;
                 category = Category.CASTLE;
@@ -249,7 +248,13 @@ public class Building extends GameEntity {
                 HP = 100;
                 category = Category.CASTLE;
                 productionCost.put(Resource.STONE, 15);
-                attributes.add(new CreateUnit());
+                attributes.add(new CreateUnit(false));
+                break;
+            case MERCENARY_POST:
+                HP = 100;
+                category = Category.CASTLE;
+                productionCost.put(Resource.STONE, 15);
+                attributes.add(new CreateUnit(true));
                 break;
             case CHERRY_TREE:
             case OLIVE_TREE:
@@ -263,8 +268,7 @@ public class Building extends GameEntity {
                 break;
         }
 
-        return new Building(buildingName, productionCost, attributes, category, HP);
-
+        return new Building(buildingName, productionCost, attributes, category, HP, x, y);
     }
 
     public BuildingName getBuildingName() {

@@ -371,14 +371,15 @@ public class Government {
     }
 
     public int getMaximumResource(Capacity.Stored stored) {
+        //TODO why are we instantiating here?
         if (stored == Capacity.Stored.FOOD)
             return GameMenuController.getCurrentGame().numberOfSpecialBuildingInGovernment(this
-                    , Building.getInstance("food store")) * 100;
+                    , Building.getInstance("food store", 0, 0)) * 100;
         else if (stored == Capacity.Stored.WEAPON)
             return GameMenuController.getCurrentGame().numberOfSpecialBuildingInGovernment(this,
-                    Building.getInstance("armory")) * 40;
+                    Building.getInstance("armory", 0, 0)) * 40;
         return GameMenuController.getCurrentGame().numberOfSpecialBuildingInGovernment(this
-                , Building.getInstance("store")) * 100;
+                , Building.getInstance("store", 0, 0)) * 100;
     }
 
     public boolean purchase(HashMap<Resource, Integer> productionCost) {

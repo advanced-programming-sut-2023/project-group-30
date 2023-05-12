@@ -4,6 +4,7 @@ import controller.MainController;
 import controller.messages.MenuMessages;
 import model.attributes.Attribute;
 import model.attributes.building_attributes.Capacity;
+import model.attributes.building_attributes.CreateUnit;
 import model.attributes.building_attributes.Process;
 import model.attributes.unit_attributes.RangedAttack;
 import model.enums.Resource;
@@ -29,10 +30,20 @@ public class GameEntityController extends GameController {
         currentBuilding = building;
     }
 
-    public static MenuMessages createUnit(String type, int count) {
-        Unit unit = Unit.getInstance(type, 0, 0);
-        Government government = currentGame.getCurrentGovernment();
+    public static MenuMessages createUnit(String type) {
+        int spawnX = currentBuilding.getCurrentX(), spawnY = currentBuilding.getCurrentY();
+        Unit unit = Unit.getInstance(type, spawnX, spawnY);
         if (unit == null) return MenuMessages.INVALID_TYPE;
+
+        for (Attribute attribute :
+                currentBuilding.getAttributes()) if (attribute instanceof CreateUnit) {
+            if (((CreateUnit) attribute).createArab != unit.isArab)
+                return MenuMessages.INVALID_RACE;
+
+            break;
+        }
+
+        Government government = currentGame.getCurrentGovernment();
         for (Map.Entry<Resource, Integer> entry : unit.getProductionCost().entrySet()) {
             if (government.getResources(entry.getKey()) < entry.getValue())
                 return MenuMessages.INVALID_AMOUNT;
@@ -40,9 +51,9 @@ public class GameEntityController extends GameController {
         for (Map.Entry<Resource, Integer> entry : unit.getProductionCost().entrySet()) {
             government.addResources(entry.getKey(), -entry.getValue());
         }
-        //TODO : create unit in map should write
-        return MenuMessages.OK;
 
+        currentGame.dropUnit(unit, spawnX, spawnY);
+        return MenuMessages.SUCCESS;
     }
 
     public static boolean repairBuilding() {

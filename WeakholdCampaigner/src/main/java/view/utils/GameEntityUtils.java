@@ -9,25 +9,28 @@ import java.util.HashMap;
 
 public class GameEntityUtils extends Utils {
     public static void createUnit(ParsedLine parsedLine) {
-        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t", "-c"}, new String[]{},
-                new String[]{"-c"});
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t"}, new String[]{},
+                new String[]{});
 
         if (options == null) {
-            invalidFormatError("create unit -t <type> -c <count>");
+            invalidFormatError("create unit -t <type>");
             return;
         }
-        switch (GameEntityController.createUnit(options.get("-t"), Integer.parseInt(options.get("-c")))) {
+
+        switch (GameEntityController.createUnit(options.get("-t"))) {
             case INVALID_TYPE:
-                System.out.println("this unit does not exist");
+                AbstractMenu.show("Error: There is no unit with this name.");
+                break;
+            case INVALID_RACE:
+                AbstractMenu.show("Error: You cannot create units of that race in this building.");
                 break;
             case INVALID_AMOUNT:
-                System.out.println("we have not enough production cost");
+                AbstractMenu.show("Error: You do not have enough resources to create that unit.");
                 break;
-            case OK:
+            case SUCCESS:
+                AbstractMenu.show("Unit created successfully.");
                 break;
         }
-
-
     }
 
     public static void repair(ParsedLine parsedLine) {

@@ -119,7 +119,7 @@ public class GameMenuController extends GameController {
         if (!checkLocation(x, y))
             return MenuMessages.INVALID_LOCATION;
 
-        Building building = Building.getInstance(type);
+        Building building = Building.getInstance(type, x, y);
         if (building == null) return MenuMessages.INVALID_TYPE;
 
         if (type.equals("keep")) if (currentGame.getCurrentGovernment().hasPlacedKeep())

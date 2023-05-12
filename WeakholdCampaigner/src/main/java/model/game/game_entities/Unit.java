@@ -23,13 +23,12 @@ public class Unit extends GameEntity {
 
     private final ArrayList<int[]> destinations;
     private boolean isPatrolling;
-    private int[] currentLocation;
     private boolean hasAttacked;
     public final boolean isArab;
 
     protected Unit(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes, UnitName unitName,
                    int speed, int defence, int attack, int x, int y, boolean isArab) {
-        super(productionCost, attributes);
+        super(productionCost, attributes, x, y);
 
         if (defence > 5 || defence < 1 || attack > 5 || attack < 1 || speed > 5 || speed < 1) //can be handled better
             throw new RuntimeException("Error: Attempted to instantiate a unit with invalid parameters.");
@@ -37,7 +36,6 @@ public class Unit extends GameEntity {
         this.unitName = unitName;
         this.destinations = new ArrayList<>();
         this.isPatrolling = false;
-        this.currentLocation = new int[]{x, y};
         this.speed = speed;
         this.remainingMovement = speed;
         this.HP = defence * 10; //fine tune this coefficient
@@ -161,14 +159,6 @@ public class Unit extends GameEntity {
     public void setCurrentLocation(int x, int y) {
         currentLocation[0] = x;
         currentLocation[1] = y;
-    }
-
-    public int getCurrentX() {
-        return currentLocation[0];
-    }
-
-    public int getCurrentY() {
-        return currentLocation[1];
     }
 
     public int getRemainingMovement() {

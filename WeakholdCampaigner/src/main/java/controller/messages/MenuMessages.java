@@ -59,4 +59,5 @@ public enum MenuMessages {
     TOO_FAR,
     NOT_ENOUGH_SPACE,
     NO_REMAINING_MOVEMENT,
+    INVALID_RACE,
 }

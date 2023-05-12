@@ -153,7 +153,7 @@ public class MapController {
         if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
             return MenuMessages.BUILDING_EXISTENCE;
         }
-        Building building = Building.getInstance("rock");
+        Building building = Building.getInstance("rock", x, y);
         GameMenuController.getCurrentGame().dropBuilding(building, x, y);
         if (direction.equals("r")) {
             ArrayList<String> directionslist = new ArrayList<>();
@@ -192,7 +192,7 @@ public class MapController {
         if (!isTextureAppropriateForTree(x, y)) {
             return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
         }
-        Building building = Building.getInstance(type.replace("_", " "));
+        Building building = Building.getInstance(type.replace("_", " "), x, y);
         GameMenuController.getCurrentGame().dropBuilding(building, x, y);
         return MenuMessages.OK;
     }

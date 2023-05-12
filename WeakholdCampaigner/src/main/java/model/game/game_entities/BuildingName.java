@@ -42,7 +42,7 @@ public enum BuildingName {
     POLETURNER("poleturner"),
     HOUSE("house"),
     WOOD_CUTTER("wood cutter"),
-
+    MERCENARY_POST("mercenary post"),
     ;
     private final String name;
 
