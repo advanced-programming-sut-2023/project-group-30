@@ -46,6 +46,10 @@ public class MapCell {
         this.units.add(unit);
     }
 
+    public void removeUnit(Unit unit) {
+        this.units.remove(unit);
+    }
+
     public enum Texture {
         LAND,
         GRAVEL,

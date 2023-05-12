@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Unit extends GameEntity {
-    private int remainingMovement, fieldOfView;
-    private final int speed, defence;
+    private int remainingMovement, HP, fieldOfView;
+    private final int speed, meleeDamage;
     private UnitStance stance;
     public final UnitName unitName;
 
@@ -23,15 +23,20 @@ public class Unit extends GameEntity {
     private boolean hasAttacked;
 
     protected Unit(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes, UnitName unitName,
-                   int speed, int defence, int x, int y) {
+                   int speed, int defence, int attack, int x, int y) {
         super(productionCost, attributes);
+
+        if (defence > 5 || defence < 1 || attack > 5 || attack < 1 || speed > 5 || speed < 1) //can be handled better
+            throw new RuntimeException("Error: Attempted to instantiate a unit with invalid parameters.");
+
         this.unitName = unitName;
         this.destinations = new ArrayList<>();
         this.isPatrolling = false;
         this.currentLocation = new int[]{x, y};
         this.speed = speed;
         this.remainingMovement = speed;
-        this.defence = defence;
+        this.HP = defence * 10; //fine tune this coefficient
+        this.meleeDamage = attack * 4; //fine tune this coefficient
         this.hasAttacked = false;
         this.stance = UnitStance.STAND_GROUND;
     }
@@ -42,7 +47,7 @@ public class Unit extends GameEntity {
 
         ArrayList<Attribute> attributes = new ArrayList<>();
         HashMap<Resource, Integer> productionCost = new HashMap<>();
-        int speed = 0, defence = 0;
+        int speed = 0, defence = 0, attack = 0;
 
         switch (unitName) {
             //TODO
@@ -51,7 +56,7 @@ public class Unit extends GameEntity {
                 break;
         }
 
-        return new Unit(productionCost, attributes, unitName, speed, defence, x, y);
+        return new Unit(productionCost, attributes, unitName, speed, defence, attack, x, y);
     }
 
     public boolean isMoving() {
@@ -122,5 +127,19 @@ public class Unit extends GameEntity {
 
     public void setStance(UnitStance stance) {
         this.stance = stance;
+    }
+
+    public boolean reduceHP(int decrement) { //returns false if HP hits zero
+        this.HP -= decrement;
+
+        if (this.HP <= 0) {
+            this.HP = 0;
+            return false;
+        }
+        return true;
+    }
+
+    public int getMeleeDamage() {
+        return meleeDamage;
     }
 }

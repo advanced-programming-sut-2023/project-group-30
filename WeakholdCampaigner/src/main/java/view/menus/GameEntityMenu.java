@@ -31,9 +31,9 @@ public class GameEntityMenu extends AbstractMenu {
             for (Attribute attribute :
                     gameEntity.getAttributes()) {
                 if (attribute instanceof CloseCombat)
-                    commands.add(new Command("attack", "melee", GameEntityUtils::meleeAttack));
+                    commands.add(new Command("attack", "melee", GameEntityUtils::attack));
                 else if (attribute instanceof RangedAttack)
-                    commands.add(new Command("attack", "ranged", GameEntityUtils::rangedAttack));
+                    commands.add(new Command("attack", "ranged", GameEntityUtils::attack));
                 else if (attribute instanceof PourOil)
                     commands.add(new Command("pour", "oil", GameEntityUtils::pourOil));
                 else if (attribute instanceof DigTunnel)

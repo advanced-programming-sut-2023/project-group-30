@@ -1,18 +1,19 @@
 package controller.menu_controllers;
 
+import controller.MainController;
 import controller.messages.MenuMessages;
 import model.attributes.Attribute;
 import model.attributes.building_attributes.Capacity;
-import model.attributes.building_attributes.Harvesting;
 import model.attributes.building_attributes.Process;
+import model.attributes.unit_attributes.RangedAttack;
 import model.enums.Resource;
 import model.game.Game;
 import model.game.Government;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
+import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class GameEntityController extends GameController {
@@ -104,10 +105,22 @@ public class GameEntityController extends GameController {
         return MenuMessages.SUCCESS;
     }
 
-    public static MenuMessages meleeAttack(int enemyX, int enemyY) {
+    public static MenuMessages attack(int enemyX, int enemyY, boolean isRanged) {
         if (currentUnit.hasAttacked()) return MenuMessages.ALREADY_ATTACKED;
 
-        if (Math.abs(currentUnit.getCurrentX() - enemyX) > 1 || Math.abs(currentUnit.getCurrentY() - enemyY) > 1)
+        int myRange = 1, myDamage = currentUnit.getMeleeDamage();
+        if (isRanged)
+            for (Attribute attribute :
+                    currentUnit.getAttributes())
+                if (attribute instanceof RangedAttack) {
+                    myRange = ((RangedAttack) attribute).getRange();
+                    myDamage = ((RangedAttack) attribute).getRangedDamage();
+                    break;
+                }
+
+        int myX = currentUnit.getCurrentX(), myY = currentUnit.getCurrentY();
+        int distanceX = Math.abs(myX - enemyX), distanceY = Math.abs(myY - enemyY);
+        if (distanceX > myRange || distanceY > myRange)
             return MenuMessages.TOO_FAR;
 
         Unit enemyUnit = null;
@@ -119,12 +132,38 @@ public class GameEntityController extends GameController {
             }
         if (enemyUnit == null) return MenuMessages.NO_MATCHING_UNIT;
 
-        //TODO
+        //TODO: attack buildings
+        //damaging the enemy unit:
+        if (enemyUnit.reduceHP(myDamage)) {
+            AbstractMenu.show("Enemy unit wasted.");
+            currentGame.removeUnit(enemyUnit, enemyX, enemyY);
+        }
+
+        //calculating the damage the enemy unit can deal to us:
+        int enemyDamage = enemyUnit.getMeleeDamage();
+        if (isRanged) {
+            enemyDamage = 0; //the enemy unit cannot defend against a ranged attack unless it has RangedAttack itself.
+            for (Attribute attribute :
+                    enemyUnit.getAttributes())
+                if (attribute instanceof RangedAttack) {
+                    int enemyRange = ((RangedAttack) attribute).getRange();
+                    if (distanceX <= enemyRange && distanceY <= enemyRange)
+                        enemyDamage = ((RangedAttack) attribute).getRangedDamage();
+                    break;
+                }
+        }
+
+        //damaging our unit:
+        if (!currentUnit.reduceHP(enemyDamage)) {
+            AbstractMenu.show("Your unit died in battle!");
+            currentGame.removeUnit(currentUnit, myX, myY);
+
+            MainController.setCurrentMenu(AbstractMenu.MenuName.GAME_MENU);
+            currentUnit = null;
+            AbstractMenu.show("Unit unselected.");
+        }
+
         return MenuMessages.SUCCESS;
-    }
-
-    public static void rangedAttack(int enemyX, int enemyY) {
-
     }
 
     public static void pourOil(String direction) {

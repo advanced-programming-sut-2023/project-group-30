@@ -73,9 +73,13 @@ public class Game {
         return map.getCell(x, y).getUnits();
     }
 
-    public void dropUnit(Unit unit, int x, int y) {
+    public void dropUnit(@NotNull Unit unit, int x, int y) {
         unit.setGovernmentColor(currentGovernment.getColor());
         map.getCell(x, y).addUnit(unit);
+    }
+
+    public void removeUnit(Unit unit, int x, int y) {
+        map.getCell(x, y).removeUnit(unit);
     }
 
     @NotNull

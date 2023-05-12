@@ -126,18 +126,22 @@ public class GameEntityUtils extends Utils {
         }
     }
 
-    public static void meleeAttack(ParsedLine parsedLine) {
+    public static void attack(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(
                 parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
 
         if (options == null) {
-            invalidFormatError("attack melee -x <enemy's x> -y <enemy's y>");
+            if (parsedLine.subCommand.equals("melee"))
+                invalidFormatError("attack melee -x <enemy's x> -y <enemy's y>");
+            else
+                invalidFormatError("attack ranged -x <enemy's x> -y <enemy's y>");
             return;
         }
 
-        switch (GameEntityController.meleeAttack(
+        switch (GameEntityController.attack(
                 Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y"))
+                Integer.parseInt(options.get("-y")),
+                parsedLine.subCommand.equals("ranged")
         )) {
             case ALREADY_ATTACKED:
                 AbstractMenu.show("Error: This unit has already attacked in this turn.");
@@ -149,22 +153,9 @@ public class GameEntityUtils extends Utils {
                 AbstractMenu.show("Error: No enemy unit in that location.");
                 break;
             case SUCCESS:
-                AbstractMenu.show("Successful.");
+                AbstractMenu.show("Your unit engaged in " + parsedLine.subCommand + " combat successfully.");
                 break;
         }
-    }
-
-    public static void rangedAttack(ParsedLine parsedLine) { //smelly. merge this with meleeAttack.
-        HashMap<String, String> options = formatOptions(
-                parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
-
-        if (options == null) {
-            invalidFormatError("attack ranged -x <enemy's x> -y <enemy's y>");
-            return;
-        }
-
-        GameEntityController.rangedAttack(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")));
     }
 
     public static void pourOil(ParsedLine parsedLine) {
