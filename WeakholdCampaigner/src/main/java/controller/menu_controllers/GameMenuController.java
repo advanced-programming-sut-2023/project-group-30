@@ -4,6 +4,8 @@ import controller.MainController; //TODO: check every import on every file, and 
 import controller.messages.MenuMessages;
 import model.Database;
 import model.attributes.Attribute;
+import model.attributes.building_attributes.Harvesting;
+import model.attributes.building_attributes.IncreasePopularity;
 import model.attributes.building_attributes.NeedsSpecialPlacement;
 import model.enums.Resource;
 import model.game.Game;
@@ -230,6 +232,12 @@ public class GameMenuController extends GameController {
 
                 Building building = currentGame.getBuilding(x, y);
                 if (building != null) {
+                    for(Attribute i : building.getAttributes()) {
+                        if (i instanceof Harvesting)
+                            ((Harvesting) i).nextTurn();
+                        else if (i instanceof IncreasePopularity)
+                            ((IncreasePopularity) i).nextTurn();
+                    }
 
                 }
             }

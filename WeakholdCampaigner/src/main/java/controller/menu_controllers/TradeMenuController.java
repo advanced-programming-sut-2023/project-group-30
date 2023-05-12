@@ -18,6 +18,11 @@ public class TradeMenuController {
             return MenuMessages.INVALID_RESOURCE;
         if (GameMenuController.getCurrentGame().getCurrentGovernment().getGold() < price)
             return MenuMessages.INVALID_MONEY;
+        Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
+        if (government.getMaximumResource(government.getResourcesCategory(getResourceByName(resource))) <
+                (government.getStoredUnit(government.getResourcesCategory(getResourceByName(resource)))
+                        + resourceAmount))
+            return MenuMessages.NOT_ENOUGH_SPACE;
 
         Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), resourceAmount
                 , getResourceByName(resource),

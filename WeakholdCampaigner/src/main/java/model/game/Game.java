@@ -153,7 +153,7 @@ public class Game {
         Map map = GameMenuController.getCurrentGame().getMap();
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
-                if (map.getCell(i, j).getBuilding().equals(building) &&
+                if (map.getCell(i, j).getBuilding().getBuildingName().equals(building.getBuildingName()) &&
                         building.getGovernmentColor().equals(government.getColor())) {
                     output++;
                 }

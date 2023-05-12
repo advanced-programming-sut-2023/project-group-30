@@ -56,5 +56,5 @@ public enum MenuMessages {
     BUILDING_EXISTENCE,
     INVALID_DIRECTION,
     ALREADY_ATTACKED,
-    TOO_FAR,
+    TOO_FAR, NOT_ENOUGH_SPACE,
 }
