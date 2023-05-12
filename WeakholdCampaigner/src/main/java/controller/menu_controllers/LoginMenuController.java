@@ -6,14 +6,14 @@ import model.Database;
 import model.User;
 import view.menus.AppMenu;
 
-public class LoginMenuController {
+public class LoginMenuController extends MenuController{
     private static int attemptNumber = 0;
 
     public static MenuMessages userLogin(String username, String password, Boolean stayLoggedIn) {
         User user = Database.getUserByName(username);
         if (user == null)
             return MenuMessages.USERNAME_DOES_NOT_EXIST;
-        else if (!user.getPassword().equals(password)) {
+        else if (!user.getPassword().equals(sha256(password))) {
             if (attemptNumber >= 1) {
                 AppMenu.show("you entered password incorrect " + LoginMenuController.getAttemptNumber()
                         + " times wait for " + (LoginMenuController.getAttemptNumber() * 5) + " seconds");
@@ -42,7 +42,7 @@ public class LoginMenuController {
                 if (!MenuController.isPasswordStrong(newPassword).equals(MenuMessages.STRONG_PASSWORD))
                     return MenuController.isPasswordStrong(newPassword);
                 else {
-                    user.setPassword(newPassword);
+                    user.setPassword(sha256(newPassword));
                     Database.saveAllUsers();
                     AppMenu.show("your new password: " + newPassword);
                     return MenuMessages.SECURITY_QUESTION_CONFIRMED;

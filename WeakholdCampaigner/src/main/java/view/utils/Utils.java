@@ -33,7 +33,7 @@ public abstract class Utils {
     }
 
     @Nullable
-    protected static HashMap<String, String> formatOptions(@NotNull HashMap<String, String> allUserInputOptions,
+    public static HashMap<String, String> formatOptions(@NotNull HashMap<String, String> allUserInputOptions,
                                                            @NotNull String[] allMandatoryOptions,
                                                            @NotNull String[] allOptionalOptions,
                                                            @NotNull String[] allIntegerOptions) {

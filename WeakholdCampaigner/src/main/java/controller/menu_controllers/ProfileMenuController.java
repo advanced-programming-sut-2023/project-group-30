@@ -32,7 +32,7 @@ public class ProfileMenuController extends MenuController {
     }
 
     public static MenuMessages changePassword(String oldPassword, String newPassword) {
-        if (!MainController.getCurrentUser().getPassword().equals(oldPassword)) {
+        if (!MainController.getCurrentUser().getPassword().equals(sha256(oldPassword))) {
             return MenuMessages.INCORRECT_CURRENT_PASSWORD;
         } else if (oldPassword.equals(newPassword)) {
             return MenuMessages.SAME_PASSWORD;
@@ -41,7 +41,7 @@ public class ProfileMenuController extends MenuController {
         }
         if (!AppMenu.getOneLine("Please enter your new password again: ").equals(newPassword))
             return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
-        MainController.getCurrentUser().setPassword(newPassword);
+        MainController.getCurrentUser().setPassword(sha256(newPassword));
         Database.saveAllUsers();
         return MenuMessages.PASSWORD_HAS_CHANGED;
     }
