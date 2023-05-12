@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class GameMenuController extends GameController {
-    public static MenuMessages createGame(int mapId, ArrayList<String> usernames){
+    public static MenuMessages createGame(int mapId, ArrayList<String> usernames) {
         if (Database.getMapById(mapId) == null) return MenuMessages.MAP_DOES_NOT_EXIST;
 
         //there should be 2 to 8 players including the host

@@ -72,6 +72,7 @@ public class Game {
     public ArrayList<Unit> getUnits(int x, int y) {
         return map.getCell(x, y).getUnits();
     }
+
     public void dropUnit(Unit unit, int x, int y) {
         unit.setGovernmentColor(currentGovernment.getColor());
         map.getCell(x, y).addUnit(unit);
@@ -86,7 +87,7 @@ public class Game {
         return currentGovernment;
     }
 
-    public void setTexture(int x, int y, MapCell.Texture texture){
+    public void setTexture(int x, int y, MapCell.Texture texture) {
         map.getCell(x, y).setTexture(texture);
     }
 
@@ -105,7 +106,7 @@ public class Game {
 
     public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) { //returns {x, y, numOfRemainingSteps}
         if ((fromX == toX && fromY == toY) || numOfSteps == 0)
-            return new int[] {fromX, fromY, numOfSteps};
+            return new int[]{fromX, fromY, numOfSteps};
 
 
         if (toX > fromX) if (Unit.canGoTo(
@@ -132,10 +133,10 @@ public class Game {
         ))
             return move(fromX, fromY - 1, toX, toY, numOfSteps - 1);
 
-        return new int[] {fromX, fromY, numOfSteps};
+        return new int[]{fromX, fromY, numOfSteps};
     }
 
-    public  ArrayList<Government> getGovernments() {
+    public ArrayList<Government> getGovernments() {
         return governments;
     }
 
@@ -146,13 +147,14 @@ public class Game {
     public void incrementTurn() {
         currentTurn++;
     }
-    public Integer numberOfSpecialBuildingInGovernment(Government government, Building building){
+
+    public Integer numberOfSpecialBuildingInGovernment(Government government, Building building) {
         Integer output = 0;
         Map map = GameMenuController.getCurrentGame().getMap();
-        for (int i = 0;i < map.getWidth();i++) {
-            for(int j = 0; j < map.getWidth();j++) {
-                if(map.getCell(i , j).getBuilding().equals(building) &&
-                        building.getGovernmentColor().equals(government.getColor())){
+        for (int i = 0; i < map.getWidth(); i++) {
+            for (int j = 0; j < map.getWidth(); j++) {
+                if (map.getCell(i, j).getBuilding().equals(building) &&
+                        building.getGovernmentColor().equals(government.getColor())) {
                     output++;
                 }
             }

@@ -160,8 +160,6 @@ public class Government {
     }
 
 
-
-
     public void addResources(Resource resource, double amount) {
         if (resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
                 || resource == Resource.CHEESE)
@@ -171,6 +169,7 @@ public class Government {
             weapons.put(resource, (int) (amount + weapons.get(resource)));
         else resources.put(resource, resources.get(resource) + amount);
     }
+
     public double getResources(Resource resource) {
         if (resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
                 || resource == Resource.CHEESE)

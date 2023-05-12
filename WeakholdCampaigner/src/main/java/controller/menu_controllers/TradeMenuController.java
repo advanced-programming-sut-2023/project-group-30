@@ -84,7 +84,6 @@ public class TradeMenuController {
         government.addGold(trade.getPrice());
 
 
-
         return MenuMessages.OK;
     }
 

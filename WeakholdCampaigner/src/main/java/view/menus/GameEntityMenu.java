@@ -54,7 +54,7 @@ public class GameEntityMenu extends AbstractMenu {
                 else if (attribute instanceof Shop)
                     commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
                 else if (attribute instanceof DrinkServing)
-                    commands.add(new Command("serve","drink",GameEntityUtils::serveDrink));
+                    commands.add(new Command("serve", "drink", GameEntityUtils::serveDrink));
                 else if (attribute instanceof Process)
                     commands.add(new Command("process", null, GameEntityUtils::process));
                 else if (attribute instanceof Capacity)

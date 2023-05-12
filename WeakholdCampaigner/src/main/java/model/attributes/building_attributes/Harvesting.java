@@ -18,6 +18,7 @@ public class Harvesting implements BuildingAttribute {
     public Resource getHarvestedResource() {
         return harvestedResource;
     }
+
     public void nextTurn() {
         //TODO : check capacity
 

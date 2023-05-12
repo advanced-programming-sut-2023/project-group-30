@@ -5,7 +5,7 @@ import model.enums.Resource;
 import model.game.Game;
 import model.game.Government;
 
-public class DrinkServing implements BuildingAttribute{
+public class DrinkServing implements BuildingAttribute {
 //    public void callForNextTurn() {
 //        Game game = GameMenuController.getCurrentGame();
 //        Government government = game.getCurrentGovernment();

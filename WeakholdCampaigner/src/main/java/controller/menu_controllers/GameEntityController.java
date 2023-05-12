@@ -98,7 +98,7 @@ public class GameEntityController extends GameController {
                 break;
             default:
                 return MenuMessages.INVALID_TYPE;
-                //break
+            //break
         }
 
         return MenuMessages.SUCCESS;

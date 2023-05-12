@@ -22,13 +22,13 @@ public class Unit extends GameEntity {
     private int[] currentLocation;
     private boolean hasAttacked;
 
-    protected Unit(HashMap<Resource, Integer> productionCost , ArrayList<Attribute> attributes, UnitName unitName,
+    protected Unit(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes, UnitName unitName,
                    int speed, int defence, int x, int y) {
         super(productionCost, attributes);
         this.unitName = unitName;
         this.destinations = new ArrayList<>();
         this.isPatrolling = false;
-        this.currentLocation = new int[] {x, y};
+        this.currentLocation = new int[]{x, y};
         this.speed = speed;
         this.remainingMovement = speed;
         this.defence = defence;
@@ -59,7 +59,7 @@ public class Unit extends GameEntity {
     }
 
     public void addDestination(int x, int y) {
-        destinations.add(new int[] {x, y});
+        destinations.add(new int[]{x, y});
     }
 
     public void clearDestinations() {

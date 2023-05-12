@@ -5,8 +5,8 @@ public class Map {
 
     public Map(int mapWidth) {
         map = new MapCell[mapWidth][mapWidth];
-        for (int i =0; i< mapWidth;i++){
-            for (int j = 0; j < mapWidth;j++){
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapWidth; j++) {
                 map[i][j] = new MapCell();
             }
         }

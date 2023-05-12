@@ -493,14 +493,13 @@ public class GameUtils extends Utils {
                     }
                     if (GameMenuController.getCurrentGame().getUnits(x, y) != null) {
                         System.out.println("Number of units : " + GameMenuController.getCurrentGame().getUnits(x, y).size());
-                    }
-                    else {
+                    } else {
                         System.out.println("Number of units : 0");
                     }
                     if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
                         System.out.println("Building is : "
                                 + GameMenuController.getCurrentGame().getBuilding(x, y).getBuildingName());
-                    }else {
+                    } else {
                         System.out.println("There is no building on this cell");
                     }
                     break;
@@ -1008,7 +1007,7 @@ public class GameUtils extends Utils {
             return;
         }
         switch (MapController.dropTree(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")), options.get("-t"))){
+                Integer.parseInt(options.get("-y")), options.get("-t"))) {
             case BUILDING_EXISTENCE:
                 System.out.println("There is a building on these tiles!");
                 break;
