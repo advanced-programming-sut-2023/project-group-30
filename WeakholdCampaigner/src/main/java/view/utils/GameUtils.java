@@ -1,9 +1,8 @@
 package view.utils;
 
 import controller.MainController;
-import controller.menu_controllers.*;
-import model.Database;
 import model.game.game_entities.Building;
+import model.game.game_entities.BuildingName;
 import model.game.game_entities.Unit;
 import model.game.game_entities.UnitName;
 import model.game.map.MapCell;
@@ -1068,5 +1067,35 @@ public class GameUtils extends Utils {
         }
 
         AbstractMenu.show("It is turn number " + GameMenuController.getTurn() + ".");
+    }
+
+    public static void showUnits(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("show units");
+            return;
+        }
+
+        for (UnitName unitName :
+                UnitName.values()) {
+            AbstractMenu.show(unitName.name);
+        }
+    }
+
+    public static void showBuildings(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("show buildings");
+            return;
+        }
+
+        for (BuildingName buildingName :
+                BuildingName.values()) {
+            AbstractMenu.show(buildingName.name);
+        }
     }
 }

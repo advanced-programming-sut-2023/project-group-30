@@ -44,7 +44,7 @@ public enum BuildingName {
     WOOD_CUTTER("wood cutter"),
     MERCENARY_POST("mercenary post"),
     ;
-    private final String name;
+    public final String name;
 
     BuildingName(String name) {
         this.name = name;
