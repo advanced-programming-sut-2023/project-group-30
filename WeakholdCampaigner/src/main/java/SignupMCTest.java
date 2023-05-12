@@ -1,14 +1,7 @@
-import controller.menu_controllers.MenuController;
 import controller.menu_controllers.SignupMenuController;
 import controller.messages.MenuMessages;
-import model.PasswordRecoveryQNA;
-import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import view.menus.AppMenu;
-import view.utils.Utils;
-
-import java.util.HashMap;
 
 public class SignupMCTest {
     @Test
@@ -65,11 +58,18 @@ public class SignupMCTest {
         MenuMessages message = SignupMenuController.isPasswordStrong("DAWe23sS");
         Assertions.assertEquals(message, MenuMessages.NO_NON_WORD_NUMBER_CHARACTER);
     }
+
     @Test
     public void wrongPasswordConfirmation(){
         MenuMessages message = SignupMenuController.createUser("Mamadam", "Sa23!s",
                 "Ssa", "mamad@gmail.com", "feri", null);
         Assertions.assertEquals(MenuMessages.WRONG_PASSWORD_CONFIRMATION, message);
+    }
+
+    @Test
+    public void strongPassword(){
+        MenuMessages message = SignupMenuController.isPasswordStrong("ans@#23AD");
+        Assertions.assertEquals(MenuMessages.STRONG_PASSWORD, message);
     }
 
     @Test

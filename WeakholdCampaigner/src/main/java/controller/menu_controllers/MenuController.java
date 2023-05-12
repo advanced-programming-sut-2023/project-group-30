@@ -47,14 +47,20 @@ public class MenuController {
         return emailMatcher.matches();
     }
 
-    public static String getSHA(String input) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] cryptogtaphicBytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
-        BigInteger number = new BigInteger(1, cryptogtaphicBytes);
-        StringBuilder hexString = new StringBuilder(number.toString(16));
-        while (hexString.length() < 64) {
-            hexString.insert(0, '0');
+    public static String sha256(final String base) {
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            final byte[] hash = digest.digest(base.getBytes("UTF-8"));
+            final StringBuilder hexString = new StringBuilder();
+            for (int i = 0; i < hash.length; i++) {
+                final String hex = Integer.toHexString(0xff & hash[i]);
+                if (hex.length() == 1)
+                    hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        return hexString.toString();
-    }//TODO: use this method in logic and profile and signup controller
+    }
 }

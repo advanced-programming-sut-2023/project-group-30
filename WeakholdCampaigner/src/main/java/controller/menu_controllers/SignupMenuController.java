@@ -78,9 +78,9 @@ public class SignupMenuController extends MenuController {
             passwordRecoveryQNA = new PasswordRecoveryQNA(Database.getSecurityQuestions().get(questionNumberInt - 1)
                     .getQuestion(), answer);
         }
-        User user = new User(username, password, nickname, email, slogan, passwordRecoveryQNA);
+        User user = new User(username, sha256(password), nickname, email, slogan, passwordRecoveryQNA);
         Database.addUser(user);
-        return MenuMessages.USER_CREATED_SUCCESSFULLY;//TODO: return callligraphic password
+        return MenuMessages.USER_CREATED_SUCCESSFULLY;
     }
 
 
