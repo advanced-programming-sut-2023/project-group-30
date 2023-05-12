@@ -37,10 +37,10 @@ public class MapController {
         if (secondInvalidCoordinate(x, y)) {
             return MenuMessages.INVALID_LOCATION;
         }
-        if(GameMenuController.getCurrentGame().getBuilding(x, y) != null){
+        if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
             return MenuMessages.BUILDING_EXISTENCE;
         }
-        if(findingTextureType(texure) == null){
+        if (findingTextureType(texure) == null) {
             return MenuMessages.INVALID_TYPE;
         }
         GameMenuController.getCurrentGame().setTexture(x, y, findingTextureType(texure));
@@ -73,6 +73,7 @@ public class MapController {
             return x < 0 || x > 200;
         }
     }
+
     public static MapCell.Texture findingTextureType(String texture) {
         switch (texture) {
             case "land":
@@ -107,28 +108,30 @@ public class MapController {
                 return null;
         }
     }
-    public static MenuMessages setBlockTexture(int x,int y, int x2, int y2, String type){
-        if(secondInvalidCoordinate(x, y) || secondInvalidCoordinate(x2, y2)
+
+    public static MenuMessages setBlockTexture(int x, int y, int x2, int y2, String type) {
+        if (secondInvalidCoordinate(x, y) || secondInvalidCoordinate(x2, y2)
                 || (x2 < x) || (y2 < y))
             return MenuMessages.INVALID_LOCATION;
-        if(findingTextureType(type) == null){
+        if (findingTextureType(type) == null) {
             return MenuMessages.INVALID_TYPE;
         }
-        for(int i = x; i <= x2; i++){
-            for (int j = y; j <= y2;j++){
-                if(GameMenuController.getCurrentGame().getBuilding(i , j) != null){
+        for (int i = x; i <= x2; i++) {
+            for (int j = y; j <= y2; j++) {
+                if (GameMenuController.getCurrentGame().getBuilding(i, j) != null) {
                     return MenuMessages.BUILDING_EXISTENCE;
                 }
             }
         }
-        for(int i = x; i <= x2; i++){
-            for (int j = y; j <= y2;j++){
-                GameMenuController.getCurrentGame().setTexture(i , j, findingTextureType(type));
+        for (int i = x; i <= x2; i++) {
+            for (int j = y; j <= y2; j++) {
+                GameMenuController.getCurrentGame().setTexture(i, j, findingTextureType(type));
             }
         }
         return MenuMessages.OK;
     }
-    public static MenuMessages clear(int x, int y){
+
+    public static MenuMessages clear(int x, int y) {
         if (secondInvalidCoordinate(x, y)) {
             return MenuMessages.INVALID_LOCATION;
         }
@@ -139,19 +142,20 @@ public class MapController {
         GameMenuController.getCurrentGame().getMap().getCell(x, y).setUnits(null);
         return MenuMessages.OK;
     }
-    public static MenuMessages dropRock(int x, int y, String direction){
+
+    public static MenuMessages dropRock(int x, int y, String direction) {
         if (secondInvalidCoordinate(x, y)) {
             return MenuMessages.INVALID_LOCATION;
         }
-        if(!isDirectionTrue(direction)){
+        if (!isDirectionTrue(direction)) {
             return MenuMessages.INVALID_DIRECTION;
         }
-        if(GameMenuController.getCurrentGame().getBuilding(x , y) != null){
+        if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
             return MenuMessages.BUILDING_EXISTENCE;
         }
         Building building = Building.getInstance("rock");
         GameMenuController.getCurrentGame().dropBuilding(building, x, y);
-        if(direction.equals("r")){
+        if (direction.equals("r")) {
             ArrayList<String> directionslist = new ArrayList<>();
             directionslist.add("n");
             directionslist.add("e");
@@ -160,38 +164,41 @@ public class MapController {
             Random random = new Random();
             String d = directionslist.get(random.nextInt(4));
             GameMenuController.getCurrentGame().getBuilding(x, y).setDirection(d);
-        }else {
+        } else {
             GameMenuController.getCurrentGame().getBuilding(x, y).setDirection(direction);
         }
         return MenuMessages.OK;
     }
-    public static boolean isDirectionTrue(String direction){
-        String []directions = new String[]{"n", "e", "w", "s", "r"};
-        for (String d : directions){
-            if(direction.equals(d))
+
+    public static boolean isDirectionTrue(String direction) {
+        String[] directions = new String[]{"n", "e", "w", "s", "r"};
+        for (String d : directions) {
+            if (direction.equals(d))
                 return true;
         }
         return false;
     }
-    public static MenuMessages dropTree(int x, int y, String type){
+
+    public static MenuMessages dropTree(int x, int y, String type) {
         if (secondInvalidCoordinate(x, y)) {
             return MenuMessages.INVALID_LOCATION;
         }
-        if(GameMenuController.getCurrentGame().getBuilding(x , y) != null){
+        if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
             return MenuMessages.BUILDING_EXISTENCE;
         }
-        if(findingTreeType(type) == null){
+        if (findingTreeType(type) == null) {
             return MenuMessages.INVALID_TYPE;
         }
-        if(!isTextureAppropriateForTree(x, y)){
+        if (!isTextureAppropriateForTree(x, y)) {
             return MenuMessages.CELL_HAS_INCOMPATIBLE_TEXTURE;
         }
-        Building building =Building.getInstance(type.replace("_", " "));
+        Building building = Building.getInstance(type.replace("_", " "));
         GameMenuController.getCurrentGame().dropBuilding(building, x, y);
         return MenuMessages.OK;
     }
-    public static BuildingName findingTreeType(String type){
-        switch (type){
+
+    public static BuildingName findingTreeType(String type) {
+        switch (type) {
             case "desert_shrub":
                 return BuildingName.DESERT_SHRUB;
             case "olive_tree":
@@ -206,7 +213,8 @@ public class MapController {
                 return null;
         }
     }
-    public static boolean isTextureAppropriateForTree(int x, int y){
+
+    public static boolean isTextureAppropriateForTree(int x, int y) {
         ArrayList<MapCell.Texture> textures = new ArrayList<>();
         textures.add(MapCell.Texture.DEEP_WATER);
         textures.add(MapCell.Texture.SHALLOW_WATER);
@@ -216,8 +224,8 @@ public class MapController {
         textures.add(MapCell.Texture.GRAVEL);
         textures.add(MapCell.Texture.IRON);
         textures.add(MapCell.Texture.STONE);
-        for(MapCell.Texture texture : textures){
-            if(GameMenuController.getCurrentGame().getTexture(x, y).equals(texture))
+        for (MapCell.Texture texture : textures) {
+            if (GameMenuController.getCurrentGame().getTexture(x, y).equals(texture))
                 return false;
         }
         return true;

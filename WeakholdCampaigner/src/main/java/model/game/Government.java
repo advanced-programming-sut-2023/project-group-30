@@ -4,6 +4,7 @@ import controller.menu_controllers.GameMenuController;
 import model.User;
 import model.attributes.building_attributes.Capacity;
 import model.enums.Resource;
+import model.game.game_entities.Building;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,17 +161,25 @@ public class Government {
     }
 
 
-
-
     public void addResources(Resource resource, double amount) {
         if (resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
-                || resource == Resource.CHEESE)
-            foods.put(resource, amount + foods.get(resource));
-        else if (resource == Resource.BOW || resource == Resource.SWORD || resource == Resource.ARMOR
-                || resource == Resource.SPEAR)
-            weapons.put(resource, (int) (amount + weapons.get(resource)));
-        else resources.put(resource, resources.get(resource) + amount);
+                || resource == Resource.CHEESE) {
+            if (getMaximumResource(Capacity.Stored.FOOD) < (getStoredUnit(Capacity.Stored.FOOD) + amount)) ;
+            else
+                foods.put(resource, amount + foods.get(resource));
+        } else if (resource == Resource.BOW || resource == Resource.SWORD || resource == Resource.ARMOR
+                || resource == Resource.SPEAR) {
+            if (getMaximumResource(Capacity.Stored.WEAPON) < (getStoredUnit(Capacity.Stored.WEAPON) + amount)) ;
+            else
+                weapons.put(resource, (int) (amount + weapons.get(resource)));
+        } else {
+            if (getMaximumResource(Capacity.Stored.RECOURSE) < (getStoredUnit(Capacity.Stored.RECOURSE) + amount)) ;
+            else
+            resources.put(resource, resources.get(resource) + amount);
+        }
+
     }
+
     public double getResources(Resource resource) {
         if (resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
                 || resource == Resource.CHEESE)
@@ -179,6 +188,17 @@ public class Government {
                 || resource == Resource.SPEAR)
             return weapons.get(resource);
         else return resources.get(resource);
+
+    }
+
+    public Capacity.Stored getResourcesCategory(Resource resource) {
+        if (resource == Resource.APPLE || resource == Resource.MEAT || resource == Resource.BREAD
+                || resource == Resource.CHEESE)
+            return Capacity.Stored.FOOD;
+        else if (resource == Resource.BOW || resource == Resource.SWORD || resource == Resource.ARMOR
+                || resource == Resource.SPEAR)
+            return Capacity.Stored.WEAPON;
+        else return Capacity.Stored.RECOURSE;
 
     }
 
@@ -348,6 +368,17 @@ public class Government {
         }
 
         return sum;
+    }
+
+    public int getMaximumResource(Capacity.Stored stored) {
+        if (stored == Capacity.Stored.FOOD)
+            return GameMenuController.getCurrentGame().numberOfSpecialBuildingInGovernment(this
+                    , Building.getInstance("food store")) * 100;
+        else if (stored == Capacity.Stored.WEAPON)
+            return GameMenuController.getCurrentGame().numberOfSpecialBuildingInGovernment(this,
+                    Building.getInstance("armory")) * 40;
+        return GameMenuController.getCurrentGame().numberOfSpecialBuildingInGovernment(this
+                , Building.getInstance("store")) * 100;
     }
 
     public boolean purchase(HashMap<Resource, Integer> productionCost) {

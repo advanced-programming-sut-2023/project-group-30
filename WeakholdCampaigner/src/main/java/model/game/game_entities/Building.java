@@ -65,7 +65,8 @@ public class Building extends GameEntity {
                 attributes.add(new BridgeMobility(true));
                 category = Category.CASTLE;
                 break;
-            case LOOKOUT_TOWER: case PERIMETER_TOWER:
+            case LOOKOUT_TOWER:
+            case PERIMETER_TOWER:
                 HP = 100;
                 productionCost.put(Resource.STONE, 10);
                 category = Category.CASTLE;

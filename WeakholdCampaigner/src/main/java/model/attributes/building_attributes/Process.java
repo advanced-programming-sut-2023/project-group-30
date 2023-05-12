@@ -2,7 +2,7 @@ package model.attributes.building_attributes;
 
 import model.enums.Resource;
 
-public class Process implements BuildingAttribute{
+public class Process implements BuildingAttribute {
     private Resource primarySubstance;
     private Resource finallySubstance;
 

@@ -1,6 +1,6 @@
 package model.attributes.building_attributes;
 
-public class Capacity implements BuildingAttribute{
+public class Capacity implements BuildingAttribute {
     private final int maxCapacity;
     private final Stored storedItem;
 
@@ -16,7 +16,8 @@ public class Capacity implements BuildingAttribute{
     public int getMaxCapacity() {
         return maxCapacity;
     }
+
     public enum Stored {
-        FOOD,RECOURSE,WEAPON;
+        FOOD, RECOURSE, WEAPON;
     }
 }

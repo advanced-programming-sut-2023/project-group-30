@@ -1,4 +1,4 @@
 package model.attributes.building_attributes;
 
-public class ChangeFoodRate implements BuildingAttribute{
+public class ChangeFoodRate implements BuildingAttribute {
 }

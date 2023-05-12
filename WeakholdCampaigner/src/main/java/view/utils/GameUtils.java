@@ -7,6 +7,11 @@ import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 import model.game.game_entities.UnitName;
 import model.game.map.MapCell;
+import controller.menu_controllers.GameMenuController;
+import controller.menu_controllers.MapController;
+import controller.menu_controllers.ShopMenuController;
+import controller.menu_controllers.TradeMenuController;
+import view.menus.AbstractMenu;
 import view.menus.AppMenu; //TODO: it is better to put AbstractMenu instead ?
 import view.ParsedLine;
 
@@ -488,14 +493,13 @@ public class GameUtils extends Utils {
                     }
                     if (GameMenuController.getCurrentGame().getUnits(x, y) != null) {
                         System.out.println("Number of units : " + GameMenuController.getCurrentGame().getUnits(x, y).size());
-                    }
-                    else {
+                    } else {
                         System.out.println("Number of units : 0");
                     }
                     if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
                         System.out.println("Building is : "
                                 + GameMenuController.getCurrentGame().getBuilding(x, y).getBuildingName());
-                    }else {
+                    } else {
                         System.out.println("There is no building on this cell");
                     }
                     break;
@@ -789,6 +793,9 @@ public class GameUtils extends Utils {
             case INVALID_MONEY:
                 System.out.println("you does not haven enough gold coin");
                 break;
+            case NOT_ENOUGH_SPACE:
+                System.out.println("not enough space");
+                break;
             case OK:
                 System.out.println("your request/donation added");
                 break;
@@ -863,6 +870,9 @@ public class GameUtils extends Utils {
                 break;
             case INVALID_COMMAND:
                 System.out.println("error: you entered your confirmation incorrect");
+                break;
+            case NOT_ENOUGH_SPACE:
+                System.out.println("not enough space");
                 break;
             case CANCEL:
                 System.out.println("your purchase canceled successfully");
@@ -1003,7 +1013,7 @@ public class GameUtils extends Utils {
             return;
         }
         switch (MapController.dropTree(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")), options.get("-t"))){
+                Integer.parseInt(options.get("-y")), options.get("-t"))) {
             case BUILDING_EXISTENCE:
                 System.out.println("There is a building on these tiles!");
                 break;
@@ -1021,5 +1031,42 @@ public class GameUtils extends Utils {
                 System.out.println("The texture of cell is inappropriate for tree");
                 break;
         }
+
+    }
+
+    public static void endTurn(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("end turn");
+            return;
+        }
+
+        GameMenuController.endOnePlayersTurn();
+    }
+
+    public static void whoseTurnIsIt(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("whose turn");
+            return;
+        }
+
+        AbstractMenu.show("It is " + GameMenuController.whoseTurn() + "'s turn.");
+    }
+
+    public static void whichTurnIsIt(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("which turn");
+            return;
+        }
+
+        AbstractMenu.show("It is turn number " + GameMenuController.getTurn() + ".");
     }
 }

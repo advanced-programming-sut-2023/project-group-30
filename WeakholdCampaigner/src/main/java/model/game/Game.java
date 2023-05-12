@@ -4,13 +4,11 @@ import controller.menu_controllers.GameMenuController;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 import model.game.map.Map;
-import model.User;
 import model.game.map.MapCell;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class Game {
     private int currentTurn;
@@ -50,11 +48,11 @@ public class Game {
         this.currentGovernment = governments.get(0);
     }
 
-    public int getMapX() {
+    public int getMapWidth() {
         return map.getWidth();
     }
 
-    public int getMapY() {
+    public int getMapHeight() {
         return map.getWidth();
     }
 
@@ -72,9 +70,14 @@ public class Game {
     public ArrayList<Unit> getUnits(int x, int y) {
         return map.getCell(x, y).getUnits();
     }
-    public void dropUnit(Unit unit, int x, int y) {
+
+    public void dropUnit(@NotNull Unit unit, int x, int y) {
         unit.setGovernmentColor(currentGovernment.getColor());
         map.getCell(x, y).addUnit(unit);
+    }
+
+    public void removeUnit(Unit unit, int x, int y) { //does not actually need x,y
+        map.getCell(x, y).removeUnit(unit);
     }
 
     @NotNull
@@ -86,7 +89,7 @@ public class Game {
         return currentGovernment;
     }
 
-    public void setTexture(int x, int y, MapCell.Texture texture){
+    public void setTexture(int x, int y, MapCell.Texture texture) {
         map.getCell(x, y).setTexture(texture);
     }
 
@@ -94,9 +97,20 @@ public class Game {
         return map;
     }
 
-    public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) {
+    public boolean nextGovernment() { //returns true if a full turn has passed.
+        int nextGovernmentIndex = governments.indexOf(currentGovernment) + 1;
+        if (nextGovernmentIndex >= governments.size()) nextGovernmentIndex = 0;
+
+        this.currentGovernment = governments.get(nextGovernmentIndex);
+
+        return nextGovernmentIndex == 0; //returns true if all players have said "endTurn".
+    }
+
+    public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) { //does not change anything,
+        // simply returns {x, y, numOfRemainingSteps} where x,y is the destination the unit can reach
+        // on its way to toX,toY with its numberOfSteps as a limit.
         if ((fromX == toX && fromY == toY) || numOfSteps == 0)
-            return new int[] {fromX, fromX};
+            return new int[]{fromX, fromY, numOfSteps};
 
 
         if (toX > fromX) if (Unit.canGoTo(
@@ -123,20 +137,31 @@ public class Game {
         ))
             return move(fromX, fromY - 1, toX, toY, numOfSteps - 1);
 
-        return new int[] {fromX, fromY};
+        return new int[]{fromX, fromY, numOfSteps};
     }
 
-    public  ArrayList<Government> getGovernments() {
+    public ArrayList<Government> getGovernments() {
         return governments;
     }
-    public Integer numberOfSpecialBuildingInGovernment(Government government, Building building){
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void incrementTurn() {
+        currentTurn++;
+    }
+
+    public Integer numberOfSpecialBuildingInGovernment(Government government, Building building) {
         Integer output = 0;
         Map map = GameMenuController.getCurrentGame().getMap();
-        for (int i = 0;i < map.getWidth();i++) {
-            for(int j = 0; j < map.getWidth();j++) {
-                if(map.getCell(i , j).getBuilding().equals(building) &&
-                        building.getGovernmentColor().equals(government.getColor())){
-                    output++;
+        for (int i = 0; i < map.getWidth(); i++) {
+            for (int j = 0; j < map.getWidth(); j++) {
+                if (map.getCell(i, j).getBuilding() != null) {
+                    if (map.getCell(i, j).getBuilding().getBuildingName().equals(building.getBuildingName()) &&
+                            building.getGovernmentColor().equals(government.getColor())) {
+                        output++;
+                    }
                 }
             }
         }

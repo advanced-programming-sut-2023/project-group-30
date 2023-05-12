@@ -10,6 +10,7 @@ public class IncreasePopularity implements BuildingAttribute {
     public IncreasePopularity(int amount) {
         this.amount = amount;
     }
+
     public void nextTurn() {
         Game game = GameMenuController.getCurrentGame();
         Government government = game.getCurrentGovernment();

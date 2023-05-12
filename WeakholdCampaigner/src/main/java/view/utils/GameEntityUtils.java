@@ -60,6 +60,9 @@ public class GameEntityUtils extends Utils {
             case CELL_HAS_INCOMPATIBLE_TEXTURE:
                 AbstractMenu.show("Error: The destination is unreachable due to its texture.");
                 break;
+            case NO_REMAINING_MOVEMENT:
+                AbstractMenu.show("Error: This unit does not have any remaining movement.");
+                break;
             case IS_PATROLLING:
                 AbstractMenu.show("Error: The Unit is currently patrolling.");
                 AbstractMenu.show("You can use 'unit halt' to end its patrol.");
@@ -115,33 +118,47 @@ public class GameEntityUtils extends Utils {
             return;
         }
 
-        GameEntityController.setStance(options.get("-s"));
+        switch (GameEntityController.setStance(options.get("-s"))) {
+            case INVALID_TYPE:
+                AbstractMenu.show("Error: " +
+                        "The unit stance can be either 'standing', 'defensive' or 'offensive'.");
+                break;
+            case SUCCESS:
+                AbstractMenu.show("Unit stance set successfully.");
+                break;
+        }
     }
 
-    public static void meleeAttack(ParsedLine parsedLine) {
+    public static void attack(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(
                 parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
 
         if (options == null) {
-            invalidFormatError("attack melee -x <enemy's x> -y <enemy's y>");
+            if (parsedLine.subCommand.equals("melee"))
+                invalidFormatError("attack melee -x <enemy's x> -y <enemy's y>");
+            else
+                invalidFormatError("attack ranged -x <enemy's x> -y <enemy's y>");
             return;
         }
 
-        GameEntityController.meleeAttack(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")));
-    }
-
-    public static void rangedAttack(ParsedLine parsedLine) { //smelly. merge this with meleeAttack.
-        HashMap<String, String> options = formatOptions(
-                parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
-
-        if (options == null) {
-            invalidFormatError("attack ranged -x <enemy's x> -y <enemy's y>");
-            return;
+        switch (GameEntityController.attack(
+                Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y")),
+                parsedLine.subCommand.equals("ranged")
+        )) {
+            case ALREADY_ATTACKED:
+                AbstractMenu.show("Error: This unit has already attacked in this turn.");
+                break;
+            case TOO_FAR:
+                AbstractMenu.show("Error: The selected location is out of your unit's range.");
+                break;
+            case NO_MATCHING_UNIT:
+                AbstractMenu.show("Error: No enemy unit in that location.");
+                break;
+            case SUCCESS:
+                AbstractMenu.show("Your unit engaged in " + parsedLine.subCommand + " combat successfully.");
+                break;
         }
-
-        GameEntityController.rangedAttack(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")));
     }
 
     public static void pourOil(ParsedLine parsedLine) {

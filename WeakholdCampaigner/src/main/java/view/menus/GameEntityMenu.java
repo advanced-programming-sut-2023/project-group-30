@@ -31,9 +31,9 @@ public class GameEntityMenu extends AbstractMenu {
             for (Attribute attribute :
                     gameEntity.getAttributes()) {
                 if (attribute instanceof CloseCombat)
-                    commands.add(new Command("attack", "melee", GameEntityUtils::meleeAttack));
+                    commands.add(new Command("attack", "melee", GameEntityUtils::attack));
                 else if (attribute instanceof RangedAttack)
-                    commands.add(new Command("attack", "ranged", GameEntityUtils::rangedAttack));
+                    commands.add(new Command("attack", "ranged", GameEntityUtils::attack));
                 else if (attribute instanceof PourOil)
                     commands.add(new Command("pour", "oil", GameEntityUtils::pourOil));
                 else if (attribute instanceof DigTunnel)
@@ -54,7 +54,7 @@ public class GameEntityMenu extends AbstractMenu {
                 else if (attribute instanceof Shop)
                     commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
                 else if (attribute instanceof DrinkServing)
-                    commands.add(new Command("serve","drink",GameEntityUtils::serveDrink));
+                    commands.add(new Command("serve", "drink", GameEntityUtils::serveDrink));
                 else if (attribute instanceof Process)
                     commands.add(new Command("process", null, GameEntityUtils::process));
                 else if (attribute instanceof Capacity)

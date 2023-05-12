@@ -8,6 +8,7 @@ import model.game.Game;
 import model.game.map.Map;
 import org.jetbrains.annotations.Nullable;
 import view.menus.AppMenu;
+
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class Database {
         games = new HashMap<>();
     }
 
-    public static Integer addGame(Game game){
+    public static Integer addGame(Game game) {
         int id = games.size() + 1;
         games.put(id, game);
         return id;
@@ -96,6 +97,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     private static void loadSlogan() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/slogan.json")) {
