@@ -217,16 +217,30 @@ public class GameMenuController extends GameController {
         for (Government i : governments)
             i.updateAllForNextTurn();
 
-        //loop through every unit that is present on the map.
-        //TODO: might be too time-consuming to search for them.
+        //loop through every unit and meet their needs:
+        for (Unit unit :
+                MapCell.allMapUnits) {
+            unit.resetRemainingMovement();
+            unit.setHasAttacked(false);
+
+            //move the unit if needed:
+            //Beware that having the units move and rest(reset their movement limit) in the same loop can be bug-prone.
+            int[] unitDestination;
+            while ((unitDestination = unit.getFirstDestination()) != null) {
+                if (unit.getRemainingMovement() <= 0) break;
+
+                if (unitDestination[0] == unit.getCurrentX() && unitDestination[1] == unit.getCurrentY()) {
+                    unit.removeFirstDestination();
+                    continue;
+                }
+
+                autoMoveUnit(unit, unitDestination[0], unitDestination[1]);
+            }
+        }
+
+        //TODO: might be too time-consuming to search for entities this way.
         for (int x = 0; x < currentGame.getMapX(); x++)
             for (int y = 0; y < currentGame.getMapY(); y++) {
-                for (Unit unit :
-                        currentGame.getUnits(x, y)) {
-                    unit.resetRemainingMovement();
-                    unit.setHasAttacked(false);
-                    //TODO: consider the unit's stance
-                }
 
                 Building building = currentGame.getBuilding(x, y);
                 if (building != null) {

@@ -3,6 +3,7 @@ package model.game.game_entities;
 import model.attributes.Attribute;
 import model.enums.Resource;
 import model.game.map.MapCell;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,5 +142,16 @@ public class Unit extends GameEntity {
 
     public int getMeleeDamage() {
         return meleeDamage;
+    }
+
+    @Nullable
+    public int[] getFirstDestination() {
+        if (this.destinations.size() == 0) return null;
+        return this.destinations.get(0);
+    }
+
+    public void removeFirstDestination() {
+        if (this.destinations.size() == 0) return;
+        this.destinations.remove(0);
     }
 }

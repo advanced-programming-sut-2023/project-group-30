@@ -60,6 +60,9 @@ public class GameEntityUtils extends Utils {
             case CELL_HAS_INCOMPATIBLE_TEXTURE:
                 AbstractMenu.show("Error: The destination is unreachable due to its texture.");
                 break;
+            case NO_REMAINING_MOVEMENT:
+                AbstractMenu.show("Error: This unit does not have any remaining movement.");
+                break;
             case IS_PATROLLING:
                 AbstractMenu.show("Error: The Unit is currently patrolling.");
                 AbstractMenu.show("You can use 'unit halt' to end its patrol.");

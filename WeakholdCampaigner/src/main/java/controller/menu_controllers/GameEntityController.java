@@ -58,13 +58,12 @@ public class GameEntityController extends GameController {
         if (currentUnit.isPatrolling())
             return MenuMessages.IS_PATROLLING;
 
-        int[] tempDestination = currentGame.move(
-                currentUnit.getCurrentX(), currentUnit.getCurrentY(), destinationX, destinationY,
-                currentUnit.getRemainingMovement());
-        currentUnit.setCurrentLocation(tempDestination[0], tempDestination[1]);
-        currentUnit.setRemainingMovement(tempDestination[2]);
+        if (currentUnit.getRemainingMovement() <= 0) return MenuMessages.NO_REMAINING_MOVEMENT;
 
-        currentUnit.addDestination(destinationX, destinationY); //TODO: remove reached destinations in nextTurn()
+        autoMoveUnit(currentUnit, destinationX, destinationY);
+
+        currentUnit.addDestination(destinationX, destinationY);
+        //we remove reached destinations in nextTurn() so that the unit can be momentarily seen as moving.
         return MenuMessages.SUCCESS;
     }
 

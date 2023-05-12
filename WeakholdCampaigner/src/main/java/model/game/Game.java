@@ -108,7 +108,9 @@ public class Game {
         return nextGovernmentIndex == 0; //returns true if all players have said "endTurn".
     }
 
-    public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) { //returns {x, y, numOfRemainingSteps}
+    public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) { //does not change anything,
+        // simply returns {x, y, numOfRemainingSteps} where x,y is the destination the unit can reach
+        // on its way to toX,toY with its numberOfSteps as a limit.
         if ((fromX == toX && fromY == toY) || numOfSteps == 0)
             return new int[]{fromX, fromY, numOfSteps};
 
