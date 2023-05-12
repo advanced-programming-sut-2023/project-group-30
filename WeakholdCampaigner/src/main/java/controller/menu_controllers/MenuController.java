@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MenuController {
-    protected static boolean isUsernameValid(String username) {
+    public static boolean isUsernameValid(String username) {
         String validUsernameReg = "^[a-zA-Z0-9_]+$";
         Pattern usernamePattern = Pattern.compile(validUsernameReg);
         Matcher usernameMatcher = usernamePattern.matcher(username);
@@ -40,7 +40,7 @@ public class MenuController {
         }
     }
 
-    protected static boolean isEmailValid(String email) {
+    public static boolean isEmailValid(String email) {
         String validEmaileReg = "^[a-zA-Z0-9._]+@[a-zA-Z0-9._]+\\.[a-zA-Z0-9._]+$";
         Pattern emailPattern = Pattern.compile(validEmaileReg);
         Matcher emailMatcher = emailPattern.matcher(email);

@@ -429,7 +429,7 @@ public class GameUtils extends Utils {
 
     public static boolean isAnyUnitPatrolling(ArrayList<Unit> units) {
         for (Unit unit : units) {
-            if (unit.isPatrolling()) {
+            if (unit.isMoving()) {
                 return true;
             }
         }
