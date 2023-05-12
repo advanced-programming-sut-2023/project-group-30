@@ -125,8 +125,8 @@ public class GameUtils extends Utils {
     public static void printMapCellComponents(int x, int y) {
         if (GameMenuController.getCurrentGame().getUnits(x, y).size() != 0 &&
                 isAnyUnitMoving(GameMenuController.getCurrentGame().getUnits(x, y))) {
-                System.out.print(setTextureColor
-                        (GameMenuController.getCurrentGame().getTexture(x, y), "S"));
+            System.out.print(setTextureColor
+                    (GameMenuController.getCurrentGame().getTexture(x, y), "S"));
         } else if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
             if (GameMenuController.getCurrentGame().getBuilding(x, y).getCategory()
                     != Building.Category.TREE) {
@@ -1045,6 +1045,7 @@ public class GameUtils extends Utils {
         }
 
         GameMenuController.endOnePlayersTurn();
+        AppMenu.show("Successful. It is next player's turn. type 'whose turn' to see who they are.");
     }
 
     public static void whoseTurnIsIt(ParsedLine parsedLine) {

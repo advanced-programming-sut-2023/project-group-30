@@ -2,10 +2,7 @@ package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

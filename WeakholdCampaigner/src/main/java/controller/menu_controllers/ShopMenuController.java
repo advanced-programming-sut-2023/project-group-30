@@ -1,7 +1,6 @@
 package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
-import model.game.Game;
 import model.game.Government;
 import model.game.Shop;
 import model.game.ShopItem;

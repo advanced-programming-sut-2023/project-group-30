@@ -1,8 +1,6 @@
 package controller;
 
-import controller.menu_controllers.GameMenuController;
 import model.Database;
-import model.game.Government;
 import model.User;
 import model.game.game_entities.GameEntity;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 import view.menus.GameEntityMenu;
-import view.utils.GameUtils;
 
 import java.util.HashMap;
 import java.util.Scanner;

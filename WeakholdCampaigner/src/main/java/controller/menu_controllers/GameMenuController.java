@@ -209,7 +209,10 @@ public class GameMenuController extends GameController {
     }
 
     public static void endOnePlayersTurn() {
-        if (currentGame.nextGovernment()) nextTurn();
+        if (currentGame.nextGovernment()) {
+            AbstractMenu.show("Every player played their turn, so one full turn has finished.");
+            nextTurn();
+        }
     }
 
     public static void nextTurn() { //gets called when one full turn has passed

@@ -32,11 +32,15 @@ public abstract class GameController {
     }
 
     private static int[] simpleUnitMovement(Unit unitToMove, int destinationX, int destinationY) {
+        currentGame.removeUnit(unitToMove, unitToMove.getCurrentX(), unitToMove.getCurrentY());
+
         int[] tempDestination = currentGame.move(
                 unitToMove.getCurrentX(), unitToMove.getCurrentY(), destinationX, destinationY,
                 unitToMove.getRemainingMovement());
         unitToMove.setCurrentLocation(tempDestination[0], tempDestination[1]);
         unitToMove.setRemainingMovement(tempDestination[2]);
+
+        currentGame.getMap().getCell(tempDestination[0], tempDestination[1]).addUnit(unitToMove);
 
         return tempDestination;
     }

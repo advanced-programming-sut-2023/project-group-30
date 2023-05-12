@@ -5,7 +5,6 @@ import controller.messages.MenuMessages;
 import model.game.Government;
 import model.game.Trade;
 import model.User;
-import model.enums.Resource;
 import view.menus.AppMenu;
 
 import java.util.ArrayList;
