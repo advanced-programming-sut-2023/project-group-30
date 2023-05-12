@@ -230,6 +230,12 @@ public class GameMenuController extends GameController {
                 if (unit.getRemainingMovement() <= 0) break;
 
                 if (unitDestination[0] == unit.getCurrentX() && unitDestination[1] == unit.getCurrentY()) {
+                    if (unit.isPatrolling()) {
+                        //TODO: test this
+                        if (unit.howManyDestinations() != 2) //this is to make sure I didn't make a mistake
+                            throw new RuntimeException("A patrolling unit should have exactly two destinations.");
+                        unit.addDestination(unitDestination[0], unitDestination[1]);
+                    }
                     unit.removeFirstDestination();
                     continue;
                 }

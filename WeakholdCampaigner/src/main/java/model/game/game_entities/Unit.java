@@ -23,9 +23,10 @@ public class Unit extends GameEntity {
     private boolean isPatrolling;
     private int[] currentLocation;
     private boolean hasAttacked;
+    public final boolean isArab;
 
     protected Unit(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes, UnitName unitName,
-                   int speed, int defence, int attack, int x, int y) {
+                   int speed, int defence, int attack, int x, int y, boolean isArab) {
         super(productionCost, attributes);
 
         if (defence > 5 || defence < 1 || attack > 5 || attack < 1 || speed > 5 || speed < 1) //can be handled better
@@ -41,6 +42,7 @@ public class Unit extends GameEntity {
         this.meleeDamage = attack * 4; //fine tune this coefficient
         this.hasAttacked = false;
         this.stance = UnitStance.STAND_GROUND;
+        this.isArab = isArab;
     }
 
     public static Unit getInstance(String name, int x, int y) {
@@ -50,6 +52,7 @@ public class Unit extends GameEntity {
         ArrayList<Attribute> attributes = new ArrayList<>();
         HashMap<Resource, Integer> productionCost = new HashMap<>();
         int speed = 0, defence = 0, attack = 0;
+        boolean isArab = false;
 
         switch (unitName) {
             //TODO
@@ -58,7 +61,7 @@ public class Unit extends GameEntity {
                 break;
         }
 
-        return new Unit(productionCost, attributes, unitName, speed, defence, attack, x, y);
+        return new Unit(productionCost, attributes, unitName, speed, defence, attack, x, y, isArab);
     }
 
     public boolean isMoving() {
@@ -158,5 +161,9 @@ public class Unit extends GameEntity {
     public void removeFirstDestination() {
         if (this.destinations.size() == 0) return;
         this.destinations.remove(0);
+    }
+
+    public int howManyDestinations() {
+        return this.destinations.size();
     }
 }
