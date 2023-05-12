@@ -52,5 +52,7 @@ public enum MenuMessages {
     CELL_IS_EMPTY,
     NOT_THE_OWNER,
     NO_MATCHING_UNIT,
-    IS_PATROLLING
+    IS_PATROLLING,
+    ALREADY_ATTACKED,
+    TOO_FAR,
 }

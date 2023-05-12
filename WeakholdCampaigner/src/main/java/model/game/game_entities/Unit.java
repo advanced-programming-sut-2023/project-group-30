@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Unit extends GameEntity {
     private int remainingMovement, fieldOfView;
     private final int speed, defence;
-    private UnitStance unitStance;
+    private UnitStance stance;
     public final UnitName unitName;
     private final ArrayList<int[]> destinations;
     private boolean isPatrolling;
@@ -28,6 +28,7 @@ public class Unit extends GameEntity {
         this.remainingMovement = speed;
         this.defence = defence;
         this.hasAttacked = false;
+        this.stance = UnitStance.STAND_GROUND;
     }
 
     public static Unit getInstance(String name, int x, int y) {
@@ -46,12 +47,6 @@ public class Unit extends GameEntity {
         }
 
         return new Unit(productionCost, attributes, unitName, speed, defence, x, y);
-    }
-
-    public enum UnitStance {
-        STAND_GROUND,
-        DEFENSIVE_STANCE,
-        AGGRESSIVE_STANCE
     }
 
     public boolean isMoving() {
@@ -89,9 +84,13 @@ public class Unit extends GameEntity {
         return remainingMovement;
     }
 
-    public void setRemainingMovement(boolean decrease) {
-        if (decrease) if (remainingMovement > 0) this.remainingMovement--;
-        else this.remainingMovement = speed;
+    public void setRemainingMovement(int remaining) {
+        this.remainingMovement = remaining;
+        if (this.remainingMovement < 0) this.remainingMovement = 0;
+    }
+
+    public void resetRemainingMovement() {
+        this.remainingMovement = speed;
     }
 
     public void setPatrolling(boolean patrolling) {
@@ -104,5 +103,19 @@ public class Unit extends GameEntity {
 
     public void setHasAttacked(boolean hasAttacked) {
         this.hasAttacked = hasAttacked;
+    }
+
+    public boolean hasAttacked() {
+        return hasAttacked;
+    }
+
+    public enum UnitStance {
+        STAND_GROUND,
+        DEFENSIVE_STANCE,
+        AGGRESSIVE_STANCE
+    }
+
+    public void setStance(UnitStance stance) {
+        this.stance = stance;
     }
 }

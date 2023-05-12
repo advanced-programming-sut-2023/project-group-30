@@ -105,7 +105,15 @@ public class GameEntityUtils extends Utils {
             return;
         }
 
-        GameEntityController.setStance(options.get("-s"));
+        switch (GameEntityController.setStance(options.get("-s"))) {
+            case INVALID_TYPE:
+                AbstractMenu.show("Error: " +
+                        "The unit stance can be either 'standing', 'defensive' or 'offensive'.");
+                break;
+            case SUCCESS:
+                AbstractMenu.show("Unit stance set successfully.");
+                break;
+        }
     }
 
     public static void meleeAttack(ParsedLine parsedLine) {
@@ -117,8 +125,23 @@ public class GameEntityUtils extends Utils {
             return;
         }
 
-        GameEntityController.meleeAttack(Integer.parseInt(options.get("-x")),
-                Integer.parseInt(options.get("-y")));
+        switch (GameEntityController.meleeAttack(
+                Integer.parseInt(options.get("-x")),
+                Integer.parseInt(options.get("-y"))
+        )) {
+            case ALREADY_ATTACKED:
+                AbstractMenu.show("Error: This unit has already attacked in this turn.");
+                break;
+            case TOO_FAR:
+                AbstractMenu.show("Error: The selected location is out of your unit's range.");
+                break;
+            case NO_MATCHING_UNIT:
+                AbstractMenu.show("Error: No enemy unit in that location.");
+                break;
+            case SUCCESS:
+                AbstractMenu.show("Successful.");
+                break;
+        }
     }
 
     public static void rangedAttack(ParsedLine parsedLine) { //smelly. merge this with meleeAttack.

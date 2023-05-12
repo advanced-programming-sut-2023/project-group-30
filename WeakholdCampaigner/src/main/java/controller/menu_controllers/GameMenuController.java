@@ -222,12 +222,19 @@ public class GameMenuController extends GameController {
         //loop through every unit that is present on the map.
         //TODO: might be too time-consuming to search for them.
         for (int x = 0; x < currentGame.getMapX(); x++)
-            for (int y = 0; y < currentGame.getMapY(); y++)
+            for (int y = 0; y < currentGame.getMapY(); y++) {
                 for (Unit unit :
                         currentGame.getUnits(x, y)) {
-                    unit.setRemainingMovement(false);
+                    unit.resetRemainingMovement();
                     unit.setHasAttacked(false);
+                    //TODO: consider the unit's stance
                 }
+
+                Building building = currentGame.getBuilding(x, y);
+                if (building != null) {
+
+                }
+            }
     }
 
     public static String whoseTurn() {

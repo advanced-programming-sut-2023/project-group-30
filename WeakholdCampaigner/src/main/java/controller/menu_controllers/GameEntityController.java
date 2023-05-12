@@ -32,6 +32,7 @@ public class GameEntityController extends GameController {
                 currentUnit.getCurrentX(), currentUnit.getCurrentY(), destinationX, destinationY,
                 currentUnit.getRemainingMovement());
         currentUnit.setCurrentLocation(tempDestination[0], tempDestination[1]);
+        currentUnit.setRemainingMovement(tempDestination[2]);
 
         currentUnit.addDestination(destinationX, destinationY); //TODO: remove reached destinations in nextTurn()
         return MenuMessages.SUCCESS;
@@ -55,12 +56,42 @@ public class GameEntityController extends GameController {
         currentUnit.clearDestinations();
     }
 
-    public static void setStance(String stance) {
+    public static MenuMessages setStance(String stance) {
+        switch (stance) {
+            case "standing":
+                currentUnit.setStance(Unit.UnitStance.STAND_GROUND);
+                break;
+            case "defensive":
+                currentUnit.setStance(Unit.UnitStance.DEFENSIVE_STANCE);
+                break;
+            case "offensive":
+                currentUnit.setStance(Unit.UnitStance.AGGRESSIVE_STANCE);
+                break;
+            default:
+                return MenuMessages.INVALID_TYPE;
+                //break
+        }
 
+        return MenuMessages.SUCCESS;
     }
 
-    public static void meleeAttack(int enemyX, int enemyY) {
+    public static MenuMessages meleeAttack(int enemyX, int enemyY) {
+        if (currentUnit.hasAttacked()) return MenuMessages.ALREADY_ATTACKED;
 
+        if (Math.abs(currentUnit.getCurrentX() - enemyX) > 1 || Math.abs(currentUnit.getCurrentY() - enemyY) > 1)
+            return MenuMessages.TOO_FAR;
+
+        Unit enemyUnit = null;
+        for (Unit unit :
+                currentGame.getUnits(enemyX, enemyY))
+            if (!unit.getGovernmentColor().equals(currentUnit.getGovernmentColor())) {
+                enemyUnit = unit;
+                break;
+            }
+        if (enemyUnit == null) return MenuMessages.NO_MATCHING_UNIT;
+
+        //TODO
+        return MenuMessages.SUCCESS;
     }
 
     public static void rangedAttack(int enemyX, int enemyY) {
