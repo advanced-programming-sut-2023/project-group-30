@@ -43,6 +43,9 @@ public class AppMenu extends AbstractMenu {
             commands.add(new Command("exit", "game_menu", MenuUtils::enterMainMenu));
             commands.add(new Command("enter", "trade_menu", GameUtils::enterTradMenu));
             commands.add(new Command("enter", "shop_menu", GameUtils::enterShopMenu));
+            commands.add(new Command("end", "turn", GameUtils::endTurn));
+            commands.add(new Command("whose", "turn", GameUtils::whoseTurnIsIt));
+            commands.add(new Command("which", "turn", GameUtils::whichTurnIsIt));
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
             commands.add(new Command("show", "details", GameUtils::showDetails));

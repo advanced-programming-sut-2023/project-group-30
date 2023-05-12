@@ -8,20 +8,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Unit extends GameEntity {
-    private int defence, speed, fieldOfView;
+    private int remainingMovement, fieldOfView;
+    private final int speed, defence;
     private UnitStance unitStance;
     public final UnitName unitName;
     private final ArrayList<int[]> destinations;
     private boolean isPatrolling;
     private int[] currentLocation;
+    private boolean hasAttacked;
 
     protected Unit(HashMap<Resource, Integer> productionCost , ArrayList<Attribute> attributes, UnitName unitName,
-                   int x, int y) {
+                   int speed, int defence, int x, int y) {
         super(productionCost, attributes);
         this.unitName = unitName;
         this.destinations = new ArrayList<>();
         this.isPatrolling = false;
         this.currentLocation = new int[] {x, y};
+        this.speed = speed;
+        this.remainingMovement = speed;
+        this.defence = defence;
+        this.hasAttacked = false;
     }
 
     public static Unit getInstance(String name, int x, int y) {
@@ -30,6 +36,7 @@ public class Unit extends GameEntity {
 
         ArrayList<Attribute> attributes = new ArrayList<>();
         HashMap<Resource, Integer> productionCost = new HashMap<>();
+        int speed = 0, defence = 0;
 
         switch (unitName) {
             //TODO
@@ -38,7 +45,7 @@ public class Unit extends GameEntity {
                 break;
         }
 
-        return new Unit(productionCost, attributes, unitName, x, y);
+        return new Unit(productionCost, attributes, unitName, speed, defence, x, y);
     }
 
     public enum UnitStance {
@@ -78,8 +85,13 @@ public class Unit extends GameEntity {
         return currentLocation[1];
     }
 
-    public int getSpeed() {
-        return speed;
+    public int getRemainingMovement() {
+        return remainingMovement;
+    }
+
+    public void setRemainingMovement(boolean decrease) {
+        if (decrease) if (remainingMovement > 0) this.remainingMovement--;
+        else this.remainingMovement = speed;
     }
 
     public void setPatrolling(boolean patrolling) {
@@ -88,5 +100,9 @@ public class Unit extends GameEntity {
 
     public boolean isPatrolling() {
         return isPatrolling;
+    }
+
+    public void setHasAttacked(boolean hasAttacked) {
+        this.hasAttacked = hasAttacked;
     }
 }

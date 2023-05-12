@@ -30,7 +30,7 @@ public class GameEntityController extends GameController {
 
         int[] tempDestination = currentGame.move(
                 currentUnit.getCurrentX(), currentUnit.getCurrentY(), destinationX, destinationY,
-                currentUnit.getSpeed());
+                currentUnit.getRemainingMovement());
         currentUnit.setCurrentLocation(tempDestination[0], tempDestination[1]);
 
         currentUnit.addDestination(destinationX, destinationY); //TODO: remove reached destinations in nextTurn()

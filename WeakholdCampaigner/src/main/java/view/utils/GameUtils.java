@@ -5,6 +5,7 @@ import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.MapController;
 import controller.menu_controllers.ShopMenuController;
 import controller.menu_controllers.TradeMenuController;
+import view.menus.AbstractMenu;
 import view.menus.AppMenu; //TODO: it is better to put AbstractMenu instead ?
 import view.ParsedLine;
 
@@ -619,5 +620,41 @@ public class GameUtils extends Utils {
 
         }
 
+    }
+
+    public static void endTurn(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("end turn");
+            return;
+        }
+
+        GameMenuController.endOnePlayersTurn();
+    }
+
+    public static void whoseTurnIsIt(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("whose turn");
+            return;
+        }
+
+        AbstractMenu.show("It is " + GameMenuController.whoseTurn() + "'s turn.");
+    }
+
+    public static void whichTurnIsIt(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}
+                , new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("which turn");
+            return;
+        }
+
+        AbstractMenu.show("It is turn number " + GameMenuController.getTurn() + ".");
     }
 }

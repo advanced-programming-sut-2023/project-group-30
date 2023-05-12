@@ -208,10 +208,34 @@ public class GameMenuController extends GameController {
         GameMenuController.currentGame = currentGame;
     }
 
-    public static void nextTurn() {
+    public static void endOnePlayersTurn() {
+        if (currentGame.nextGovernment()) nextTurn();
+    }
+
+    public static void nextTurn() { //gets called when one full turn has passed
+        currentGame.incrementTurn();
+
         ArrayList<Government> governments = currentGame.getGovernments();
         for (Government i : governments)
             i.updateAllForNextTurn();
 
+        //loop through every unit that is present on the map.
+        //TODO: might be too time-consuming to search for them.
+        for (int x = 0; x < currentGame.getMapX(); x++)
+            for (int y = 0; y < currentGame.getMapY(); y++)
+                for (Unit unit :
+                        currentGame.getUnits(x, y)) {
+                    unit.setRemainingMovement(false);
+                    unit.setHasAttacked(false);
+                }
+    }
+
+    public static String whoseTurn() {
+        return currentGame.getCurrentGovernment().getColor().toString() +
+                " (" + currentGame.getCurrentGovernment().getOwner().getUsername() + ")";
+    }
+
+    public static int getTurn() {
+        return currentGame.getCurrentTurn();
     }
 }

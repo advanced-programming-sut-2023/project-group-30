@@ -60,9 +60,18 @@ public class Game {
         return currentGovernment;
     }
 
-    public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) {
+    public boolean nextGovernment() { //returns true if a full turn has passed.
+        int nextGovernmentIndex = governments.indexOf(currentGovernment) + 1;
+        if (nextGovernmentIndex >= governments.size()) nextGovernmentIndex = 0;
+
+        this.currentGovernment = governments.get(nextGovernmentIndex);
+
+        return nextGovernmentIndex == 0; //returns true if all players have said "endTurn".
+    }
+
+    public int[] move(int fromX, int fromY, int toX, int toY, int numOfSteps) { //returns {x, y, numOfRemainingSteps}
         if ((fromX == toX && fromY == toY) || numOfSteps == 0)
-            return new int[] {fromX, fromX};
+            return new int[] {fromX, fromY, numOfSteps};
 
 
         if (toX > fromX) if (Unit.canGoTo(
@@ -89,10 +98,18 @@ public class Game {
         ))
             return move(fromX, fromY - 1, toX, toY, numOfSteps - 1);
 
-        return new int[] {fromX, fromY};
+        return new int[] {fromX, fromY, numOfSteps};
     }
 
     public  ArrayList<Government> getGovernments() {
         return governments;
+    }
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void incrementTurn() {
+        currentTurn++;
     }
 }
