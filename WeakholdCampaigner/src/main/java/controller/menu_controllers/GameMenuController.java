@@ -239,8 +239,8 @@ public class GameMenuController extends GameController {
         }
 
         //TODO: might be too time-consuming to search for entities this way.
-        for (int x = 0; x < currentGame.getMapX(); x++)
-            for (int y = 0; y < currentGame.getMapY(); y++) {
+        for (int x = 0; x < currentGame.getMapWidth(); x++)
+            for (int y = 0; y < currentGame.getMapHeight(); y++) {
 
                 Building building = currentGame.getBuilding(x, y);
                 if (building != null) {

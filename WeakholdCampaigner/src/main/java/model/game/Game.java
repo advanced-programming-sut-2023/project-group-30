@@ -4,13 +4,11 @@ import controller.menu_controllers.GameMenuController;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 import model.game.map.Map;
-import model.User;
 import model.game.map.MapCell;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class Game {
     private int currentTurn;
@@ -50,11 +48,11 @@ public class Game {
         this.currentGovernment = governments.get(0);
     }
 
-    public int getMapX() {
+    public int getMapWidth() {
         return map.getWidth();
     }
 
-    public int getMapY() {
+    public int getMapHeight() {
         return map.getWidth();
     }
 
@@ -78,7 +76,7 @@ public class Game {
         map.getCell(x, y).addUnit(unit);
     }
 
-    public void removeUnit(Unit unit, int x, int y) {
+    public void removeUnit(Unit unit, int x, int y) { //does not actually need x,y
         map.getCell(x, y).removeUnit(unit);
     }
 

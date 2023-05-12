@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Unit extends GameEntity {
-    private int remainingMovement, HP, fieldOfView;
+    public static final int fieldOfView = 8;
+    private int remainingMovement, HP;
     private final int speed, meleeDamage;
     private UnitStance stance;
     public final UnitName unitName;
@@ -128,6 +129,10 @@ public class Unit extends GameEntity {
 
     public void setStance(UnitStance stance) {
         this.stance = stance;
+    }
+
+    public UnitStance getStance() {
+        return stance;
     }
 
     public boolean reduceHP(int decrement) { //returns false if HP hits zero
