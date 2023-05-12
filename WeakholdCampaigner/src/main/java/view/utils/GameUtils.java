@@ -21,11 +21,11 @@ import java.util.regex.Pattern;
 
 public class GameUtils extends Utils {
     public static void createGame(ParsedLine parsedLine) {
-        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"--mapId"}, new String[]{},
-                new String[]{"--mapId"});
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"--mapID"}, new String[]{},
+                new String[]{"--mapID"});
 
         if (options == null) {
-            invalidFormatError("create game --mapId <map id>");
+            invalidFormatError("create game --mapID <map ID>");
             return;
         }
 
@@ -123,11 +123,10 @@ public class GameUtils extends Utils {
     }
 
     public static void printMapCellComponents(int x, int y) {
-        if (GameMenuController.getCurrentGame().getUnits(x, y) != null) {
-            if (isAnyUnitPatrolling(GameMenuController.getCurrentGame().getUnits(x, y))) {
+        if (GameMenuController.getCurrentGame().getUnits(x, y).size() != 0 &&
+                isAnyUnitMoving(GameMenuController.getCurrentGame().getUnits(x, y))) {
                 System.out.print(setTextureColor
                         (GameMenuController.getCurrentGame().getTexture(x, y), "S"));
-            }
         } else if (GameMenuController.getCurrentGame().getBuilding(x, y) != null) {
             if (GameMenuController.getCurrentGame().getBuilding(x, y).getCategory()
                     != Building.Category.TREE) {
@@ -137,6 +136,9 @@ public class GameUtils extends Utils {
                 System.out.print(setTextureColor
                         (GameMenuController.getCurrentGame().getTexture(x, y), "T"));
             }
+        } else if (GameMenuController.getCurrentGame().getUnits(x, y).size() != 0) {
+            System.out.print(setTextureColor
+                    (GameMenuController.getCurrentGame().getTexture(x, y), "U"));
         } else {
             System.out.print(setTextureColor
                     (GameMenuController.getCurrentGame().getTexture(x, y), " "));
@@ -431,7 +433,7 @@ public class GameUtils extends Utils {
         return true;
     }
 
-    public static boolean isAnyUnitPatrolling(ArrayList<Unit> units) {
+    public static boolean isAnyUnitMoving(ArrayList<Unit> units) {
         for (Unit unit : units) {
             if (unit.isMoving()) {
                 return true;
@@ -707,7 +709,7 @@ public class GameUtils extends Utils {
                 new String[]{}, new String[]{"-x", "-y"});
 
         if (options == null) {
-            invalidFormatError("select building -x <x> -y <y> --type <unit type>");
+            invalidFormatError("select unit -x <x> -y <y> --type <unit type>");
             return;
         }
 

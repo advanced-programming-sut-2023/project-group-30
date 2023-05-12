@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class MapCell {
     public final static ArrayList<Unit> allMapUnits = new ArrayList<>(); //is this ok?
     private int defenceFactor; //TODO
-    private ArrayList<Unit> units = null;
+    private ArrayList<Unit> units = new ArrayList<>();
     private Building building = null;
     private Texture texture = null;
 
