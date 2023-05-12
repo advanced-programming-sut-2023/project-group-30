@@ -59,10 +59,10 @@ public class GameUtils extends Utils {
             return;
         }
 
-//        if (!GameMenuController.loadGame(Integer.parseInt(options.get("--id")))) {
-//            System.out.println("No game with this id exists.");
-//            return;
-//        }
+        if (!GameMenuController.loadGame(Integer.parseInt(options.get("--id")))) {
+            System.out.println("No game with this id exists.");
+            return;
+        }
 
         MainController.setCurrentMenu(AppMenu.MenuName.GAME_MENU);
         System.out.println("entered game_menu");
