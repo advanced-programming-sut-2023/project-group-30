@@ -14,6 +14,7 @@ import model.game.game_entities.Unit;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GameEntityController extends GameController {
@@ -44,8 +45,15 @@ public class GameEntityController extends GameController {
 
     }
 
-    public static void repairBuilding() {
+    public static boolean repairBuilding() {
+        HashMap<Resource, Integer> cost = new HashMap<>();
+        cost.put(Resource.GOLD_COIN, currentBuilding.howMuchToRepair());
 
+        if (currentGame.getCurrentGovernment().purchase(cost)) {
+            currentBuilding.repair();
+            return true;
+        }
+        return false;
     }
 
     public static MenuMessages moveUnitTo(int destinationX, int destinationY) {

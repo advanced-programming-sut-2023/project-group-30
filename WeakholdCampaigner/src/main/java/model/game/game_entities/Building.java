@@ -271,6 +271,14 @@ public class Building extends GameEntity {
         return buildingName;
     }
 
+    public int howMuchToRepair() {
+        return maxHP - HP;
+    }
+
+    public void repair() {
+        this.HP = maxHP;
+    }
+
     public Category getCategory() {
         return category;
     }

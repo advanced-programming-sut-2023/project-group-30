@@ -39,7 +39,8 @@ public class GameEntityUtils extends Utils {
             return;
         }
 
-        GameEntityController.repairBuilding();
+        if (GameEntityController.repairBuilding()) AbstractMenu.show("Repaired successfully.");
+        else AbstractMenu.show("Error: You do not have enough GoldCoin.");
     }
 
     public static void moveUnit(ParsedLine parsedLine) {

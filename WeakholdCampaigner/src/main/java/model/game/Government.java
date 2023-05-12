@@ -382,7 +382,20 @@ public class Government {
     }
 
     public boolean purchase(HashMap<Resource, Integer> productionCost) {
-        //TODO: return true if there is enough resources and reduce them accordingly. otherwise return false
+        //returns true if there is enough resources and reduces them accordingly. otherwise returns false.
+        HashMap<Resource, Integer> tempStorage = new HashMap<>();
+        for (Resource resource :
+                productionCost.keySet()) {
+            int inStorage = this.resources.get(resource).intValue(), tempPayment = productionCost.get(resource);
+            if (inStorage < tempPayment) return false;
+
+            tempStorage.put(resource, inStorage - tempPayment);
+        }
+
+        for (Resource resource :
+                tempStorage.keySet()) {
+            this.resources.replace(resource, tempStorage.get(resource).doubleValue());
+        }
         return true;
     }
 
