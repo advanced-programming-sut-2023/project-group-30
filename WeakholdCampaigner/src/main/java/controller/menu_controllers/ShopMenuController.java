@@ -32,6 +32,11 @@ public class ShopMenuController {
         else if (shopItem.getPurchasePrice() * amount > GameMenuController.getCurrentGame()
                 .getCurrentGovernment().getGold())
             return MenuMessages.INVALID_MONEY;//TODO : enough space didn't check
+        Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
+
+        if (amount + government.getStoredUnit(government.getResourcesCategory(getResourceByName(item))) >
+                government.getMaximumResource(government.getResourcesCategory(getResourceByName(item))))
+            return MenuMessages.NOT_ENOUGH_SPACE;
         String answer = AppMenu.getOneLine("are you suer? \n -yes   -no");
         if (answer.equals("no"))
             return MenuMessages.CANCEL;

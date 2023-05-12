@@ -793,6 +793,9 @@ public class GameUtils extends Utils {
             case INVALID_MONEY:
                 System.out.println("you does not haven enough gold coin");
                 break;
+            case NOT_ENOUGH_SPACE:
+                System.out.println("not enough space");
+                break;
             case OK:
                 System.out.println("your request/donation added");
                 break;
@@ -867,6 +870,9 @@ public class GameUtils extends Utils {
                 break;
             case INVALID_COMMAND:
                 System.out.println("error: you entered your confirmation incorrect");
+                break;
+            case NOT_ENOUGH_SPACE:
+                System.out.println("not enough space");
                 break;
             case CANCEL:
                 System.out.println("your purchase canceled successfully");

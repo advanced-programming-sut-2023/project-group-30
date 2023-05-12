@@ -57,5 +57,6 @@ public enum MenuMessages {
     INVALID_DIRECTION,
     ALREADY_ATTACKED,
     TOO_FAR,
+    NOT_ENOUGH_SPACE,
     NO_REMAINING_MOVEMENT,
 }

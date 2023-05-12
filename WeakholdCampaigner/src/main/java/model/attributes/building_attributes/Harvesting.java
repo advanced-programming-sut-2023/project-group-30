@@ -20,12 +20,11 @@ public class Harvesting implements BuildingAttribute {
     }
 
     public void nextTurn() {
-        //TODO : check capacity
-
         Game game = GameMenuController.getCurrentGame();
         Government government = game.getCurrentGovernment();
-        government.addResources(harvestedResource, rate * 20);
-
+        if (government.getMaximumResource(government.getResourcesCategory(harvestedResource))
+                >= (government.getStoredUnit(government.getResourcesCategory(harvestedResource)) + 20))
+            government.addResources(harvestedResource, rate * 20);
     }
 
     public double getRate() {
