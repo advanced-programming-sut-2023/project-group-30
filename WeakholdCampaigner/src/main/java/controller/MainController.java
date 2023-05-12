@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 import view.menus.GameEntityMenu;
+import view.utils.GameUtils;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -39,7 +40,6 @@ public class MainController {
     public void run() {
         AbstractMenu.show("Welcome to Weakhold Campaigner!\n" +
                 "To see what commands are available to you at anytime, type: \"show commands\"");
-        Database.loadMap();
         while (currentMenu != null) {
             currentMenu.run();
         }

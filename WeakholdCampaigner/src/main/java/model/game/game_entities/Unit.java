@@ -12,6 +12,11 @@ public class Unit extends GameEntity {
     private final int speed, defence;
     private UnitStance stance;
     public final UnitName unitName;
+
+    public UnitName getUnitName() {
+        return unitName;
+    }
+
     private final ArrayList<int[]> destinations;
     private boolean isPatrolling;
     private int[] currentLocation;

@@ -23,6 +23,25 @@ public enum BuildingName {
     COCONUT_TREE("coconut tree"),
     DATE_TREE("date tree"),
     ROCK("rock"),
+    IRON_MINE("iron mine"),
+    STONE_MINE("stone mine"),
+    CHURCH("church"),
+    APPLE_GARDEN("apple garden"),
+    DIARY_FARMER("Diary farmer"),
+    WHEAT_FIELD("wheat field"),
+    BAKERY("bakery"),
+    GRAIN_FIELD("grain field"),
+    BREWING("brewing"),
+    ARMORY("armory"),
+    STORE("store"),
+    FOOD_STORE("food store"),
+    ARMOR("armor"),
+    BLACKSMITH("blacksmith"),
+
+    FLETCHER("fletcher"),
+    POLETURNER("poleturner"),
+    HOUSE("house"),
+    WOOD_CUTTER("wood cutter"),
 
     ;
     private final String name;

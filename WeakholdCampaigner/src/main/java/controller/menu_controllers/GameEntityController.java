@@ -1,16 +1,45 @@
 package controller.menu_controllers;
 
 import controller.messages.MenuMessages;
+import model.attributes.Attribute;
+import model.attributes.building_attributes.Capacity;
+import model.attributes.building_attributes.Harvesting;
+import model.attributes.building_attributes.Process;
+import model.enums.Resource;
+import model.game.Game;
+import model.game.Government;
+import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
+import view.menus.AppMenu;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameEntityController extends GameController {
     private static Unit currentUnit; //is set whenever user selects a Unit
+    private static Building currentBuilding;
 
     public static void setCurrentUnit(Unit unit) {
         currentUnit = unit;
     }
 
-    public static void createUnit(String type, int count) {
+    public static void setCurrentBuilding(Building building) {
+        currentBuilding = building;
+    }
+
+    public static MenuMessages createUnit(String type, int count) {
+        Unit unit = Unit.getInstance(type, 0, 0);
+        Government government = currentGame.getCurrentGovernment();
+        if (unit == null) return MenuMessages.INVALID_TYPE;
+        for (Map.Entry<Resource, Integer> entry : unit.getProductionCost().entrySet()) {
+            if (government.getResources(entry.getKey()) < entry.getValue())
+                return MenuMessages.INVALID_AMOUNT;
+        }
+        for (Map.Entry<Resource, Integer> entry : unit.getProductionCost().entrySet()) {
+            government.addResources(entry.getKey(), -entry.getValue());
+        }
+        //TODO : create unit in map should write
+        return MenuMessages.OK;
 
     }
 
@@ -113,4 +142,55 @@ public class GameEntityController extends GameController {
     public static void disbandUnit() {
 
     }
+
+    public static MenuMessages serveDrink(int amount) {
+        Game game = GameMenuController.getCurrentGame();
+        Government government = game.getCurrentGovernment();
+        Double wine = government.getResources(Resource.WINE);
+        if (wine < amount) return MenuMessages.NOT_ENOUGH_RESOURCES;
+        government.addResources(Resource.WINE, -amount);
+        government.addPopularity(amount);
+        return MenuMessages.OK;
+    }
+
+    public static MenuMessages process(int amount) {
+        Process process = getProcess();
+        Game game = GameMenuController.getCurrentGame();
+        Government government = game.getCurrentGovernment();
+        if (government.getResources(process.getPrimarySubstance()) < amount)
+            return MenuMessages.NOT_ENOUGH_RESOURCES;
+        government.addResources(process.getPrimarySubstance(), -amount);
+        government.addResources(process.getFinallySubstance(), amount);
+        return MenuMessages.OK;
+
+
+    }
+
+    public static Process getProcess() {
+        for (Attribute i : currentBuilding.getAttributes()) {
+            if (i instanceof Process) {
+                return (Process) i;
+            }
+        }
+        return null;
+    }
+
+    public static void showCondition() {
+        Capacity capacity = getCapacity();
+        Game game = GameMenuController.getCurrentGame();
+        Government government = game.getCurrentGovernment();
+        AppMenu.show("filled " + government.getStoredUnit(capacity.getStoredItem()) + " out of "
+                + capacity.getMaxCapacity());
+
+    }
+
+    public static Capacity getCapacity() {
+        for (Attribute i : currentBuilding.getAttributes()) {
+            if (i instanceof Capacity) {
+                return (Capacity) i;
+            }
+        }
+        return null;
+    }
+
 }

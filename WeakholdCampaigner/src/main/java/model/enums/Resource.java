@@ -10,7 +10,15 @@ public enum Resource {
     FLOUR("flour"),
     WINE("wine"),
     BREAD("bread"),
-    GOLD_COIN("gold coin");
+    GOLD_COIN("gold coin"),
+    MEAT("meat"),
+    CHEESE("cheese"),
+    APPLE("apple"),
+    ARMOR("armor"),
+    SWORD("sword"),
+    BOW("bow"),
+    SPEAR("spear");
+
     public final String nameString;
 
     Resource(String nameString) {
@@ -20,6 +28,7 @@ public enum Resource {
     public String getNameString() {
         return nameString;
     }
+
     public static Resource getResourceByName(String name) {
         Resource resources[] = Resource.values();
         for (Resource resource : resources) {
