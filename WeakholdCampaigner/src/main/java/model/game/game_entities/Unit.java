@@ -135,6 +135,8 @@ public class Unit extends GameEntity {
                 break;
         }
 
+        productionCost.put(Resource.GOLD_COIN, 10);
+
         return new Unit(productionCost, attributes, unitName, speed, defence, attack, x, y, isArab);
     }
 
