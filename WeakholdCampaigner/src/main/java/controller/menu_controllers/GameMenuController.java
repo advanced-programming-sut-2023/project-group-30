@@ -48,7 +48,7 @@ public class GameMenuController extends GameController {
 
         AbstractMenu.show("Game id: " +
                 Database.addGame(
-                        new Game(Database.getMapById(mapId), governments)
+                        new Game(Database.getMapById(mapId), governments, mapId)
                 ).toString());
         return MenuMessages.SUCCESS;
     }
@@ -57,10 +57,6 @@ public class GameMenuController extends GameController {
         currentGame = Database.getGameById(gameId);
 
         return currentGame != null;
-    }
-
-    public static MenuMessages showMap(int x, int y) {
-        return MenuMessages.OK;
     }
 
     public static void showPopularityFactor() {

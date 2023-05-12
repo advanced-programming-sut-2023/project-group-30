@@ -53,5 +53,7 @@ public enum MenuMessages {
     NOT_THE_OWNER,
     NO_MATCHING_UNIT,
     IS_PATROLLING,
+    BUILDING_EXISTENCE,
+    INVALID_DIRECTION,
 
 }

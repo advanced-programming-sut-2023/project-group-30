@@ -1,14 +1,13 @@
 package model;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import controller.MainController;
 import model.game.Game;
 import model.game.map.Map;
-import model.game.map.MapCell;
 import org.jetbrains.annotations.Nullable;
 import view.menus.AppMenu;
-
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class Database {
     private static ArrayList<PasswordRecoveryQNA> securityQuestions = new ArrayList<>();
     private static ArrayList<String> slogans = new ArrayList<>();
     private static HashMap<Integer, Game> games; //each game must have a unique id.
-    private static HashMap<Integer, Map> maps; //each map must have a unique id.
+    private static HashMap<Integer, Map> maps = new HashMap<>(); //each map must have a unique id.
 
     public static void saveAllUsers() {
         Gson gson = new Gson();
@@ -37,10 +36,9 @@ public class Database {
         Database.loadSlogan();
         Database.loadAllUsers();
         Database.loadStayLogin();
+        Database.loadMap();
 
-        //TODO: loadMaps, loadGames :
-        maps = new HashMap<>();
-        maps.put(1, new Map(200));
+        //TODO: loadGames :
         games = new HashMap<>();
     }
 
@@ -98,7 +96,6 @@ public class Database {
             e.printStackTrace();
         }
     }
-
     private static void loadSlogan() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/slogan.json")) {

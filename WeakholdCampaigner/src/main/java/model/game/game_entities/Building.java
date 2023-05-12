@@ -12,8 +12,13 @@ import java.util.HashMap;
 
 public class Building extends GameEntity {
     private Category category;
-    private BuildingName buildingName;
     private int maxHP, HP;
+    private BuildingName buildingName;
+    private String direction = null;
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 
     protected Building(BuildingName buildingName, HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes,
                        Category category, int maxHP) {
@@ -60,8 +65,7 @@ public class Building extends GameEntity {
                 attributes.add(new BridgeMobility(true));
                 category = Category.CASTLE;
                 break;
-            case LOOKOUT_TOWER:
-            case PERIMETER_TOWER:
+            case LOOKOUT_TOWER: case PERIMETER_TOWER:
                 HP = 100;
                 productionCost.put(Resource.STONE, 10);
                 category = Category.CASTLE;
@@ -113,14 +117,7 @@ public class Building extends GameEntity {
                 attributes.add(new NeedWorker(3));
                 attributes.add(new Process(Resource.WHEAT, Resource.FLOUR));
                 break;
-            case DESERT_SHRUB:
-            case CHERRY_TREE:
-            case DATE_TREE:
-            case COCONUT_TREE:
-            case OLIVE_TREE:
-            case ROCK:
-                category = Category.OTHER;
-                break;
+
             case IRON_MINE:
                 HP = 100;
                 category = Category.INDUSTRY;
@@ -253,21 +250,28 @@ public class Building extends GameEntity {
                 productionCost.put(Resource.STONE, 15);
                 attributes.add(new CreateUnit());
                 break;
-
-
-
-
-
-
-
-
+            case CHERRY_TREE:
+            case OLIVE_TREE:
+            case COCONUT_TREE:
+            case DATE_TREE:
+            case DESERT_SHRUB:
+                category = Category.TREE;
+                break;
+            case ROCK:
+                category = Category.OTHER;
+                break;
         }
 
         return new Building(buildingName, productionCost, attributes, category, HP);
+
     }
 
     public BuildingName getBuildingName() {
         return buildingName;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     public enum Category {
@@ -277,6 +281,7 @@ public class Building extends GameEntity {
         TOWN,
         WEAPONS,
         FOOD_PROCESSING,
+        TREE,
         OTHER
     }
 }

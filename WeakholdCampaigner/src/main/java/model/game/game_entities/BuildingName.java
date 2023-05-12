@@ -43,8 +43,6 @@ public enum BuildingName {
     HOUSE("house"),
     WOOD_CUTTER("wood cutter"),
 
-
-
     ;
     private final String name;
 
