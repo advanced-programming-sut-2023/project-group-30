@@ -52,7 +52,7 @@ public abstract class GameController {
                     case STAND_GROUND:
                         break;
                     case DEFENSIVE_STANCE:
-                        if (Math.abs(currentX - i) <= Unit.fieldOfView/3 && Math.abs(currentY - j) <= Unit.fieldOfView/3) {
+                        if (Math.abs(currentX - i) <= Unit.fieldOfView / 3 && Math.abs(currentY - j) <= Unit.fieldOfView / 3) {
                             shouldMove = true;
                         }
                         break;

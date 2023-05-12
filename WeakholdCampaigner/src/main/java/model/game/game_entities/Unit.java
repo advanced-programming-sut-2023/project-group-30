@@ -58,79 +58,113 @@ public class Unit extends GameEntity {
         switch (unitName) {
             case ARCHER:
                 attributes.add(new RangedAttack(6, 8));
-                speed = 4; defence = 2; attack = 2;
+                speed = 4;
+                defence = 2;
+                attack = 2;
                 break;
             case CROSSBOWMEN:
                 attributes.add(new RangedAttack(5, 10));
-                speed = 2; defence = 3; attack = 2;
+                speed = 2;
+                defence = 3;
+                attack = 2;
                 break;
             case SPEARMEN:
                 attributes.add(new CloseCombat());
-                speed = 3; defence = 1; attack = 3;
+                speed = 3;
+                defence = 1;
+                attack = 3;
                 break;
             case PIKEMEN:
                 attributes.add(new CloseCombat());
-                speed = 2; defence = 4; attack = 3;
+                speed = 2;
+                defence = 4;
+                attack = 3;
                 break;
             case MACEMEN:
                 attributes.add(new CloseCombat());
-                speed = 3; defence = 3; attack = 4;
+                speed = 3;
+                defence = 3;
+                attack = 4;
                 break;
             case SWORDSMEN:
                 attributes.add(new CloseCombat());
-                speed = 1; defence = 1; attack = 5;
+                speed = 1;
+                defence = 1;
+                attack = 5;
                 break;
             case KNIGHT:
                 attributes.add(new CloseCombat());
-                speed = 5; defence = 4; attack = 5;
+                speed = 5;
+                defence = 4;
+                attack = 5;
                 break;
             case TUNNELER:
                 attributes.add(new CloseCombat());
-                speed = 4; defence = 1; attack = 3;
+                speed = 4;
+                defence = 1;
+                attack = 3;
                 break;
             case LADDERMEN:
-                speed = 4; defence = 1;
+                speed = 4;
+                defence = 1;
                 break;
             case ENGINEER:
-                speed = 3; defence = 1;
+                speed = 3;
+                defence = 1;
                 break;
             case BLACK_MONK:
                 attributes.add(new CloseCombat());
-                speed = 1; defence = 3; attack = 3;
+                speed = 1;
+                defence = 3;
+                attack = 3;
                 break;
             case ARCHER_BOW:
                 attributes.add(new RangedAttack(6, 8));
-                speed = 4; defence = 2; attack = 2;
+                speed = 4;
+                defence = 2;
+                attack = 2;
                 isArab = true;
                 break;
             case SLAVES:
                 attributes.add(new CloseCombat());
-                speed = 4; defence = 1; attack = 1;
+                speed = 4;
+                defence = 1;
+                attack = 1;
                 isArab = true;
                 break;
             case SLINGERS:
                 attributes.add(new RangedAttack(4, 9));
-                speed = 4; defence = 1; attack = 1;
+                speed = 4;
+                defence = 1;
+                attack = 1;
                 isArab = true;
                 break;
             case ASSASSINS:
                 attributes.add(new CloseCombat());
-                speed = 3; defence = 3; attack = 3;
+                speed = 3;
+                defence = 3;
+                attack = 3;
                 isArab = true;
                 break;
             case HORSE_ARCHERS:
                 attributes.add(new RangedAttack(6, 8));
-                speed = 5; defence = 3; attack = 2;
+                speed = 5;
+                defence = 3;
+                attack = 2;
                 isArab = true;
                 break;
             case ARABIAN_SWORDSMEN:
                 attributes.add(new CloseCombat());
-                speed = 5; defence = 4; attack = 4;
+                speed = 5;
+                defence = 4;
+                attack = 4;
                 isArab = true;
                 break;
             case FIRE_THROWERS:
                 attributes.add(new RangedAttack(5, 9));
-                speed = 5; defence = 2; attack = 4;
+                speed = 5;
+                defence = 2;
+                attack = 4;
                 isArab = true;
                 break;
         }

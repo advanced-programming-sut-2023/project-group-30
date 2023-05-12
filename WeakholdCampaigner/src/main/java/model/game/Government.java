@@ -175,7 +175,7 @@ public class Government {
         } else {
             if (getMaximumResource(Capacity.Stored.RECOURSE) < (getStoredUnit(Capacity.Stored.RECOURSE) + amount)) ;
             else
-            resources.put(resource, resources.get(resource) + amount);
+                resources.put(resource, resources.get(resource) + amount);
         }
 
     }

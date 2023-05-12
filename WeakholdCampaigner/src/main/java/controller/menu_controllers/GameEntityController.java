@@ -36,12 +36,13 @@ public class GameEntityController extends GameController {
         if (unit == null) return MenuMessages.INVALID_TYPE;
 
         for (Attribute attribute :
-                currentBuilding.getAttributes()) if (attribute instanceof CreateUnit) {
-            if (((CreateUnit) attribute).createArab != unit.isArab)
-                return MenuMessages.INVALID_RACE;
+                currentBuilding.getAttributes())
+            if (attribute instanceof CreateUnit) {
+                if (((CreateUnit) attribute).createArab != unit.isArab)
+                    return MenuMessages.INVALID_RACE;
 
-            break;
-        }
+                break;
+            }
 
         Government government = currentGame.getCurrentGovernment();
         for (Map.Entry<Resource, Integer> entry : unit.getProductionCost().entrySet()) {

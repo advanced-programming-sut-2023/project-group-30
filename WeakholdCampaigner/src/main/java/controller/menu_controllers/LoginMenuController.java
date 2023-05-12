@@ -6,7 +6,7 @@ import model.Database;
 import model.User;
 import view.menus.AppMenu;
 
-public class LoginMenuController extends MenuController{
+public class LoginMenuController extends MenuController {
     private static int attemptNumber = 0;
 
     public static MenuMessages userLogin(String username, String password, Boolean stayLoggedIn) {

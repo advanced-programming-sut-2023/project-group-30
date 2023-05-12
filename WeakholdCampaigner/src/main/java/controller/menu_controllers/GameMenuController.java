@@ -252,7 +252,7 @@ public class GameMenuController extends GameController {
 
                 Building building = currentGame.getBuilding(x, y);
                 if (building != null) {
-                    for(Attribute i : building.getAttributes()) {
+                    for (Attribute i : building.getAttributes()) {
                         if (i instanceof Harvesting)
                             ((Harvesting) i).nextTurn();
                         else if (i instanceof IncreasePopularity)
