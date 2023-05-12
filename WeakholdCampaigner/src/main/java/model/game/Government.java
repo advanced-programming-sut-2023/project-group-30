@@ -378,4 +378,5 @@ public class Government {
         YELLOW,
         GRAY
     }
+
 }

@@ -95,4 +95,8 @@ public class Game {
     public  ArrayList<Government> getGovernments() {
         return governments;
     }
+
+    public void setCurrentGovernment(Government currentGovernment) {
+        this.currentGovernment = currentGovernment;
+    }
 }
