@@ -48,6 +48,9 @@ public class AppMenu extends AbstractMenu {
             commands.add(new Command("which", "turn", GameUtils::whichTurnIsIt));
             commands.add(new Command("show", "units", GameUtils::showUnits));
             commands.add(new Command("show", "buildings", GameUtils::showBuildings));
+            //to remove:
+            commands.add(new Command("show", "religion", GameUtils::showReligion));
+            commands.add(new Command("set", "religion_rate", GameUtils::setReligionRate));
         } else if (menuName == MenuName.MAP_MENU) {
             commands.add(new Command("move", "map", GameUtils::moveMap));
             commands.add(new Command("show", "details", GameUtils::showDetails));

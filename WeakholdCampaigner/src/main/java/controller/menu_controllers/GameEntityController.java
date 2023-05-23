@@ -57,15 +57,27 @@ public class GameEntityController extends GameController {
         return MenuMessages.SUCCESS;
     }
 
-    public static boolean repairBuilding() {
+    public static boolean repairBuilding(boolean isGodMode) {
         HashMap<Resource, Integer> cost = new HashMap<>();
         cost.put(Resource.GOLD_COIN, currentBuilding.howMuchToRepair());
 
-        if (currentGame.getCurrentGovernment().purchase(cost)) {
+        if (isGodMode || currentGame.getCurrentGovernment().purchase(cost)) {
             currentBuilding.repair();
             return true;
         }
         return false;
+    }
+
+    public static boolean damageBuilding(int damage) {
+        return currentBuilding.damage(damage);
+    }
+
+    public static int getBuildingHealth() {
+        return currentBuilding.getHP();
+    }
+
+    public static int getUnitHealth() {
+        return currentUnit.getHP();
     }
 
     public static MenuMessages moveUnitTo(int destinationX, int destinationY) {
@@ -186,19 +198,21 @@ public class GameEntityController extends GameController {
     }
 
     public static void pourOil(String direction) {
-
+        //todo
     }
 
     public static void digTunnel(int x, int y) {
-
+        //todo
     }
 
     public static void buildEquipment(String equipmentName) {
-
+        //todo
     }
 
     public static void disbandUnit() {
-
+        currentGame.removeUnit(currentUnit, currentUnit.getCurrentX(), currentUnit.getCurrentY());
+        currentUnit = null;
+        //todo
     }
 
     public static MenuMessages serveDrink(int amount) {

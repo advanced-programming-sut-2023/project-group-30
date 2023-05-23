@@ -283,6 +283,20 @@ public class Building extends GameEntity {
         this.HP = maxHP;
     }
 
+    public boolean damage(int damage) {
+        this.HP -= damage;
+        if (this.HP <= 0) {
+            this.HP = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    public int getHP() {
+        return this.HP;
+    }
+
     public Category getCategory() {
         return category;
     }

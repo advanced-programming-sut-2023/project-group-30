@@ -34,16 +34,59 @@ public class GameEntityUtils extends Utils {
     }
 
     public static void repair(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}, new String[]{"--godMode"},
+                new String[]{});
+
+        if (options == null) {
+            invalidFormatError("repair [--godMode <on>]");
+            return;
+        }
+
+        boolean isGodMode;
+        String godMode = options.get("--godMode");
+        isGodMode = godMode != null && godMode.equals("on");
+
+        if (GameEntityController.repairBuilding(isGodMode)) AbstractMenu.show("Repaired successfully.");
+        else AbstractMenu.show("Error: You do not have enough GoldCoin.");
+    }
+
+    public static void damageBuilding(ParsedLine parsedLine) {
+        //remove this method
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-d"}, new String[]{},
+                new String[]{"-d"});
+
+        if (options == null) {
+            invalidFormatError("damage -d <damage>");
+            return;
+        }
+
+        if (GameEntityController.damageBuilding(Integer.parseInt(options.get("-d"))))
+            AbstractMenu.show("Building destroyed.");
+        else AbstractMenu.show("Building damaged.");
+    }
+
+    public static void showBuildingHealth(ParsedLine parsedLine) {
         HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}, new String[]{},
                 new String[]{});
 
         if (options == null) {
-            invalidFormatError("repair");
+            invalidFormatError("show health");
             return;
         }
 
-        if (GameEntityController.repairBuilding()) AbstractMenu.show("Repaired successfully.");
-        else AbstractMenu.show("Error: You do not have enough GoldCoin.");
+        AbstractMenu.show("HP = " + GameEntityController.getBuildingHealth());
+    }
+
+    public static void showUnitHealth(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{}, new String[]{},
+                new String[]{});
+
+        if (options == null) {
+            invalidFormatError("show health");
+            return;
+        }
+
+        AbstractMenu.show("HP = " + GameEntityController.getUnitHealth());
     }
 
     public static void moveUnit(ParsedLine parsedLine) {
@@ -175,6 +218,7 @@ public class GameEntityUtils extends Utils {
         }
 
         GameEntityController.pourOil(options.get("-d"));
+        AbstractMenu.show("Oil poured successfully.");
     }
 
     public static void digTunnel(ParsedLine parsedLine) {
@@ -188,6 +232,7 @@ public class GameEntityUtils extends Utils {
 
         GameEntityController.digTunnel(Integer.parseInt(options.get("-x")),
                 Integer.parseInt(options.get("-y")));
+        AbstractMenu.show("Tunnel got dug successfully.");
     }
 
     public static void buildEquipment(ParsedLine parsedLine) {
@@ -200,6 +245,20 @@ public class GameEntityUtils extends Utils {
         }
 
         GameEntityController.buildEquipment(options.get("-q"));
+        AbstractMenu.show("Equipment built successfully.");
+    }
+
+    public static void doLadder(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{}, new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("do ladder");
+            return;
+        }
+
+        //todo : GameEntityController.doLadder();
+        AbstractMenu.show("Laddered successfully.");
     }
 
     public static void disbandUnit(ParsedLine parsedLine) {
@@ -212,6 +271,8 @@ public class GameEntityUtils extends Utils {
         }
 
         GameEntityController.disbandUnit();
+        AbstractMenu.show("Unit disbanded successfully.");
+        exitEntityMenu(parsedLine); //may be bug prone
     }
 
     public static void exitEntityMenu(ParsedLine parsedLine) {
@@ -259,5 +320,17 @@ public class GameEntityUtils extends Utils {
         GameEntityController.showCondition();
     }
 
+    public static void digMoat(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-x", "-y"}, new String[]{}, new String[]{"-x", "-y"});
+
+        if (options == null) {
+            invalidFormatError("dig moat -x <x> -y <y>");
+            return;
+        }
+
+        //todo
+        AbstractMenu.show("Moat dug successfully.");
+    }
 
 }

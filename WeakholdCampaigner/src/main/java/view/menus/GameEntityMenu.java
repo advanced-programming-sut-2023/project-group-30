@@ -27,6 +27,7 @@ public class GameEntityMenu extends AbstractMenu {
             commands.add(new Command("unit", "halt", GameEntityUtils::halt));
             commands.add(new Command("set", "stance", GameEntityUtils::setStance));
             commands.add(new Command("unit", "disband", GameEntityUtils::disbandUnit));
+            commands.add(new Command("show", "health", GameEntityUtils::showUnitHealth));
 
             for (Attribute attribute :
                     gameEntity.getAttributes()) {
@@ -40,11 +41,17 @@ public class GameEntityMenu extends AbstractMenu {
                     commands.add(new Command("dig", "tunnel", GameEntityUtils::digTunnel));
                 else if (attribute instanceof BuildEquipment)
                     commands.add(new Command("build", "equipment", GameEntityUtils::buildEquipment));
+                else if (attribute instanceof Ladder)
+                    commands.add(new Command("do", "ladder", GameEntityUtils::doLadder));
+                else if (attribute instanceof DigMoat)
+                    commands.add(new Command("dig", "moat", GameEntityUtils::digMoat));
             }
         }
 
         if (gameEntity instanceof Building) {
             commands.add(new Command("repair", null, GameEntityUtils::repair));
+            commands.add(new Command("damage", null, GameEntityUtils::damageBuilding));
+            commands.add(new Command("show", "health", GameEntityUtils::showBuildingHealth));
             for (Attribute attribute :
                     gameEntity.getAttributes()) {
                 if (attribute instanceof CreateUnit)
@@ -61,7 +68,6 @@ public class GameEntityMenu extends AbstractMenu {
                     commands.add(new Command("show", "condition", GameEntityUtils::showCondition));
                 else if (attribute instanceof ChangeFoodRate)
                     commands.add(new Command("food", "rate", GameUtils::setFoodRate));
-
 
             }
         }

@@ -274,4 +274,14 @@ public class GameMenuController extends GameController {
     public static int getTurn() {
         return currentGame.getCurrentTurn();
     }
+
+    public static String showReligion() {
+        return "religion=Christianity religionRate=" +
+                currentGame.getCurrentGovernment().getReligionRate() + " popularityOfReligion=" +
+                currentGame.getCurrentGovernment().getReligionPopularity();
+    }
+
+    public static void setReligionRate(int rate) {
+        currentGame.getCurrentGovernment().setReligionRate(rate);
+    }
 }

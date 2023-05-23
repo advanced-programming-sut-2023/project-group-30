@@ -1,15 +1,12 @@
 package view.utils;
 
 import controller.MainController;
+import controller.menu_controllers.*;
 import model.game.game_entities.Building;
 import model.game.game_entities.BuildingName;
 import model.game.game_entities.Unit;
 import model.game.game_entities.UnitName;
 import model.game.map.MapCell;
-import controller.menu_controllers.GameMenuController;
-import controller.menu_controllers.MapController;
-import controller.menu_controllers.ShopMenuController;
-import controller.menu_controllers.TradeMenuController;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu; //TODO: it is better to put AbstractMenu instead ?
 import view.ParsedLine;
@@ -1100,5 +1097,30 @@ public class GameUtils extends Utils {
                 BuildingName.values()) {
             AbstractMenu.show(buildingName.name);
         }
+    }
+
+    public static void showReligion(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{}, new String[]{}, new String[]{});
+
+        if (options == null) {
+            invalidFormatError("show religion");
+            return;
+        }
+
+        AbstractMenu.show(GameMenuController.showReligion());
+    }
+
+    public static void setReligionRate(ParsedLine parsedLine) {
+        HashMap<String, String> options = formatOptions(
+                parsedLine.options, new String[]{"-r"}, new String[]{}, new String[]{"-r"});
+
+        if (options == null) {
+            invalidFormatError("set religion_rate -r <rate>");
+            return;
+        }
+
+        GameMenuController.setReligionRate(Integer.parseInt(options.get("rate")));
+        AbstractMenu.show("Religion rate set successfully.");
     }
 }

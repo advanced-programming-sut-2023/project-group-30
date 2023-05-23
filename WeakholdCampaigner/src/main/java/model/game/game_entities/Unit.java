@@ -1,8 +1,7 @@
 package model.game.game_entities;
 
 import model.attributes.Attribute;
-import model.attributes.unit_attributes.CloseCombat;
-import model.attributes.unit_attributes.RangedAttack;
+import model.attributes.unit_attributes.*;
 import model.enums.Resource;
 import model.game.map.MapCell;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +29,8 @@ public class Unit extends GameEntity {
                    int speed, int defence, int attack, int x, int y, boolean isArab) {
         super(productionCost, attributes, x, y);
 
-        if (defence > 5 || defence < 1 || attack > 5 || attack < 1 || speed > 5 || speed < 1) //can be handled better
-            throw new RuntimeException("Error: Attempted to instantiate a unit with invalid parameters.");
+        //if (defence > 5 || defence < 1 || attack > 5 || attack < 1 || speed > 5 || speed < 1) //can be handled better
+        //    throw new RuntimeException("Error: Attempted to instantiate a unit with invalid parameters.");
 
         this.unitName = unitName;
         this.destinations = new ArrayList<>();
@@ -58,6 +57,7 @@ public class Unit extends GameEntity {
         switch (unitName) {
             case ARCHER:
                 attributes.add(new RangedAttack(6, 8));
+                attributes.add(new DigMoat());
                 speed = 4;
                 defence = 2;
                 attack = 2;
@@ -70,18 +70,21 @@ public class Unit extends GameEntity {
                 break;
             case SPEARMEN:
                 attributes.add(new CloseCombat());
+                attributes.add(new DigMoat());
                 speed = 3;
                 defence = 1;
                 attack = 3;
                 break;
             case PIKEMEN:
                 attributes.add(new CloseCombat());
+                attributes.add(new DigMoat());
                 speed = 2;
                 defence = 4;
                 attack = 3;
                 break;
             case MACEMEN:
                 attributes.add(new CloseCombat());
+                attributes.add(new DigMoat());
                 speed = 3;
                 defence = 3;
                 attack = 4;
@@ -100,15 +103,20 @@ public class Unit extends GameEntity {
                 break;
             case TUNNELER:
                 attributes.add(new CloseCombat());
+                attributes.add(new DigTunnel());
                 speed = 4;
                 defence = 1;
                 attack = 3;
                 break;
             case LADDERMEN:
+                attributes.add(new Ladder());
                 speed = 4;
                 defence = 1;
                 break;
             case ENGINEER:
+                attributes.add(new PourOil());
+                attributes.add(new BuildEquipment());
+                attributes.add(new DigMoat());
                 speed = 3;
                 defence = 1;
                 break;
@@ -127,6 +135,7 @@ public class Unit extends GameEntity {
                 break;
             case SLAVES:
                 attributes.add(new CloseCombat());
+                attributes.add(new DigMoat());
                 speed = 4;
                 defence = 1;
                 attack = 1;
@@ -248,6 +257,10 @@ public class Unit extends GameEntity {
             return false;
         }
         return true;
+    }
+
+    public int getHP() {
+        return HP;
     }
 
     public int getMeleeDamage() {

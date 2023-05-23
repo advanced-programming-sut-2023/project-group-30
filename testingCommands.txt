@@ -4,6 +4,7 @@ player2
 player3
 !q
 enter game --id 1
+
 drop unit -x 10 -y 9 -t Archer --godMode on
 show map -x 10 -y 9
 show details -x 10 -y 9
@@ -25,3 +26,14 @@ show map -x 14 -y 9
 exit map_menu
 show map -x 14 -y 13
 save_and_exit
+
+drop building -x 10 -y 9 --type Barracks --godMode on
+select building -x 10 -y 9
+create unit -t Engineer
+show health
+damage -d 30
+show health
+repair --godMode on
+exit entity_menu
+select unit -x 10 -y 9 --type Engineer
+pour oil -d Up
