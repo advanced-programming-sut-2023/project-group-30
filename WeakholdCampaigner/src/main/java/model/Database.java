@@ -20,7 +20,7 @@ public class Database {
     private static ArrayList<PasswordRecoveryQNA> securityQuestions = new ArrayList<>();
     private static ArrayList<String> slogans = new ArrayList<>();
     private static HashMap<Integer, Game> games; //each game must have a unique id.
-    private static HashMap<Integer, Map> maps = new HashMap<>(); //each map must have a unique id.
+    private static final HashMap<Integer, Map> maps = new HashMap<>(); //each map must have a unique id.
 
     public static void saveAllUsers() {
         Gson gson = new Gson();
@@ -84,7 +84,7 @@ public class Database {
             Map secondMap = gson.fromJson(secondReader, Map.class);
             maps.put(2, secondMap);
             FileReader thirdReader = new FileReader("src/main/resources/thirdDefaultMap.json");
-            Map thirdMap = gson.fromJson(secondReader, Map.class);
+            Map thirdMap = gson.fromJson(thirdReader, Map.class);
             maps.put(3, thirdMap);
             FileReader forthReader = new FileReader("src/main/resources/forthDefaultMap.json");
             Map forthMap = gson.fromJson(forthReader, Map.class);
