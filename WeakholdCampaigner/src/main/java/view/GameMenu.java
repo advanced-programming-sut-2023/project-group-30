@@ -2,6 +2,7 @@ package view;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -36,19 +38,15 @@ public class GameMenu extends Application {
         gridPane = new GridPane();
         gridPane.setVgap(-0.5);
         gridPane.setHgap(-0.5);
-
         Database.loadMap();
-        createMap(Database.getMapById(1));
-
         scrollPane = new ScrollPane(gridPane);
-        scrollPane.setPrefViewportWidth(40 * 20); // 40 cells wide (20 pixels each)
-        scrollPane.setPrefViewportHeight(40 * 20); // 40 cells high (20 pixels each)
-        setZoom(scrollPane);
-
+        scrollPane.setPrefViewportWidth(stage.getMaxWidth()); // 40 cells wide (20 pixels each)
+        scrollPane.setPrefViewportHeight(stage.getMaxHeight()); // 40 cells high (20 pixels each)
         gamePane = new StackPane(scrollPane);
-        Scene scene = new Scene(gamePane,stage.getMaxWidth(),stage.getMaxHeight());
-        scrollPane.setPrefSize(stage.getMaxWidth(),stage.getMaxHeight());
-
+        Scene scene = new Scene(gamePane, stage.getMaxWidth(), stage.getMaxHeight());
+        scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
+        createMap(Database.getMapById(1));
+        setZoom(scrollPane);
         stage.setScene(scene);
         stage.setFullScreen(true);
         stage.show();
@@ -69,11 +67,12 @@ public class GameMenu extends Application {
                 gridPane.add(group, i, j);
             }
         }
-        Rectangle cell = new Rectangle(60, 60);
-        cell.setFill(new ImagePattern(new Image(GameMenu.class
-                .getResource("/Tiles/1.png")
-                .toExternalForm())));
-        addInMap(cell, 150, 3);
+        ImageView imageView = new ImageView(GameMenu.class.getResource("/Menu/BoarderMenuOfGame.png")
+                .toExternalForm());
+        StackPane.setMargin(imageView, new Insets(700, 0, 0, 0));
+        gamePane.getChildren().add(imageView);
+
+
     }
 
     private void setImagePattern(HashMap<MapCell.Texture, ImagePattern> imagePatternHashMap) {
@@ -133,36 +132,43 @@ public class GameMenu extends Application {
     }
 
     public void setZoom(ScrollPane scrollPane) {
-        double minScale = 0.8;
-        double maxScale = 1.5;
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                double zoomFactor = 1.05;
-                double deltaY = event.getDeltaY();
-
-                if (deltaY < 0) {
-                    zoomFactor = 1 / 1.05;
-                }
-
-                // Check if zoom out will cause the scale to become negative
-                double newScaleX = scrollPane.getScaleX() * zoomFactor;
-                double newScaleY = scrollPane.getScaleY() * zoomFactor;
-                if (newScaleX < minScale || newScaleY > maxScale) {
-                    return;
-                }
-
-
-                scrollPane.setScaleX(newScaleX);
-                scrollPane.setScaleY(newScaleY);
-
-                event.consume();
+        Button zoomInButton = new Button();
+        Button zoomOutButton = new Button();
+        ImageView zoomInImage = new ImageView(GameMenu.class.getResource("/Icon/zoomIn.png").toExternalForm());
+        ImageView zoomOutImage = new ImageView(GameMenu.class.getResource("/Icon/zoomOut.png").toExternalForm());
+        zoomOutImage.setFitHeight(20);
+        zoomOutImage.setFitWidth(20);
+        zoomInImage.setFitHeight(20);
+        zoomInImage.setFitWidth(20);
+        zoomInButton.setGraphic(zoomInImage);
+        zoomOutButton.setGraphic(zoomOutImage);
+        zoomInButton.setOnAction(event -> {
+            double currentScale = scrollPane.getScaleX();
+            double newScale = currentScale + 0.1;
+            if (newScale <= 1.5) {
+                scrollPane.setScaleX(currentScale + 0.1);
+                scrollPane.setScaleY(currentScale + 0.1);
             }
+
+
         });
 
+        zoomOutButton.setOnAction(event -> {
+            double currentScale = scrollPane.getScaleX();
+            double newScale = currentScale - 0.1;
+            if (newScale >= 0.8) {
+                scrollPane.setScaleX(currentScale - 0.1);
+                scrollPane.setScaleY(currentScale - 0.1);
+            }
+
+        });
+
+        HBox zoomBox = new HBox(zoomInButton, zoomOutButton);
+        zoomBox.setSpacing(6);
+        StackPane.setMargin(zoomBox, new Insets(0, 0, 0, 1450));
+        gamePane.getChildren().add(zoomBox);
     }
+
 
 }
 
