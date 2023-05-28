@@ -63,6 +63,8 @@ public class GameMenu extends Application {
         });
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));
+        scrollPane.setScaleX(3*scrollPane.getScaleX()/2);
+        scrollPane.setScaleY(3*scrollPane.getScaleY()/2);
         setZoom(scrollPane);
         stage.setScene(scene);
         stage.setFullScreen(true);
@@ -106,7 +108,7 @@ public class GameMenu extends Application {
         setImagePattern(imagePatternHashMap);
         for (int i = 0; i < 200; i++) {
             for (int j = 0; j < 200; j++) {
-                Rectangle cell = new Rectangle(60, 60);
+                Rectangle cell = new Rectangle(30, 30);
                 cell.setFill(imagePatternHashMap.get(map.getCell(i, j).getTexture()));
                 Group group = new Group(cell);
                 Tooltip tooltip = new Tooltip();
@@ -202,7 +204,7 @@ public class GameMenu extends Application {
         zoomInButton.setOnAction(event -> {
             double currentScale = scrollPane.getScaleX();
             double newScale = currentScale + 0.1;
-            if (newScale <= 1.5) {
+            if (newScale <= 3) {
                 scrollPane.setScaleX(currentScale + 0.1);
                 scrollPane.setScaleY(currentScale + 0.1);
             }
@@ -213,7 +215,7 @@ public class GameMenu extends Application {
         zoomOutButton.setOnAction(event -> {
             double currentScale = scrollPane.getScaleX();
             double newScale = currentScale - 0.1;
-            if (newScale >= 0.8) {
+            if (newScale >= 0.9) {
                 scrollPane.setScaleX(currentScale - 0.1);
                 scrollPane.setScaleY(currentScale - 0.1);
             }
