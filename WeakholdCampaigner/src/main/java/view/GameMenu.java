@@ -1,5 +1,6 @@
 package view;
 
+import controller.menu_controllers.GameMenuController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -20,9 +23,12 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Database;
+import model.game.game_entities.Building;
+import model.game.game_entities.Unit;
 import model.game.map.Map;
 import model.game.map.MapCell;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static model.game.map.MapCell.Texture.*;
@@ -44,12 +50,51 @@ public class GameMenu extends Application {
         scrollPane.setPrefViewportHeight(stage.getMaxHeight()); // 40 cells high (20 pixels each)
         gamePane = new StackPane(scrollPane);
         Scene scene = new Scene(gamePane, stage.getMaxWidth(), stage.getMaxHeight());
+        scene.setOnKeyPressed(event ->{
+            if(event.getCode() == KeyCode.UP){
+                scrollUp();
+            }else if(event.getCode() == KeyCode.DOWN){
+                scrollDown();
+            } else if (event.getCode() == KeyCode.RIGHT) {
+                scrollRight();
+            } else if (event.getCode() == KeyCode.LEFT) {
+                scrollLeft();
+            }
+        });
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));
         setZoom(scrollPane);
         stage.setScene(scene);
         stage.setFullScreen(true);
         stage.show();
+    }
+
+    private void scrollRight() {
+        double deltaX = 10.0;
+        double width = scrollPane.getContent().getBoundsInLocal().getWidth();
+        double hValue = scrollPane.getHvalue();
+        scrollPane.setVvalue(hValue + deltaX / width);
+    }
+
+    private void scrollLeft() {
+        double deltaX = -10.0;
+        double width = scrollPane.getContent().getBoundsInLocal().getWidth();
+        double hValue = scrollPane.getHvalue();
+        scrollPane.setVvalue(hValue + deltaX / width);
+    }
+
+    private void scrollDown() {
+        double deltaY = 10.0;
+        double height = scrollPane.getContent().getBoundsInLocal().getHeight();
+        double vValue = scrollPane.getVvalue();
+        scrollPane.setVvalue(vValue + deltaY / height);
+    }
+
+    private void scrollUp() {
+        double deltaY = -10.0;
+        double height = scrollPane.getContent().getBoundsInLocal().getHeight();
+        double vValue = scrollPane.getVvalue();
+        scrollPane.setVvalue(vValue + deltaY / height);
     }
 
     public static void main(String[] args) {
@@ -64,6 +109,18 @@ public class GameMenu extends Application {
                 Rectangle cell = new Rectangle(60, 60);
                 cell.setFill(imagePatternHashMap.get(map.getCell(i, j).getTexture()));
                 Group group = new Group(cell);
+                Tooltip tooltip = new Tooltip();
+                tooltip.setText("Texture:" + map.getCell(i, j).getTexture().name());
+                if(map.getCell(i, j).getBuilding() != null){
+                    tooltip.setText(tooltip.getText() + "\nBuilding:"+ map.getCell(i, j).getBuilding());
+                }
+                if(movingUnits(map.getCell(i, j).getUnits()).size() != 0){
+                    tooltip.setText(tooltip.getText() + "\nUnit:");
+                    for(Unit unit : movingUnits(map.getCell(i, j).getUnits())){
+                        tooltip.setText(tooltip.getText() + unit.unitName + " ");
+                    }
+                }
+                Tooltip.install(group, tooltip);
                 gridPane.add(group, i, j);
             }
         }
@@ -168,7 +225,14 @@ public class GameMenu extends Application {
         StackPane.setMargin(zoomBox, new Insets(0, 0, 0, 1450));
         gamePane.getChildren().add(zoomBox);
     }
-
+    public static ArrayList<Unit> movingUnits(ArrayList<Unit> units) {
+        ArrayList <Unit> movingUnits = new ArrayList<>();
+        for (Unit unit : units) {
+            if (unit.isMoving()) {
+                movingUnits.add(unit);
+            }
+        }
+        return movingUnits;
+    }
 
 }
-
