@@ -1,5 +1,6 @@
 package view;
 
+import controller.menu_controllers.GameMenuController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,8 +19,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Database;
+import model.game.Game;
+import model.game.Government;
 import model.game.map.Map;
 import model.game.map.MapCell;
 
@@ -32,6 +36,7 @@ public class GameMenu extends Application {
     private GridPane gridPane;
     private ScrollPane scrollPane;
     private StackPane gamePane;
+    private Text textForPopularity = new Text();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -46,8 +51,8 @@ public class GameMenu extends Application {
         Scene scene = new Scene(gamePane, stage.getMaxWidth(), stage.getMaxHeight());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));
-        scrollPane.setScaleX(3*scrollPane.getScaleX()/2);
-        scrollPane.setScaleY(3*scrollPane.getScaleY()/2);
+        scrollPane.setScaleX(3 * scrollPane.getScaleX() / 2);
+        scrollPane.setScaleY(3 * scrollPane.getScaleY() / 2);
         setZoom(scrollPane);
         stage.setScene(scene);
         stage.setFullScreen(true);
@@ -69,10 +74,12 @@ public class GameMenu extends Application {
                 gridPane.add(group, i, j);
             }
         }
+
         ImageView imageView = new ImageView(GameMenu.class.getResource("/Menu/BoarderMenuOfGame.png")
                 .toExternalForm());
         StackPane.setMargin(imageView, new Insets(700, 0, 0, 0));
         gamePane.getChildren().add(imageView);
+        setPopularity();
 
 
     }
@@ -169,6 +176,12 @@ public class GameMenu extends Application {
         zoomBox.setSpacing(6);
         StackPane.setMargin(zoomBox, new Insets(0, 0, 0, 1450));
         gamePane.getChildren().add(zoomBox);
+    }
+
+    public void setPopularity() {
+        textForPopularity.setText(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"1000");
+        StackPane.setMargin(textForPopularity, new Insets(750,0 , 0, 280));
+        gamePane.getChildren().add(textForPopularity);
     }
 
 
