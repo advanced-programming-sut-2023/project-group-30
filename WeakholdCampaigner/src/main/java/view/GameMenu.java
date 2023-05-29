@@ -14,6 +14,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -22,6 +23,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Database;
 import model.game.Game;
@@ -41,7 +44,7 @@ public class GameMenu extends Application {
     private GridPane gridPane;
     private ScrollPane scrollPane;
     private StackPane gamePane;
-    private Text textForPopularity = new Text();
+    private Button textForPopularity = new Button();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -243,9 +246,17 @@ public class GameMenu extends Application {
     }
 
     public void setPopularity() {
+        textForPopularity.setStyle("-fx-background-color: transparent;");
         textForPopularity.setText(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"1000");
         StackPane.setMargin(textForPopularity, new Insets(750,0 , 0, 280));
         gamePane.getChildren().add(textForPopularity);
+        textForPopularity.setOnAction(e -> showPopularity());
+    }
+    public void showPopularity() {
+        Stage showThePopularityFactor = new Stage();
+        showThePopularityFactor.initModality(Modality.APPLICATION_MODAL);
+
+
     }
 
 
