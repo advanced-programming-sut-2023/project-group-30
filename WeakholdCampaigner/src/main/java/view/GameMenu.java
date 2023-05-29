@@ -2,9 +2,9 @@ package view;
 
 import controller.menu_controllers.GameMenuController;
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -14,17 +14,17 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Database;
+import model.game.Game;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
+import model.game.game_entities.UnitName;
 import model.game.map.Map;
 import model.game.map.MapCell;
 
@@ -38,6 +38,7 @@ public class GameMenu extends Application {
     private GridPane gridPane;
     private ScrollPane scrollPane;
     private StackPane gamePane;
+    private Point2D startPoint;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -61,12 +62,40 @@ public class GameMenu extends Application {
                 scrollLeft();
             }
         });
+        //showDetailWithDragClick(gridPane);
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));
         setZoom(scrollPane);
         stage.setScene(scene);
         stage.setFullScreen(true);
         stage.show();
+    }
+
+    private void showDetailWithDragClick(GridPane gridPane) {
+        ArrayList<MapCell> selectedNode = new ArrayList<>();
+        gridPane.setOnMousePressed(event -> {
+            startPoint = new Point2D(event.getX(), event.getY());
+        });
+
+        gridPane.setOnMouseDragged(event -> {
+            Point2D currentPoint = new Point2D(event.getX(), event.getY());
+            double minX = Math.min(startPoint.getX(), currentPoint.getX());
+            double minY = Math.min(startPoint.getY(), currentPoint.getY());
+            double maxX = Math.max(startPoint.getX(), currentPoint.getX());
+            double maxY = Math.max(startPoint.getY(), currentPoint.getY());
+//            for(int i = 0; i < 200; i++){
+//                for(int j =0 ;j < 200; j++){
+//                    Bounds bounds =
+//                }
+//            }
+            for(Node node : gridPane.getChildren()){
+                Bounds bounds = node.localToScene(node.getBoundsInLocal());
+                if(bounds.intersects(minX, minY, maxX - minX, maxY - minY)){
+                 //   selectedNode.add(node);
+                }
+            }
+        });
+        System.out.println(selectedNode.size());
     }
 
     private void scrollRight() {
@@ -104,6 +133,8 @@ public class GameMenu extends Application {
     public void createMap(Map map) {
         HashMap<MapCell.Texture, ImagePattern> imagePatternHashMap = new HashMap<>();
         setImagePattern(imagePatternHashMap);
+        Building building = Building.getInstance("rock", 12, 4);
+        GameMenuController.getCurrentGame().dropBuilding(building, 12, 4);
         for (int i = 0; i < 200; i++) {
             for (int j = 0; j < 200; j++) {
                 Rectangle cell = new Rectangle(60, 60);
@@ -114,13 +145,21 @@ public class GameMenu extends Application {
                 if(map.getCell(i, j).getBuilding() != null){
                     tooltip.setText(tooltip.getText() + "\nBuilding:"+ map.getCell(i, j).getBuilding());
                 }
+                if(map.getCell(i, j).getUnits() != null){
+                    tooltip.setText(tooltip.getText() + "\nNumber of Units: " + map.getCell(i, j).getUnits().size());
+                    for (Unit unit : map.getCell(i, j).getUnits()) {
+                            tooltip.setText("\n" + tooltip.getText() + unit.unitName + "health : "+ unit.getHP()+
+                                    "Melee damage : "+ unit.getMeleeDamage());
+                    }
+                }
                 if(movingUnits(map.getCell(i, j).getUnits()).size() != 0){
-                    tooltip.setText(tooltip.getText() + "\nUnit:");
+                    tooltip.setText(tooltip.getText() + "\nMoving Unit:");
                     for(Unit unit : movingUnits(map.getCell(i, j).getUnits())){
                         tooltip.setText(tooltip.getText() + unit.unitName + " ");
                     }
                 }
                 Tooltip.install(group, tooltip);
+
                 gridPane.add(group, i, j);
             }
         }
