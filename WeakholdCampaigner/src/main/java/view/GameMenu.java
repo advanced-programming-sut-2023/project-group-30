@@ -8,6 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
@@ -38,7 +39,10 @@ public class GameMenu extends Application {
     private GridPane gridPane;
     private ScrollPane scrollPane;
     private StackPane gamePane;
-    private Point2D startPoint;
+
+    private ArrayList<Building> buildings;
+    private int unitNumbers ;
+    private boolean drag;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -62,40 +66,58 @@ public class GameMenu extends Application {
                 scrollLeft();
             }
         });
-        //showDetailWithDragClick(gridPane);
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
-        createMap(Database.getMapById(1));
+        createMap(Database.getMapById(1));//TODO: after finishing game menu change 1
         setZoom(scrollPane);
         stage.setScene(scene);
+        showDetailWithDragClick(gridPane);
         stage.setFullScreen(true);
         stage.show();
     }
 
     private void showDetailWithDragClick(GridPane gridPane) {
-        ArrayList<MapCell> selectedNode = new ArrayList<>();
+        drag = false;
+        unitNumbers = 0;
+        buildings = new ArrayList<>();
+        Rectangle draggedSection = new Rectangle();
         gridPane.setOnMousePressed(event -> {
-            startPoint = new Point2D(event.getX(), event.getY());
+            draggedSection.setX(event.getX());
+            draggedSection.setY(event.getY());
         });
-
         gridPane.setOnMouseDragged(event -> {
-            Point2D currentPoint = new Point2D(event.getX(), event.getY());
-            double minX = Math.min(startPoint.getX(), currentPoint.getX());
-            double minY = Math.min(startPoint.getY(), currentPoint.getY());
-            double maxX = Math.max(startPoint.getX(), currentPoint.getX());
-            double maxY = Math.max(startPoint.getY(), currentPoint.getY());
-//            for(int i = 0; i < 200; i++){
-//                for(int j =0 ;j < 200; j++){
-//                    Bounds bounds =
-//                }
-//            }
+            double x = Math.min(event.getX(), draggedSection.getX());
+            double y = Math.min(event.getY(), draggedSection.getY());
+            double width = Math.abs(event.getX() - draggedSection.getX());
+            double height = Math.abs(event.getY() - draggedSection.getY());
+            draggedSection.setX(x);
+            draggedSection.setY(y);
+            draggedSection.setWidth(width);
+            draggedSection.setHeight(height);
+            drag = true;
+        });
+        gridPane.setOnMouseReleased(event -> {
             for(Node node : gridPane.getChildren()){
-                Bounds bounds = node.localToScene(node.getBoundsInLocal());
-                if(bounds.intersects(minX, minY, maxX - minX, maxY - minY)){
-                 //   selectedNode.add(node);
+                if(node.getBoundsInParent().intersects(draggedSection.getBoundsInParent())){
+                    int i = gridPane.getChildren().indexOf(node) % 200;
+                    int j = gridPane.getChildren().indexOf(node) / 200;
+                    unitNumbers += Database.getMapById(1).getCell(i, j).getUnits().size();//TODO: after finishing game menu change 1
+                    if(Database.getMapById(1).getCell(i,  j).getBuilding() != null){//TODO: after finishing game menu change 1
+                        buildings.add(Database.getMapById(1).getCell(i, j).getBuilding());
+                    }
                 }
             }
+            String popupText = "";
+            for(Building building : buildings){
+                popupText = popupText + building.getBuildingName();
+            }
+            if(drag) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Details");
+                alert.setHeaderText("Dragged cells information");
+                alert.setContentText("Units number:" + unitNumbers + "\nBuildings:" + popupText);
+                alert.showAndWait();
+            }
         });
-        System.out.println(selectedNode.size());
     }
 
     private void scrollRight() {
@@ -133,8 +155,6 @@ public class GameMenu extends Application {
     public void createMap(Map map) {
         HashMap<MapCell.Texture, ImagePattern> imagePatternHashMap = new HashMap<>();
         setImagePattern(imagePatternHashMap);
-        Building building = Building.getInstance("rock", 12, 4);
-        GameMenuController.getCurrentGame().dropBuilding(building, 12, 4);
         for (int i = 0; i < 200; i++) {
             for (int j = 0; j < 200; j++) {
                 Rectangle cell = new Rectangle(60, 60);
