@@ -15,9 +15,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -43,6 +42,8 @@ public class GameMenu extends Application {
     private ArrayList<Building> buildings;
     private int unitNumbers ;
     private boolean drag;
+    private int mapCellPressed;
+    private boolean canPress = true;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -71,8 +72,21 @@ public class GameMenu extends Application {
         setZoom(scrollPane);
         stage.setScene(scene);
         showDetailWithDragClick(gridPane);
+        pressedNode(gridPane);
         stage.setFullScreen(true);
         stage.show();
+    }
+    private void pressedNode(GridPane gridPane){
+        for (Node node: gridPane.getChildren()){
+            node.setOnMousePressed(event -> {
+                int i = gridPane.getChildren().indexOf(node) % 200;
+                int j = gridPane.getChildren().indexOf(node) / 200;
+                Rectangle rectangle = new Rectangle(60, 60, Color.TRANSPARENT);
+                rectangle.setFill(Color.rgb( 96, 96,217));
+                rectangle.setOpacity(0.5);
+                addInMap(rectangle, i, j);
+            });
+        }
     }
 
     private void showDetailWithDragClick(GridPane gridPane) {
@@ -117,6 +131,7 @@ public class GameMenu extends Application {
                 alert.setContentText("Units number:" + unitNumbers + "\nBuildings:" + popupText);
                 alert.showAndWait();
             }
+            drag = false;
         });
     }
 
