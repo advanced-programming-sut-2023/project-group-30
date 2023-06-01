@@ -8,10 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -49,6 +46,7 @@ public class GameMenu extends Application {
     private HashMap<Enum, ImagePattern> imagePatternHashMap;
     private Button textForPopularity = new Button();
 
+
     @Override
     public void start(Stage stage) throws Exception {
         gridPane = new GridPane();
@@ -69,6 +67,8 @@ public class GameMenu extends Application {
                 scrollRight();
             } else if (event.getCode() == KeyCode.LEFT) {
                 scrollLeft();
+            } else if (event.getCode() == KeyCode.S) {
+                setRates();
             }
         });
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
@@ -78,6 +78,7 @@ public class GameMenu extends Application {
         setZoom(scrollPane);
         stage.setScene(scene);
         stage.setFullScreen(true);
+        System.out.println(gridPane.getChildren().size());
         stage.show();
     }
 
@@ -262,7 +263,7 @@ public class GameMenu extends Application {
     public void setPopularity() {
         textForPopularity.setStyle("-fx-background-color: transparent;");
         textForPopularity.setText(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"1000");
-        StackPane.setMargin(textForPopularity, new Insets(750, 0, 0, 280));
+        StackPane.setMargin(textForPopularity, new Insets(750, 0, 0, 270));
         gamePane.getChildren().add(textForPopularity);
         textForPopularity.setOnAction(e -> showPopularity());
     }
@@ -309,16 +310,21 @@ public class GameMenu extends Application {
     private HBox getMaskCondition(double number, String name) {
         HBox hBox = new HBox();
 
-        Text numberText = new Text((int)number + "");
+        Text numberText = new Text(number + "");
         numberText.setStyle("-fx-font-family: Cardamon");
         numberText.setStyle("-fx-font-size: 20px");
         hBox.getChildren().add(numberText);
         Rectangle rectangle = new Rectangle(25, 25);
-        if (number == 0){
-            rectangle.setFill((imagePatternHashMap.get(ignoreMask)));numberText.setFill(Color.WHITE);}
-        else if (number > 0){
-            rectangle.setFill(imagePatternHashMap.get(happyMask));numberText.setFill(Color.GREEN);}
-        else {rectangle.setFill(imagePatternHashMap.get(angryMask));numberText.setFill(Color.RED);}
+        if (number == 0) {
+            rectangle.setFill((imagePatternHashMap.get(ignoreMask)));
+            numberText.setFill(Color.WHITE);
+        } else if (number > 0) {
+            rectangle.setFill(imagePatternHashMap.get(happyMask));
+            numberText.setFill(Color.GREEN);
+        } else {
+            rectangle.setFill(imagePatternHashMap.get(angryMask));
+            numberText.setFill(Color.RED);
+        }
         hBox.getChildren().add(rectangle);
         Text textForName = new Text(name);
         textForName.setStyle("-fx-font-family: Cardamon");
@@ -326,6 +332,87 @@ public class GameMenu extends Application {
         hBox.getChildren().add(textForName);
         hBox.setSpacing(10);
         return hBox;
+    }
+
+    private void setRates() {
+        Stage setRates = new Stage();
+        BorderPane borderPane = new BorderPane();
+        borderPane.setBackground(new Background(new BackgroundImage(
+                new Image(GameMenu.class.getResource("/Menu/setRates.jpg").toExternalForm())
+                , BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT
+                , BackgroundPosition.CENTER
+                , new BackgroundSize(1.0, 1.0, true, true
+                , false, false))));
+        setRates.initModality(Modality.APPLICATION_MODAL);
+        setSliderForRates(borderPane);
+        Scene scene = new Scene(borderPane);
+        borderPane.setPrefSize(800, 800);
+        setRates.setScene(scene);
+        setRates.showAndWait();
+
+    }
+
+    private void setSliderForRates(BorderPane borderPane) {
+        VBox vBox = new VBox();
+        Label fearRate = new Label("Fear Rate");
+        Label foodRate = new Label("Food Rate");
+        Label taxRate = new Label("Tax Rate");
+        vBox.getChildren().addAll(fearRate, getFearSlider(), foodRate, setFoodAndTaxRate(-2, 2, 0)
+                , taxRate, setFoodAndTaxRate(-3, 8, 0));
+        vBox.setAlignment(Pos.CENTER);
+        borderPane.getStylesheets().add(GameMenu.class.getResource("/Css/Slider.css").toExternalForm());
+        borderPane.setCenter(vBox);
+
+
+    }
+
+    private VBox getFearSlider() {
+        double min = -5;
+        double max = 5;
+        Slider slider = new Slider(min, max, 0);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setBlockIncrement(10);
+        slider.setMinWidth(200);
+
+        Label valueLabel = new Label(0+ "");
+        valueLabel.setAlignment(Pos.CENTER);
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            double roundedValue = Math.round(newValue.doubleValue() * 10.0) / 10.0;
+            valueLabel.setText(roundedValue+"");
+            GameMenuController.setFearRate(roundedValue);
+        });
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(10));
+        root.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(slider, valueLabel);
+        return root;
+    }
+
+    private VBox setFoodAndTaxRate(int min, int max, int value) {
+        Label label = new Label(value + "");
+        Slider slider = new Slider(min, max, value);
+        slider.setBlockIncrement(1);
+        slider.setMinorTickCount(0);
+        slider.setMajorTickUnit(1);
+        slider.setSnapToTicks(true);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMinWidth(200);
+
+        slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            label.setText(Integer.toString(newVal.intValue()));
+            if (min == -3)
+                GameMenuController.taxRate(newVal.intValue());//min -3 for taxRate
+            else GameMenuController.foodRate(newVal.intValue());
+        });
+
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(10));
+        root.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(slider, label);
+        return root;
+
     }
 
 

@@ -22,7 +22,7 @@ public class Government {
     private int otherPopularity = 0;
     private int numOfVillagers;
     private int taxRate = 0;
-    private int fearRate = 0;
+    private double fearRate = 0;
     //we want main castle but concept is unknown  //TODO
     private ArrayList<Trade> tradeList;
     private ArrayList<Trade> tradeHistory;
@@ -135,7 +135,7 @@ public class Government {
         this.taxRate = taxRate;
     }
 
-    public void setFearRate(int fearRate) {
+    public void setFearRate(double fearRate) {
         this.fearRate = fearRate;
     }
 
@@ -270,11 +270,11 @@ public class Government {
         religionRate = religionRate + amount;
     }
 
-    public int getFearRate() {
+    public double getFearRate() {
         return fearRate + unSuitableBuildings - suitableBuildings;
     }
 
-    public int getPopularityOfFear() {
+    public double getPopularityOfFear() {
         return (-1 * fearRate) - unSuitableBuildings + suitableBuildings;
     }
 
