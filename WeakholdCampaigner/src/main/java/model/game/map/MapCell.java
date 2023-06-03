@@ -1,5 +1,6 @@
 package model.game.map;
 
+import javafx.fxml.FXML;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 
@@ -9,6 +10,7 @@ public class MapCell {
     public final static ArrayList<Unit> allMapUnits = new ArrayList<>(); //is this ok?
     private int defenceFactor; //TODO
     private ArrayList<Unit> units = new ArrayList<>();
+
     private Building building = null;
     private Texture texture = null;
 

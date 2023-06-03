@@ -6,20 +6,24 @@ module WeakholdCampaigner {
     requires com.google.gson;
 
 
-
-
     exports view;
-    opens model to  javafx.fxml, javafx.controls;
+    opens model to javafx.fxml, javafx.controls;
     opens view to javafx.fxml;
-    opens model.game.game_entities to com.google.gson;
+    opens model.game.game_entities to javafx.graphics, com.google.gson;
     opens model.game.map to com.google.gson;
-    opens model.enums to javafx.controls,javafx.graphics;
+    opens model.enums to com.google.gson;
 
+
+    opens model.game to com.google.gson;
+
+    exports model.game.game_entities to javafx.graphics;
     exports controller.menu_controllers to javafx.graphics;
-    exports model.enums to com.google.gson;
-    exports model.game to com.google.gson;
+    exports model.game.map to com.google.gson;
+
+
     exports controller;
     exports model;
+
 
 
 }

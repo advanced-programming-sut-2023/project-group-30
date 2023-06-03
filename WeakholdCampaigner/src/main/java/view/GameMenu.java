@@ -12,30 +12,26 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Database;
-import model.User;
-import model.game.Game;
 import model.game.Government;
-import model.game.game_entities.Building;
+import model.game.game_entities.BuildingName;
 import model.game.game_entities.Unit;
 import model.game.map.Map;
-import model.game.map.MapCell;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static model.enums.FileName.*;
+
+import static model.game.game_entities.BuildingName.*;
 import static model.game.map.MapCell.Texture.*;
 
 
@@ -44,6 +40,9 @@ public class GameMenu extends Application {
     private ScrollPane scrollPane;
     private StackPane gamePane;
     private HashMap<Enum, ImagePattern> imagePatternHashMap;
+    private HashMap<Enum, ImageView> imageOfBuilding;
+
+
     private Button textForPopularity = new Button();
 
 
@@ -71,14 +70,15 @@ public class GameMenu extends Application {
                 setRates();
             }
         });
+        gamePane.getStylesheets().add(GameMenu.class.getResource("/Css/Style.css").toExternalForm());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));
         scrollPane.setScaleX(3 * scrollPane.getScaleX() / 2);
         scrollPane.setScaleY(3 * scrollPane.getScaleY() / 2);
         setZoom(scrollPane);
+        dropBuilding();
         stage.setScene(scene);
         stage.setFullScreen(true);
-        System.out.println(gridPane.getChildren().size());
         stage.show();
     }
 
@@ -262,7 +262,7 @@ public class GameMenu extends Application {
 
     public void setPopularity() {
         textForPopularity.setStyle("-fx-background-color: transparent;");
-        textForPopularity.setText(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"1000");
+        textForPopularity.setText(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"1000");//todo
         StackPane.setMargin(textForPopularity, new Insets(750, 0, 0, 270));
         gamePane.getChildren().add(textForPopularity);
         textForPopularity.setOnAction(e -> showPopularity());
@@ -375,11 +375,11 @@ public class GameMenu extends Application {
         slider.setBlockIncrement(10);
         slider.setMinWidth(200);
 
-        Label valueLabel = new Label(0+ "");
+        Label valueLabel = new Label(0 + "");
         valueLabel.setAlignment(Pos.CENTER);
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double roundedValue = Math.round(newValue.doubleValue() * 10.0) / 10.0;
-            valueLabel.setText(roundedValue+"");
+            valueLabel.setText(roundedValue + "");
             GameMenuController.setFearRate(roundedValue);
         });
         VBox root = new VBox(10);
@@ -414,6 +414,177 @@ public class GameMenu extends Application {
         return root;
 
     }
+
+    private void dropBuilding() {
+        ScrollPane scrollOfBuilding = new ScrollPane();
+        scrollOfBuilding.setStyle("-fx-background: #F5DEB3; -fx-border-color: #F5DEB3;");
+
+        scrollOfBuilding.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollOfBuilding.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        Button buttonForCastle = new Button();
+        Button buttonForFarm = new Button();
+        Button buttonForTree = new Button();
+        Button buttonForWeapon = new Button();
+        buttonForCastle.setBackground(null);
+        buttonForTree.setBackground(null);
+        buttonForWeapon.setBackground(null);
+        buttonForFarm.setBackground(null);
+        ImageView imageViewForCastle = new ImageView(new Image(GameMenu.class.getResource("/Icon/Castle.jpg")
+                .toExternalForm()));
+        ImageView imageViewForFarm = new ImageView(new Image(GameMenu.class.getResource("/Icon/Farm.jpg")
+                .toExternalForm()));
+        ImageView imageViewForTree = new ImageView(new Image(GameMenu.class.getResource("/Icon/Tree.jpg")
+                .toExternalForm()));
+        ImageView imageViewForWeapon = new ImageView(new Image(GameMenu.class.getResource("/Icon/Weapon.jpg")
+                .toExternalForm()));
+        imageViewForCastle.setFitWidth(30);
+        imageViewForCastle.setFitHeight(30);
+        imageViewForFarm.setFitWidth(30);
+        imageViewForFarm.setFitHeight(30);
+        imageViewForTree.setFitWidth(30);
+        imageViewForTree.setFitHeight(30);
+        imageViewForWeapon.setFitWidth(30);
+        imageViewForWeapon.setFitHeight(30);
+        buttonForCastle.setGraphic(imageViewForCastle);
+        buttonForFarm.setGraphic(imageViewForFarm);
+        buttonForTree.setGraphic(imageViewForTree);
+        buttonForWeapon.setGraphic(imageViewForWeapon);
+        StackPane.setMargin(buttonForCastle, new Insets(660, 680, 0, 0));
+        gamePane.getChildren().add(buttonForCastle);
+        StackPane.setMargin(buttonForFarm, new Insets(660, 600, 0, 0));
+        gamePane.getChildren().add(buttonForFarm);
+        StackPane.setMargin(buttonForTree, new Insets(660, 520, 0, 0));
+        gamePane.getChildren().add(buttonForTree);
+        StackPane.setMargin(buttonForWeapon, new Insets(660, 440, 0, 0));
+        gamePane.getChildren().add(buttonForWeapon);
+        buttonForFarm.setOnAction(e -> showFarmScroll(scrollOfBuilding));
+        buttonForCastle.setOnAction(e -> showCastleScroll(scrollOfBuilding));
+        buttonForTree.setOnAction(e -> showTreeScroll(scrollOfBuilding));
+        buttonForWeapon.setOnAction(e -> showWeaponScroll(scrollOfBuilding));
+        StackPane.setMargin(scrollOfBuilding, new Insets(780, 680, 5, 410));
+        gamePane.getChildren().add(scrollOfBuilding);
+    }
+
+    private void showWeaponScroll(ScrollPane scrollPane1) {
+        Button buttonForSHOP = new Button();
+        buttonForSHOP.setGraphic(getImageOFBuildingWithName(BuildingName.SHOP));
+        buttonForSHOP.setStyle("-fx-background-color: transparent;");
+        Button buttonForIRON_MINE = new Button();
+        buttonForIRON_MINE.setGraphic(getImageOFBuildingWithName(BuildingName.IRON_MINE));
+        buttonForIRON_MINE.setStyle("-fx-background-color: transparent;");
+        Button buttonForSTONE_MINE = new Button();
+        buttonForSTONE_MINE.setGraphic(getImageOFBuildingWithName(BuildingName.STONE_MINE));
+        buttonForSTONE_MINE.setStyle("-fx-background-color: transparent;");
+        Button buttonForSTORE = new Button();
+        buttonForSTORE.setGraphic(getImageOFBuildingWithName(BuildingName.STORE));
+        buttonForSTORE.setStyle("-fx-background-color: transparent;");
+        Button buttonForWOOD_CUTTER = new Button();
+        buttonForWOOD_CUTTER.setGraphic(getImageOFBuildingWithName(BuildingName.WOOD_CUTTER));
+        buttonForWOOD_CUTTER.setStyle("-fx-background-color: transparent;");
+        HBox content = new HBox();
+        content.setPrefSize(200,40);
+        content.getChildren().addAll(buttonForSHOP, buttonForSTONE_MINE, buttonForSTORE, buttonForIRON_MINE
+                , buttonForWOOD_CUTTER );
+        scrollPane1.setContent(content);
+        scrollPane1.setFitToWidth(true);
+        scrollPane1.setFitToHeight(true);
+
+    }
+
+    private void showTreeScroll(ScrollPane scrollPane) {
+        
+    }
+
+    private void showCastleScroll(ScrollPane scrollPane1) {
+        Button buttonForKeep = new Button();
+        buttonForKeep.setGraphic(getImageOFBuildingWithName(BuildingName.KEEP));
+        buttonForKeep.setStyle("-fx-background-color: transparent;");
+        Button buttonForSMALL_GATEHOUSE = new Button();
+        buttonForSMALL_GATEHOUSE.setGraphic(getImageOFBuildingWithName(BuildingName.SMALL_GATEHOUSE));
+        buttonForSMALL_GATEHOUSE.setStyle("-fx-background-color: transparent;");
+        Button buttonForBIG_GATEHOUSE = new Button();
+        buttonForBIG_GATEHOUSE.setGraphic(getImageOFBuildingWithName(BuildingName.BIG_GATEHOUSE));
+        buttonForBIG_GATEHOUSE.setStyle("-fx-background-color: transparent;");
+        Button buttonForLOOKOUT_TOWER = new Button();
+        buttonForLOOKOUT_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.LOOKOUT_TOWER));
+        buttonForLOOKOUT_TOWER.setStyle("-fx-background-color: transparent;");
+        Button buttonForPERIMETER_TOWER = new Button();
+        buttonForPERIMETER_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.PERIMETER_TOWER));
+        buttonForPERIMETER_TOWER.setStyle("-fx-background-color: transparent;");
+        Button buttonForDEFENCE_TURRET = new Button();
+        buttonForDEFENCE_TURRET.setGraphic(getImageOFBuildingWithName(BuildingName.DEFENCE_TURRET));
+        buttonForDEFENCE_TURRET.setStyle("-fx-background-color: transparent;");
+        Button buttonForSQUARE_TOWER = new Button();
+        buttonForSQUARE_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.SQUARE_TOWER));
+        buttonForSQUARE_TOWER.setStyle("-fx-background-color: transparent;");
+        Button buttonForROUND_TOWER = new Button();
+        buttonForROUND_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.ROUND_TOWER));
+        buttonForROUND_TOWER.setStyle("-fx-background-color: transparent;");
+        Button buttonForBARRACKS = new Button();
+        buttonForBARRACKS.setGraphic(getImageOFBuildingWithName(BuildingName.BARRACKS));
+        buttonForBARRACKS.setStyle("-fx-background-color: transparent;");
+        Button buttonForARMORY = new Button();
+        buttonForARMORY.setGraphic(getImageOFBuildingWithName(BuildingName.ARMORY));
+        buttonForARMORY.setStyle("-fx-background-color: transparent;");
+        Button buttonForMERCENARY_POST = new Button();
+        buttonForMERCENARY_POST.setGraphic(getImageOFBuildingWithName(BuildingName.MERCENARY_POST));
+        buttonForMERCENARY_POST.setStyle("-fx-background-color: transparent;");
+        HBox content = new HBox();
+        content.setPrefSize(200,40);
+        content.getChildren().addAll(buttonForKeep, buttonForSMALL_GATEHOUSE, buttonForBIG_GATEHOUSE
+                , buttonForLOOKOUT_TOWER, buttonForPERIMETER_TOWER, buttonForDEFENCE_TURRET, buttonForSQUARE_TOWER
+                , buttonForROUND_TOWER, buttonForBARRACKS, buttonForARMORY, buttonForMERCENARY_POST);
+        scrollPane1.setContent(content);
+        scrollPane1.setFitToWidth(true);
+        scrollPane1.setFitToHeight(true);
+    }
+
+    private void showFarmScroll(ScrollPane scrollPane1) {
+        Button buttonForMOTEL = new Button();
+        buttonForMOTEL.setGraphic(getImageOFBuildingWithName(BuildingName.MOTEL));
+        buttonForMOTEL.setStyle("-fx-background-color: transparent;");
+        Button buttonForMILL = new Button();
+        buttonForMILL.setGraphic(getImageOFBuildingWithName(BuildingName.MILL));
+        buttonForMILL.setStyle("-fx-background-color: transparent;");
+        Button buttonForAPPLE_GARDEN = new Button();
+        buttonForAPPLE_GARDEN.setGraphic(getImageOFBuildingWithName(BuildingName.APPLE_GARDEN));
+        buttonForAPPLE_GARDEN.setStyle("-fx-background-color: transparent;");
+        Button buttonForDIARY_FARMER = new Button();
+        buttonForDIARY_FARMER.setGraphic(getImageOFBuildingWithName(BuildingName.DIARY_FARMER));
+        buttonForDIARY_FARMER.setStyle("-fx-background-color: transparent;");
+        Button buttonForWHEAT_FIELD = new Button();
+        buttonForWHEAT_FIELD.setGraphic(getImageOFBuildingWithName(BuildingName.WHEAT_FIELD));
+        buttonForWHEAT_FIELD.setStyle("-fx-background-color: transparent;");
+        Button buttonForBAKERY = new Button();
+        buttonForBAKERY.setGraphic(getImageOFBuildingWithName(BuildingName.BAKERY));
+        buttonForBAKERY.setStyle("-fx-background-color: transparent;");
+        Button buttonForBREWING = new Button();
+        buttonForBREWING.setGraphic(getImageOFBuildingWithName(BuildingName.BREWING));
+        buttonForBREWING.setStyle("-fx-background-color: transparent;");
+        Button buttonForFOOD_STORE = new Button();
+        buttonForFOOD_STORE.setGraphic(getImageOFBuildingWithName(BuildingName.FOOD_STORE));
+        buttonForFOOD_STORE.setStyle("-fx-background-color: transparent;");
+
+        HBox content = new HBox();
+        content.setPrefSize(200,40);
+        content.getChildren().addAll(buttonForAPPLE_GARDEN, buttonForMOTEL, buttonForMILL, buttonForDIARY_FARMER
+                , buttonForWHEAT_FIELD, buttonForBAKERY, buttonForFOOD_STORE);
+        scrollPane1.setContent(content);
+        scrollPane1.setFitToWidth(true);
+        scrollPane1.setFitToHeight(true);
+    }
+
+    private ImageView getImageOFBuildingWithName(Enum name) {
+        System.out.println(name);
+
+        ImageView imageView = new ImageView(GameMenu.class.getResource("/Building/" + name+".png")
+                .toExternalForm());
+        imageView.setFitWidth(60);
+        imageView.setFitHeight(60);
+        return imageView;
+    }
+
 
 
 }
