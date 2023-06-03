@@ -42,8 +42,9 @@ public class GameMenu extends Application {
     private ArrayList<Building> buildings;
     private int unitNumbers ;
     private boolean drag;
-    private int mapCellPressed;
-    private boolean canPress = true;
+    private Rectangle rectangle;
+    private int chosenX;
+    private int chosenY;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -79,11 +80,16 @@ public class GameMenu extends Application {
     private void pressedNode(GridPane gridPane){
         for (Node node: gridPane.getChildren()){
             node.setOnMousePressed(event -> {
+                if(rectangle != null){
+                    removeInMap(rectangle, chosenX, chosenY);
+                }
                 int i = gridPane.getChildren().indexOf(node) % 200;
                 int j = gridPane.getChildren().indexOf(node) / 200;
-                Rectangle rectangle = new Rectangle(60, 60, Color.TRANSPARENT);
+                rectangle = new Rectangle(60, 60, Color.TRANSPARENT);
                 rectangle.setFill(Color.rgb( 96, 96,217));
                 rectangle.setOpacity(0.5);
+                chosenX = i;
+                chosenY = j;
                 addInMap(rectangle, i, j);
             });
         }
