@@ -8,6 +8,7 @@ import view.menus.AppMenu;
 import view.ParsedLine;
 import view.utils.MenuUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -20,11 +21,11 @@ public class SignupMenuController extends MenuController {
                                           String email, String nickname, String slogan) {
         if (!isUsernameValid(username))
             return MenuMessages.INVALID_USERNAME;
-        if (Database.getUserByName(username) != null) {
+        if (isUsernameTaken(username)) {
             username = Database.generateSimilarUsername(username);
             if (!AppMenu.getOneLine("Error: This username has already been taken. Similar username : " +
                     username + "\nDo you want this username to be yours? Y/N").equals("Y")) {
-                return MenuMessages.OPERATION_CANCELLED;
+                return MenuMessages.USERNAME_TAKEN;
             }
         }
         if (Database.getUserByEmail(email.toLowerCase()) != null)
@@ -32,22 +33,23 @@ public class SignupMenuController extends MenuController {
         if (!isEmailValid(email))
             return MenuMessages.INVALID_EMAIL;
         else email = email.toLowerCase();
-        if (password.equals("random")) {
+        /*if (password.equals("random")) {
             password = SignupMenuController.generateRandomPassword();
             if (!AppMenu.getOneLine("Your random password is: " + password +
                     "\nPlease re-enter your password here: ").equals(password))
                 return MenuMessages.WRONG_RANDOM_PASSWORD_REENTERED;
-        } else if (!isPasswordStrong(password).equals(MenuMessages.STRONG_PASSWORD)) {
+        } else*/ if (!isPasswordStrong(password).equals(MenuMessages.STRONG_PASSWORD)) {
             return isPasswordStrong(password);
         } else if (!password.equals(passwordConfirm))
             return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
-        if (slogan != null) {
+        /*if (slogan != null) {
             if (slogan.equals("random")) {
-                Random random = new Random();
-                slogan = Database.getSlogans().get(random.nextInt(8));
+                slogan = getRandomSlogan();
                 AppMenu.show("your slogan: " + slogan);
             }
-        }
+        }*/
+
+        //Security question:
         String questionPick = AppMenu.getOneLine("Pick your security question: " +
                 "1. What is my father’s name? 2. What\n" +
                 "was my first pet’s name? 3. What is my mother’s last name?");
@@ -113,5 +115,18 @@ public class SignupMenuController extends MenuController {
         else if (!answer.equals(answerConfirm))
             return MenuMessages.WRONG_ANSWER_CONFIRM;
         return MenuMessages.OK;
+    }
+
+    public static String getRandomSlogan() {
+        Random random = new Random();
+        return Database.getSlogans().get(random.nextInt(8));
+    }
+
+    public static ArrayList<String> getAllSlogans() {
+        return Database.getSlogans();
+    }
+
+    public static boolean isUsernameTaken(String username) {
+        return Database.getUserByName(username) != null;
     }
 }

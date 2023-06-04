@@ -19,7 +19,7 @@ public class MainController {
     private static final Scanner scanner = new Scanner(System.in);
 
     public void initializeApp() {
-        menus.put(AppMenu.MenuName.SIGNUP_MENU, AppMenu.getMenu(AppMenu.MenuName.SIGNUP_MENU, scanner));
+        /*menus.put(AppMenu.MenuName.SIGNUP_MENU, AppMenu.getMenu(AppMenu.MenuName.SIGNUP_MENU, scanner));
         menus.put(AppMenu.MenuName.LOGIN_MENU, AppMenu.getMenu(AppMenu.MenuName.LOGIN_MENU, scanner));
         menus.put(AppMenu.MenuName.GAME_MENU, AppMenu.getMenu(AppMenu.MenuName.GAME_MENU, scanner));
         menus.put(AppMenu.MenuName.MAP_MENU, AppMenu.getMenu(AppMenu.MenuName.MAP_MENU, scanner));
@@ -28,7 +28,7 @@ public class MainController {
         menus.put(AppMenu.MenuName.TRAD_MENU, AppMenu.getMenu(AppMenu.MenuName.TRAD_MENU, scanner));
         menus.put(AppMenu.MenuName.SHOP_MENU, AppMenu.getMenu(AppMenu.MenuName.SHOP_MENU, scanner));
 
-        currentMenu = menus.get(AppMenu.MenuName.LOGIN_MENU);
+        currentMenu = menus.get(AppMenu.MenuName.LOGIN_MENU);*/
         currentUser = null;
 
         Database.loadData();

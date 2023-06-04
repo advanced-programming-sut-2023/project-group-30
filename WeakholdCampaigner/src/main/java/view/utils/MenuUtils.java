@@ -68,7 +68,7 @@ public class MenuUtils {
             case INVALID_USERNAME:
                 System.out.println("Error: Username consists of letters ,numbers and underscore");
                 break;
-            case OPERATION_CANCELLED:
+            case USERNAME_TAKEN:
                 System.out.println("Operation cancelled");
                 break;
             case TAKEN_EMAIL:
