@@ -26,7 +26,7 @@ public class SceneBuilder {
         return borderPane;
     }
 
-    public static VBox getLabeledVBox(String title) {
+    public static VBox getLabeledVBox(String title, Node... elements) {
         VBox vBox = new VBox(SPACING);
         vBox.setAlignment(Pos.CENTER);
 
@@ -34,6 +34,8 @@ public class SceneBuilder {
         //label.getStyleClass().add("title");
         //todo
         vBox.getChildren().add(label);
+
+        vBox.getChildren().addAll(elements);
 
         return vBox;
     }

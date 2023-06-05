@@ -2,48 +2,24 @@ package view.GUI;
 
 import controller.menu_controllers.MenuController;
 import controller.menu_controllers.SignupMenuController;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RegisterMenu extends AbstractMenu {
-    private static Scene scene;
-    private static final SignupMenuController signupMenuController = new SignupMenuController();
-
     public static void main(String[] args) {
         launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        AbstractMenu.stage = primaryStage;
-
-        borderPane = SceneBuilder.getBorderPane();
-        RegisterMenu.scene = SceneBuilder.getScene(borderPane);
-        initialize();
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Weakhold Campaigner");
-        primaryStage.show();
     }
 
     private String username = "", password = "", slogan = "", email = "", nickname = "", passwordConfirmation = "";
@@ -64,18 +40,16 @@ public class RegisterMenu extends AbstractMenu {
         VBox vBox = SceneBuilder.getLabeledVBox("Register Menu");
 
         PasswordField passwordField = new PasswordField();
-        HBox passwordHBox = getPasswordHBox(passwordField);
-
-        Button registerButton = getRegisterButton();
 
         vBox.getChildren().addAll(getUsernameHBox(),
-                passwordHBox,
+                getPasswordHBox(passwordField),
                 getPasswordConfirmationTextField(),
                 getRandomPasswordButton(passwordField),
                 getSloganVBox(),
                 getEmailTextField(),
                 getNicknameTextField(),
-                registerButton);
+                getRegisterButton(),
+                getLoginMenuButton());
 
         borderPane.setCenter(vBox);
     }
@@ -299,12 +273,14 @@ public class RegisterMenu extends AbstractMenu {
                                         slogan, pickedQuestion, newAnswerValue);
                                 showInformationAlertAndWait("Registered successfully!");
 
-                                //todo enter another menu
                                 stage.setScene(scene);
 
                                 pickedQuestion = null;
                                 pickedAnswer = new TextField();
                                 captchaValidity = new TextField();
+
+                                //todo can you close everything here before changing the menu?
+                                goToLoginMenu();
                             }
                         });
 
@@ -342,97 +318,31 @@ public class RegisterMenu extends AbstractMenu {
         return registerButton;
     }
 
+    private static Button getLoginMenuButton() {
+        Button button = new Button("Login Menu");
+        button.setOnMouseClicked((mouseEvent) -> {
+            goToLoginMenu();
+        });
+
+        return button;
+    }
+
+    private static void goToLoginMenu() {
+        try {
+            new LoginMenu().start(stage);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //Captcha:
     private static TextField captchaValidity;
-    protected static int randomNum(int num) {
-        return (new Random()).nextInt(num);
-    }
-    private static java.awt.Color randomColor(int fc, int bc) {
-        if (fc > 255)
-            fc = 255;
-        if (bc > 255)
-            bc = 255;
-        int r = fc + randomNum(bc - fc);
-        int g = fc + randomNum(bc - fc);
-        int b = fc + randomNum(bc - fc);
-        return new java.awt.Color(r, g, b);
-    }
-    public static BufferedImage getCaptcha(String captchaKey, int width, int height) {
-        Font font = new Font("Verdana", Font.ITALIC
-                | Font.BOLD, 28);
-
-        char[] chars = captchaKey.toCharArray();
-
-        BufferedImage bufferedImage = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_RGB);
-        Graphics2D bufferedImageGraphics = (Graphics2D) bufferedImage.getGraphics();
-        AlphaComposite ac3;
-        java.awt.Color color;
-        int len = chars.length;
-        bufferedImageGraphics.setColor(java.awt.Color.WHITE);
-        bufferedImageGraphics.fillRect(0, 0, width, height);
-
-        //key generation:
-        bufferedImageGraphics.setFont(font);
-        int h = height - ((height - font.getSize()) >> 1), w = width
-                / len, size = w - font.getSize() + 1;
-        for (int i = 0; i < len; i++) {
-            ac3 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                    0.7f);
-            bufferedImageGraphics.setComposite(ac3);
-
-            color = new java.awt.Color(20 + randomNum(110), 30 + randomNum(110),
-                    30 + randomNum(110));
-            bufferedImageGraphics.setColor(color);
-            bufferedImageGraphics.drawString(chars[i] + "", (width - (len - i) * w) + size,
-                    h - 4);
-        }
-
-        //Noise generation:
-        for (int i = 0; i < (width * height / 100); i++) {
-            color = randomColor(150, 250);
-            bufferedImageGraphics.setColor(color);
-            bufferedImageGraphics.drawOval(randomNum(width), randomNum(height), 5 + randomNum(width/30),
-                    5 + randomNum(height/30));
-        }
-        for (int i = 0; i < (width * height / 700); i++) {
-            color = randomColor(150, 250);
-            bufferedImageGraphics.setColor(color);
-
-            bufferedImageGraphics.drawLine(randomNum(width), randomNum(height), randomNum(width), randomNum(height));
-        }
-
-
-        return bufferedImage;
-    }
-
-    private Image bufferedImageToImage(BufferedImage img){
-        //javafx.scene.image.Image
-
-        //converting to a good type, read about types here:
-        // https://openjfx.io/javadoc/13/javafx.graphics/javafx/scene/image/PixelBuffer.html
-        BufferedImage newImg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
-        newImg.createGraphics().drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
-
-        //converting the BufferedImage to an IntBuffer
-        int[] type_int_agrb = ((DataBufferInt) newImg.getRaster().getDataBuffer()).getData();
-        IntBuffer buffer = IntBuffer.wrap(type_int_agrb);
-
-        //converting the IntBuffer to an Image, read more about it here:
-        // https://openjfx.io/javadoc/13/javafx.graphics/javafx/scene/image/PixelBuffer.html
-        PixelFormat<IntBuffer> pixelFormat = PixelFormat.getIntArgbPreInstance();
-        PixelBuffer<IntBuffer> pixelBuffer = new PixelBuffer<>(newImg.getWidth(), newImg.getHeight(),
-                buffer, pixelFormat);
-        return new WritableImage(pixelBuffer);
-    }
-
 
     public void showCaptcha() {
         String randomCaptchaNumber = Integer.toString(ThreadLocalRandom.current().nextInt(111111, 999999));
 
         ImageView imageView = new ImageView(
-                bufferedImageToImage(
-                        getCaptcha(randomCaptchaNumber, PIXEL_UNIT * 5, PIXEL_UNIT * 5)));
+                Captcha.getCaptcha(randomCaptchaNumber));
 
         TextField textField = new TextField("Enter the Captcha");
 

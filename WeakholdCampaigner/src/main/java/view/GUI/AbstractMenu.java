@@ -66,11 +66,14 @@ public abstract class AbstractMenu extends Application {
     protected static Scene scene;
     @Override
     public void start(Stage primaryStage) throws Exception {
+        stage = primaryStage;
+
         borderPane = SceneBuilder.getBorderPane();
         scene = SceneBuilder.getScene(borderPane);
         initialize();
 
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Weakhold Campaigner");
         primaryStage.show();
     }
 
