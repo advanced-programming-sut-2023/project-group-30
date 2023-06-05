@@ -4,12 +4,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 
-import static view.GUI.AbstractMenu.PIXEL_UNIT;
-import static view.GUI.AbstractMenu.SPACING;
+import java.net.URL;
+
+import static view.GUI.AbstractMenu.*;
 
 public class SceneBuilder {
     public static Scene getScene(BorderPane borderPane) {
@@ -18,10 +18,22 @@ public class SceneBuilder {
 
     public static BorderPane getBorderPane() {
         BorderPane borderPane = new BorderPane();
-        //borderPane.getStylesheets().add(SceneBuilder.class.getResource("/CSS/menuStyle.css").toExternalForm());
-        //borderPane.getStyleClass().add("BackGround"); //does this actually work?
-        //todo background
-        //stylesheets="@../CSS/menuStyle.css"
+        //borderPane.getStyleClass().add("backGround"); //does this actually work?
+
+        //css styling:
+        URL defaultCSSURL = SceneBuilder.class.getResource("/CSS/defaultCSS.css");
+        if (defaultCSSURL != null)
+            borderPane.getStylesheets().add(defaultCSSURL.toExternalForm());
+
+        //background:
+        URL backgroundURL = SceneBuilder.class.getResource("/Backgrounds/default.jpg");
+        if (backgroundURL != null)
+            borderPane.setBackground(new Background(new BackgroundImage(new Image(
+                    backgroundURL.toExternalForm(),
+                    PIXEL_UNIT * X_Ratio, PIXEL_UNIT * Y_Ratio, false, false
+            ),
+                    null, null, null, null)
+            ));
 
         return borderPane;
     }
@@ -31,8 +43,7 @@ public class SceneBuilder {
         vBox.setAlignment(Pos.CENTER);
 
         Label label =  new Label(title);
-        //label.getStyleClass().add("title");
-        //todo
+        label.getStyleClass().add("title"); // resources/CSS/defaultCSS -> .title
         vBox.getChildren().add(label);
 
         vBox.getChildren().addAll(elements);
