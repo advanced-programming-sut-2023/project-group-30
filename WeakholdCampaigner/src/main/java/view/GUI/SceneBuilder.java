@@ -13,7 +13,7 @@ import static view.GUI.AbstractMenu.SPACING;
 
 public class SceneBuilder {
     public static Scene getScene(BorderPane borderPane) {
-        return new Scene(borderPane, 9 * PIXEL_UNIT, 16 * PIXEL_UNIT);
+        return new Scene(borderPane, AbstractMenu.X_Ratio * PIXEL_UNIT, AbstractMenu.Y_Ratio * PIXEL_UNIT);
     }
 
     public static BorderPane getBorderPane() {

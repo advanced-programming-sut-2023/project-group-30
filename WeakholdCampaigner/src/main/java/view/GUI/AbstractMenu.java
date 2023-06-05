@@ -27,7 +27,7 @@ public abstract class AbstractMenu extends Application {
         alert.showAndWait();
     }
 
-    protected static void showInformationAlertAndWait(String header, String content) {
+    public static void showInformationAlertAndWait(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
         if (header != null) alert.setHeaderText(header);
@@ -35,7 +35,7 @@ public abstract class AbstractMenu extends Application {
         alert.showAndWait();
     }
 
-    protected static void showInformationAlertAndWait(String content) {
+    public static void showInformationAlertAndWait(String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setContentText(content);
@@ -57,7 +57,8 @@ public abstract class AbstractMenu extends Application {
         textInputDialog.setContentText(content);
         textInputDialog.showAndWait();
 
-        return textInputDialog.getResult();
+        String result = textInputDialog.getResult();
+        return (result != null) ? result : "";
     }
 
     protected abstract void initialize();

@@ -61,7 +61,7 @@ public class SignupMCTest {
 
     @Test
     public void wrongPasswordConfirmation() {
-        MenuMessages message = SignupMenuController.createUser("Mamadam", "Sa23!s",
+        MenuMessages message = SignupMenuController.deprecatedCreateUser("Mamadam", "Sa23!s",
                 "Ssa", "mamad@gmail.com", "feri", null);
         Assertions.assertEquals(MenuMessages.WRONG_PASSWORD_CONFIRMATION, message);
     }

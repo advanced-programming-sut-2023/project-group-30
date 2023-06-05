@@ -3,7 +3,7 @@ module WeakholdCampaigner {
     requires javafx.fxml;
     requires org.jetbrains.annotations;
     requires com.google.gson;
-
+    requires java.desktop; //java.desktop is for captcha generation
 
 
     opens view to javafx.fxml;

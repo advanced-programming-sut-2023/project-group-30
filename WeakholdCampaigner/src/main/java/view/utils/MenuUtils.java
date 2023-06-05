@@ -61,7 +61,7 @@ public class MenuUtils {
                     "--email <email> -n <nickname> [-s <slogan>]");
             return;
         }
-        switch (SignupMenuController.createUser(username, password, passwordConfirmation, email, nickname, slogan)) {
+        switch (SignupMenuController.deprecatedCreateUser(username, password, passwordConfirmation, email, nickname, slogan)) {
             case USER_CREATED_SUCCESSFULLY:
                 System.out.println("Done!");
                 break;
