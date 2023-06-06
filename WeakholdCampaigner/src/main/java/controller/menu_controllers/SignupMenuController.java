@@ -83,12 +83,13 @@ public class SignupMenuController extends MenuController {
     }
 
     public static void newCreateUser(String username, String password, String email, String nickname,
-                                      String slogan, int securityQ, String securityA) {
+                                      String slogan, int securityQ, String securityA, String avatarURL) {
 
         passwordRecoveryQNA = new PasswordRecoveryQNA(Database.getSecurityQuestions().get(securityQ)
                 .getQuestion(), securityA);
 
-        User user = new User(username, sha256(password), nickname, email.toLowerCase(), slogan, passwordRecoveryQNA);
+        User user = new User(username, sha256(password), nickname, email.toLowerCase(), slogan,
+                passwordRecoveryQNA, avatarURL);
         Database.addUser(user);
     }
 

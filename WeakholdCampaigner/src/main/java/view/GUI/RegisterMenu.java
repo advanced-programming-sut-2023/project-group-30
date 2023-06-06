@@ -269,8 +269,8 @@ public class RegisterMenu extends AbstractMenu {
                         showCaptcha();
                         captchaValidity.textProperty().addListener((observable1, oldValue1, newValue1) -> {
                             if (newValue1.equals("Y")) {
-                                SignupMenuController.newCreateUser(username, password, email, nickname,
-                                        slogan, pickedQuestion, newAnswerValue);
+                                SignupMenuController.newCreateUser(username, password, email, nickname, slogan,
+                                        pickedQuestion, newAnswerValue, AvatarSelectionMenu.getRandomAvatarURL());
                                 showInformationAlertAndWait("Registered successfully!");
 
                                 stage.setScene(scene);
@@ -281,6 +281,10 @@ public class RegisterMenu extends AbstractMenu {
 
                                 //todo can you close everything here before changing the menu?
                                 goToLoginMenu();
+                            }
+                            else {
+                                stage.setScene(scene);
+                                captchaValidity = new TextField();
                             }
                         });
 

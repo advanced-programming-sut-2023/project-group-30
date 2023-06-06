@@ -116,10 +116,10 @@ public class LoginMenu extends AbstractMenu{
 
             switch (LoginMenuController.userLogin(username, password, stayLoggedInCheckBox.isSelected())) {
                 case USERNAME_DOES_NOT_EXIST:
-                    showErrorAndWait("Error: this username not exist");
+                    showErrorAndWait("This username does not exist");
                     break;
                 case PASSWORD_INCORRECT:
-                    showErrorAndWait("Error: password is incorrect");
+                    showErrorAndWait("Password is incorrect");
                     break;
                 case STAY:
                     //Thread.sleep(ms);
@@ -130,8 +130,14 @@ public class LoginMenu extends AbstractMenu{
                         if (newValue.equals("Y")) {
                             showInformationAlertAndWait("Logged in successfully!");
 
+                            //goto MainMenu:
                             //MainController.setCurrentMenu(AppMenu.MenuName.MAIN_MENU);
-                            //todo enter another menu
+                            try {
+                                new MainMenu().start(stage);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+
                             stage.setScene(scene);
 
                             captchaValidity = new TextField();

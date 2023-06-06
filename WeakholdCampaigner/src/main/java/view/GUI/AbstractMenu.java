@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public abstract class AbstractMenu extends Application {
-    public final static int PIXEL_UNIT = 45, X_Ratio = 16, Y_Ratio = 9, SPACING = PIXEL_UNIT / 2;
+    public final static int PIXEL_UNIT = 45, X_Ratio = 32, Y_Ratio = 18, SPACING = PIXEL_UNIT / 2;
     protected static Stage stage;
 
     protected static void showErrorAndWait(String header, String content) {
