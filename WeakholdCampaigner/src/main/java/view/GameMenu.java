@@ -2,7 +2,7 @@ package view;
 
 import controller.menu_controllers.GameMenuController;
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -11,7 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -21,10 +24,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Database;
 import model.game.Government;
+import model.game.game_entities.Building;
 import model.game.game_entities.BuildingName;
 import model.game.game_entities.Unit;
 import model.game.map.Map;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,9 +205,11 @@ public class GameMenu extends Application {
     }
 
 
-    public void addInMap(Node node, int i, int j) {
+    public void addInMap(ImageView imageView, int i, int j) {
+        imageView.setFitHeight(30);
+        imageView.setFitWidth(30);
         Group group = (Group) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
-        group.getChildren().add(node);
+        group.getChildren().add(imageView);
     }
 
     public void removeInMap(Node node, int i, int j) {
@@ -466,34 +471,97 @@ public class GameMenu extends Application {
         gamePane.getChildren().add(scrollOfBuilding);
     }
 
+    private void setDragOnBuilding(Button button, BuildingName buildingName) {
+        button.setOnDragDetected(event -> {
+            Dragboard db = button.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(button.getText());
+            db.setContent(content);
+            event.consume();
+        });
+        gridPane.setOnDragOver(event -> {
+            event.acceptTransferModes(TransferMode.MOVE);
+            event.consume();
+        });
+        gridPane.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+
+            if (db.hasString()) {
+
+
+                Node node = (Node) event.getSource();
+                if (node instanceof GridPane) {
+                    double dropX = event.getX();
+                    double dropY = event.getY();
+                    Node droppedOnNode = null;
+                    int sum = 0;
+                    for (Node node1 : gridPane.getChildren()) {
+                        Bounds bounds = node1.getBoundsInParent();
+                        if (dropX >= bounds.getMinX() && dropX <= bounds.getMaxX() &&
+                                dropY >= bounds.getMinY() && dropY <= bounds.getMaxY()) {
+                            droppedOnNode = node1;
+                            break;
+                        }
+                        sum++;
+                    }
+                    createBuilding(buildingName, sum % 200, sum / 200);
+                    success = true;
+                }
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
+    }
+
     private void showWeaponScroll(ScrollPane scrollPane1) {
         Button buttonForSHOP = new Button();
         buttonForSHOP.setGraphic(getImageOFBuildingWithName(BuildingName.SHOP));
         buttonForSHOP.setStyle("-fx-background-color: transparent;");
+        buttonForSHOP.setOnAction(e -> setDragOnBuilding(buttonForSHOP, SHOP));
+
         Button buttonForIRON_MINE = new Button();
         buttonForIRON_MINE.setGraphic(getImageOFBuildingWithName(BuildingName.IRON_MINE));
         buttonForIRON_MINE.setStyle("-fx-background-color: transparent;");
+        buttonForIRON_MINE.setOnAction(e -> setDragOnBuilding(buttonForIRON_MINE, IRON_MINE));
+
         Button buttonForSTONE_MINE = new Button();
         buttonForSTONE_MINE.setGraphic(getImageOFBuildingWithName(BuildingName.STONE_MINE));
         buttonForSTONE_MINE.setStyle("-fx-background-color: transparent;");
+        buttonForSTONE_MINE.setOnAction(e -> setDragOnBuilding(buttonForSTONE_MINE, STONE_MINE));
+
         Button buttonForSTORE = new Button();
         buttonForSTORE.setGraphic(getImageOFBuildingWithName(BuildingName.STORE));
         buttonForSTORE.setStyle("-fx-background-color: transparent;");
+        buttonForSTORE.setOnAction(e -> setDragOnBuilding(buttonForSTORE, STORE));
+
         Button buttonForWOOD_CUTTER = new Button();
         buttonForWOOD_CUTTER.setGraphic(getImageOFBuildingWithName(BuildingName.WOOD_CUTTER));
         buttonForWOOD_CUTTER.setStyle("-fx-background-color: transparent;");
+        buttonForWOOD_CUTTER.setOnAction(e -> setDragOnBuilding(buttonForWOOD_CUTTER, WOOD_CUTTER));
+
         Button buttonForARMOR = new Button();
         buttonForARMOR.setGraphic(getImageOFBuildingWithName(BuildingName.ARMOR));
         buttonForARMOR.setStyle("-fx-background-color: transparent;");
+        buttonForARMOR.setOnAction(e -> setDragOnBuilding(buttonForARMOR, ARMOR));
+
         Button buttonForBLACKSMITH = new Button();
         buttonForBLACKSMITH.setGraphic(getImageOFBuildingWithName(BuildingName.BLACKSMITH));
         buttonForBLACKSMITH.setStyle("-fx-background-color: transparent;");
+        buttonForBLACKSMITH.setOnAction(e -> setDragOnBuilding(buttonForBLACKSMITH, BLACKSMITH));
+
         Button buttonForPOLETURNER = new Button();
         buttonForPOLETURNER.setGraphic(getImageOFBuildingWithName(BuildingName.POLETURNER));
         buttonForPOLETURNER.setStyle("-fx-background-color: transparent;");
+        buttonForPOLETURNER.setOnAction(e -> setDragOnBuilding(buttonForPOLETURNER, POLETURNER));
+
         Button buttonForFLETCHER = new Button();
         buttonForFLETCHER.setGraphic(getImageOFBuildingWithName(BuildingName.FLETCHER));
         buttonForFLETCHER.setStyle("-fx-background-color: transparent;");
+        buttonForFLETCHER.setOnAction(e -> setDragOnBuilding(buttonForFLETCHER, FLETCHER));
+
         HBox content = new HBox();
         content.setPrefSize(200, 40);
         content.getChildren().addAll(buttonForSHOP, buttonForSTONE_MINE, buttonForSTORE, buttonForIRON_MINE
@@ -508,22 +576,32 @@ public class GameMenu extends Application {
         Button buttonForCHERRY_TREE = new Button();
         buttonForCHERRY_TREE.setGraphic(getImageOFBuildingWithName(BuildingName.CHERRY_TREE));
         buttonForCHERRY_TREE.setStyle("-fx-background-color: transparent;");
+        buttonForCHERRY_TREE.setOnAction(e -> setDragOnBuilding(buttonForCHERRY_TREE, CHERRY_TREE));
+
         Button buttonForOLIVE_TREE = new Button();
         buttonForOLIVE_TREE.setGraphic(getImageOFBuildingWithName(BuildingName.OLIVE_TREE));
         buttonForOLIVE_TREE.setStyle("-fx-background-color: transparent;");
+        buttonForOLIVE_TREE.setOnAction(e -> setDragOnBuilding(buttonForOLIVE_TREE, OLIVE_TREE));
+
         Button buttonForCOCONUT_TREE = new Button();
         buttonForCOCONUT_TREE.setGraphic(getImageOFBuildingWithName(BuildingName.COCONUT_TREE));
         buttonForCOCONUT_TREE.setStyle("-fx-background-color: transparent;");
+        buttonForCOCONUT_TREE.setOnAction(e -> setDragOnBuilding(buttonForCOCONUT_TREE, COCONUT_TREE));
+
         Button buttonForDATE_TREE = new Button();
         buttonForDATE_TREE.setGraphic(getImageOFBuildingWithName(BuildingName.DATE_TREE));
         buttonForDATE_TREE.setStyle("-fx-background-color: transparent;");
+        buttonForDATE_TREE.setOnAction(e -> setDragOnBuilding(buttonForDATE_TREE, DATE_TREE));
+
         Button buttonForDESERT_SHRUB = new Button();
         buttonForDESERT_SHRUB.setGraphic(getImageOFBuildingWithName(BuildingName.DESERT_SHRUB));
         buttonForDESERT_SHRUB.setStyle("-fx-background-color: transparent;");
+        buttonForDESERT_SHRUB.setOnAction(e -> setDragOnBuilding(buttonForDESERT_SHRUB, DESERT_SHRUB));
+
         HBox content = new HBox();
         content.setPrefSize(200, 40);
-        content.getChildren().addAll(buttonForDATE_TREE,buttonForCHERRY_TREE,buttonForCOCONUT_TREE,buttonForDESERT_SHRUB
-                ,buttonForOLIVE_TREE);
+        content.getChildren().addAll(buttonForDATE_TREE, buttonForCHERRY_TREE, buttonForCOCONUT_TREE, buttonForDESERT_SHRUB
+                , buttonForOLIVE_TREE);
         scrollPane1.setContent(content);
         scrollPane1.setFitToWidth(true);
         scrollPane1.setFitToHeight(true);
@@ -534,36 +612,58 @@ public class GameMenu extends Application {
         Button buttonForKeep = new Button();
         buttonForKeep.setGraphic(getImageOFBuildingWithName(BuildingName.KEEP));
         buttonForKeep.setStyle("-fx-background-color: transparent;");
+        buttonForKeep.setOnAction(e -> setDragOnBuilding(buttonForKeep, KEEP));
+
         Button buttonForSMALL_GATEHOUSE = new Button();
         buttonForSMALL_GATEHOUSE.setGraphic(getImageOFBuildingWithName(BuildingName.SMALL_GATEHOUSE));
         buttonForSMALL_GATEHOUSE.setStyle("-fx-background-color: transparent;");
+        buttonForSMALL_GATEHOUSE.setOnAction(e -> setDragOnBuilding(buttonForSMALL_GATEHOUSE, SMALL_GATEHOUSE));
+
         Button buttonForBIG_GATEHOUSE = new Button();
         buttonForBIG_GATEHOUSE.setGraphic(getImageOFBuildingWithName(BuildingName.BIG_GATEHOUSE));
         buttonForBIG_GATEHOUSE.setStyle("-fx-background-color: transparent;");
+        buttonForBIG_GATEHOUSE.setOnAction(e -> setDragOnBuilding(buttonForBIG_GATEHOUSE, BIG_GATEHOUSE));
+
         Button buttonForLOOKOUT_TOWER = new Button();
         buttonForLOOKOUT_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.LOOKOUT_TOWER));
         buttonForLOOKOUT_TOWER.setStyle("-fx-background-color: transparent;");
+        buttonForLOOKOUT_TOWER.setOnAction(e -> setDragOnBuilding(buttonForLOOKOUT_TOWER, LOOKOUT_TOWER));
+
         Button buttonForPERIMETER_TOWER = new Button();
         buttonForPERIMETER_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.PERIMETER_TOWER));
         buttonForPERIMETER_TOWER.setStyle("-fx-background-color: transparent;");
+        buttonForPERIMETER_TOWER.setOnAction(e ->setDragOnBuilding(buttonForPERIMETER_TOWER, PERIMETER_TOWER));
+
         Button buttonForDEFENCE_TURRET = new Button();
         buttonForDEFENCE_TURRET.setGraphic(getImageOFBuildingWithName(BuildingName.DEFENCE_TURRET));
         buttonForDEFENCE_TURRET.setStyle("-fx-background-color: transparent;");
+        buttonForDEFENCE_TURRET.setOnAction(e ->setDragOnBuilding(buttonForDEFENCE_TURRET, DEFENCE_TURRET));
+
         Button buttonForSQUARE_TOWER = new Button();
         buttonForSQUARE_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.SQUARE_TOWER));
         buttonForSQUARE_TOWER.setStyle("-fx-background-color: transparent;");
+        buttonForSQUARE_TOWER.setOnAction(e ->setDragOnBuilding(buttonForSQUARE_TOWER, SQUARE_TOWER));
+
         Button buttonForROUND_TOWER = new Button();
         buttonForROUND_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.ROUND_TOWER));
         buttonForROUND_TOWER.setStyle("-fx-background-color: transparent;");
+        buttonForROUND_TOWER.setOnAction(e -> setDragOnBuilding(buttonForROUND_TOWER, ROUND_TOWER));
+
         Button buttonForBARRACKS = new Button();
         buttonForBARRACKS.setGraphic(getImageOFBuildingWithName(BuildingName.BARRACKS));
         buttonForBARRACKS.setStyle("-fx-background-color: transparent;");
+        buttonForBARRACKS.setOnAction(e -> setDragOnBuilding(buttonForBARRACKS, BARRACKS));
+
         Button buttonForARMORY = new Button();
         buttonForARMORY.setGraphic(getImageOFBuildingWithName(BuildingName.ARMORY));
         buttonForARMORY.setStyle("-fx-background-color: transparent;");
+        buttonForARMORY.setOnAction(e -> setDragOnBuilding(buttonForARMORY, ARMORY));
+
         Button buttonForMERCENARY_POST = new Button();
         buttonForMERCENARY_POST.setGraphic(getImageOFBuildingWithName(BuildingName.MERCENARY_POST));
         buttonForMERCENARY_POST.setStyle("-fx-background-color: transparent;");
+        buttonForMERCENARY_POST.setOnAction(e -> setDragOnBuilding(buttonForMERCENARY_POST, MERCENARY_POST));
+
         HBox content = new HBox();
         content.setPrefSize(200, 40);
         content.getChildren().addAll(buttonForKeep, buttonForSMALL_GATEHOUSE, buttonForBIG_GATEHOUSE
@@ -578,33 +678,53 @@ public class GameMenu extends Application {
         Button buttonForMOTEL = new Button();
         buttonForMOTEL.setGraphic(getImageOFBuildingWithName(BuildingName.MOTEL));
         buttonForMOTEL.setStyle("-fx-background-color: transparent;");
+        buttonForMOTEL.setOnAction(e -> setDragOnBuilding(buttonForMOTEL, MOTEL));
+
         Button buttonForMILL = new Button();
         buttonForMILL.setGraphic(getImageOFBuildingWithName(BuildingName.MILL));
         buttonForMILL.setStyle("-fx-background-color: transparent;");
+        buttonForMILL.setOnAction(e -> setDragOnBuilding(buttonForMILL, MILL));
+
         Button buttonForAPPLE_GARDEN = new Button();
         buttonForAPPLE_GARDEN.setGraphic(getImageOFBuildingWithName(BuildingName.APPLE_GARDEN));
         buttonForAPPLE_GARDEN.setStyle("-fx-background-color: transparent;");
+        buttonForAPPLE_GARDEN.setOnAction(e -> setDragOnBuilding(buttonForAPPLE_GARDEN, APPLE_GARDEN));
+
         Button buttonForDIARY_FARMER = new Button();
         buttonForDIARY_FARMER.setGraphic(getImageOFBuildingWithName(BuildingName.DIARY_FARMER));
         buttonForDIARY_FARMER.setStyle("-fx-background-color: transparent;");
+        buttonForDIARY_FARMER.setOnAction(e -> setDragOnBuilding(buttonForDIARY_FARMER, DIARY_FARMER));
+
+
         Button buttonForWHEAT_FIELD = new Button();
         buttonForWHEAT_FIELD.setGraphic(getImageOFBuildingWithName(BuildingName.WHEAT_FIELD));
         buttonForWHEAT_FIELD.setStyle("-fx-background-color: transparent;");
+        buttonForWHEAT_FIELD.setOnAction(e -> setDragOnBuilding(buttonForWHEAT_FIELD, WHEAT_FIELD));
+
         Button buttonForBAKERY = new Button();
         buttonForBAKERY.setGraphic(getImageOFBuildingWithName(BuildingName.BAKERY));
         buttonForBAKERY.setStyle("-fx-background-color: transparent;");
+        buttonForBAKERY.setOnAction(e -> setDragOnBuilding(buttonForBAKERY, BAKERY));
+
         Button buttonForBREWING = new Button();
         buttonForBREWING.setGraphic(getImageOFBuildingWithName(BuildingName.BREWING));
         buttonForBREWING.setStyle("-fx-background-color: transparent;");
+        buttonForBREWING.setOnAction(e -> setDragOnBuilding(buttonForBREWING, BREWING));
+
         Button buttonForFOOD_STORE = new Button();
         buttonForFOOD_STORE.setGraphic(getImageOFBuildingWithName(BuildingName.FOOD_STORE));
         buttonForFOOD_STORE.setStyle("-fx-background-color: transparent;");
+        buttonForFOOD_STORE.setOnAction(e -> setDragOnBuilding(buttonForFOOD_STORE, FOOD_STORE));
+
         Button buttonForHOUSE = new Button();
         buttonForHOUSE.setGraphic(getImageOFBuildingWithName(BuildingName.HOUSE));
         buttonForHOUSE.setStyle("-fx-background-color: transparent;");
+        buttonForHOUSE.setOnAction(e -> setDragOnBuilding(buttonForHOUSE, HOUSE));
+
         Button buttonForCHURCH = new Button();
         buttonForCHURCH.setGraphic(getImageOFBuildingWithName(BuildingName.CHURCH));
         buttonForCHURCH.setStyle("-fx-background-color: transparent;");
+        buttonForCHURCH.setOnAction(e ->setDragOnBuilding(buttonForCHURCH, CHURCH));
 
         HBox content = new HBox();
         content.setPrefSize(200, 40);
@@ -621,6 +741,45 @@ public class GameMenu extends Application {
         imageView.setFitWidth(60);
         imageView.setFitHeight(60);
         return imageView;
+    }
+
+    private static boolean isSetOnBuildingButton = true;
+
+    private void createBuilding(BuildingName buildingName, int i, int j) {
+        System.out.println(buildingName + " " + i + " " + j);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+//                switch (GameMenuController.dropBuilding(i, j, buildingName.name, true)) {
+//                    case ALREADY_HAS_KEEP:
+//                        alert.setTitle("ERROR");
+//                        alert.setContentText("Error: You can have only one Keep.");
+//                        alert.showAndWait();
+//                        break;
+//                    case HAS_NOT_PLACED_KEEP:
+//                        alert.setTitle("ERROR");
+//                        alert.setContentText("Error: You must Place your Keep before any other building.");
+//                        alert.showAndWait();
+//                        break;
+//                    case CELL_IS_FULL:
+//                        alert.setTitle("ERROR");
+//                        alert.setContentText("Error: There is already a building in that location.");
+//                        alert.showAndWait();
+//
+//                        break;
+//                    case CELL_HAS_INCOMPATIBLE_TEXTURE:
+//                        alert.setTitle("ERROR");
+//                        alert.setContentText("Error: The cell has an incompatible texture.");
+//                        alert.showAndWait();
+//                        break;
+//                    case SUCCESS:
+//                        Building building = Building.getInstance(buildingName.name, i, j);
+//                        addInMap(new ImageView(new Image(building.getImageView().toExternalForm())), i, j);
+//                        break;
+//                }
+
+        Building building = Building.getInstance(buildingName.name, i, j);
+        addInMap(new ImageView(new Image(building.getImageView().toExternalForm())), i, j);
+        isSetOnBuildingButton = false;
     }
 
 }
