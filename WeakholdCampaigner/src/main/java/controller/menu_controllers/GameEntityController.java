@@ -247,11 +247,11 @@ public class GameEntityController extends GameController {
         return null;
     }
 
-    public static void showCondition() {
+    public static String  showCondition() {
         Capacity capacity = getCapacity();
         Game game = GameMenuController.getCurrentGame();
         Government government = game.getCurrentGovernment();
-        AppMenu.show("filled " + government.getStoredUnit(capacity.getStoredItem()) + " out of "
+        return ("filled " + government.getStoredUnit(capacity.getStoredItem()) + " out of "
                 + capacity.getMaxCapacity());
 
     }

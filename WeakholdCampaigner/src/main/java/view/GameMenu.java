@@ -1,11 +1,12 @@
 package view;
 
+import controller.menu_controllers.GameEntityController;
 import controller.menu_controllers.GameMenuController;
+import controller.messages.MenuMessages;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,15 +24,21 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Database;
+import model.attributes.Attribute;
+import model.attributes.building_attributes.*;
+import model.attributes.building_attributes.Process;
 import model.game.Government;
 import model.game.game_entities.Building;
 import model.game.game_entities.BuildingName;
 import model.game.game_entities.Unit;
 import model.game.map.Map;
+import view.utils.GameEntityUtils;
+import view.utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static controller.messages.MenuMessages.NOT_ENOUGH_RESOURCES;
 import static model.enums.FileName.*;
 
 import static model.game.game_entities.BuildingName.*;
@@ -73,7 +80,7 @@ public class GameMenu extends Application {
                 setRates();
             }
         });
-        gamePane.getStylesheets().add(GameMenu.class.getResource("/Css/Style.css").toExternalForm());
+        gamePane.getStylesheets().add(GameMenu.class.getResource("/CSS/Style.css").toExternalForm());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));
         scrollPane.setScaleX(3 * scrollPane.getScaleX() / 2);
@@ -124,7 +131,9 @@ public class GameMenu extends Application {
             for (int j = 0; j < 200; j++) {
                 Rectangle cell = new Rectangle(30, 30);
                 cell.setFill(imagePatternHashMap.get(map.getCell(i, j).getTexture()));
-                Group group = new Group(cell);
+                Pane pane = new Pane();
+                pane.setPrefSize(30, 30);
+                pane.getChildren().add(cell);
                 Tooltip tooltip = new Tooltip();
                 tooltip.setText("Texture:" + map.getCell(i, j).getTexture().name());
                 if (map.getCell(i, j).getBuilding() != null) {
@@ -136,8 +145,8 @@ public class GameMenu extends Application {
                         tooltip.setText(tooltip.getText() + unit.unitName + " ");
                     }
                 }
-                Tooltip.install(group, tooltip);
-                gridPane.add(group, i, j);
+                Tooltip.install(pane, tooltip);
+                gridPane.add(pane, i, j);
             }
         }
         ImageView imageView = new ImageView(GameMenu.class.getResource("/Menu/BoarderMenuOfGame.png")
@@ -205,16 +214,15 @@ public class GameMenu extends Application {
     }
 
 
-    public void addInMap(ImageView imageView, int i, int j) {
-        imageView.setFitHeight(30);
-        imageView.setFitWidth(30);
-        Group group = (Group) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
-        group.getChildren().add(imageView);
+    public void addInMap(Node node, int i, int j) {
+        Pane pane = (Pane) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
+        pane.getChildren().add(node);
+
     }
 
     public void removeInMap(Node node, int i, int j) {
-        Group group = (Group) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
-        group.getChildren().remove(node);
+        Pane pane = (Pane) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
+        pane.getChildren().remove(node);
     }
 
     public void setZoom(ScrollPane scrollPane) {
@@ -365,7 +373,7 @@ public class GameMenu extends Application {
         vBox.getChildren().addAll(fearRate, getFearSlider(), foodRate, setFoodAndTaxRate(-2, 2, 0)
                 , taxRate, setFoodAndTaxRate(-3, 8, 0));
         vBox.setAlignment(Pos.CENTER);
-        borderPane.getStylesheets().add(GameMenu.class.getResource("/Css/Slider.css").toExternalForm());
+        borderPane.getStylesheets().add(GameMenu.class.getResource("/CSS/Slider.css").toExternalForm());
         borderPane.setCenter(vBox);
 
 
@@ -632,17 +640,17 @@ public class GameMenu extends Application {
         Button buttonForPERIMETER_TOWER = new Button();
         buttonForPERIMETER_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.PERIMETER_TOWER));
         buttonForPERIMETER_TOWER.setStyle("-fx-background-color: transparent;");
-        buttonForPERIMETER_TOWER.setOnAction(e ->setDragOnBuilding(buttonForPERIMETER_TOWER, PERIMETER_TOWER));
+        buttonForPERIMETER_TOWER.setOnAction(e -> setDragOnBuilding(buttonForPERIMETER_TOWER, PERIMETER_TOWER));
 
         Button buttonForDEFENCE_TURRET = new Button();
         buttonForDEFENCE_TURRET.setGraphic(getImageOFBuildingWithName(BuildingName.DEFENCE_TURRET));
         buttonForDEFENCE_TURRET.setStyle("-fx-background-color: transparent;");
-        buttonForDEFENCE_TURRET.setOnAction(e ->setDragOnBuilding(buttonForDEFENCE_TURRET, DEFENCE_TURRET));
+        buttonForDEFENCE_TURRET.setOnAction(e -> setDragOnBuilding(buttonForDEFENCE_TURRET, DEFENCE_TURRET));
 
         Button buttonForSQUARE_TOWER = new Button();
         buttonForSQUARE_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.SQUARE_TOWER));
         buttonForSQUARE_TOWER.setStyle("-fx-background-color: transparent;");
-        buttonForSQUARE_TOWER.setOnAction(e ->setDragOnBuilding(buttonForSQUARE_TOWER, SQUARE_TOWER));
+        buttonForSQUARE_TOWER.setOnAction(e -> setDragOnBuilding(buttonForSQUARE_TOWER, SQUARE_TOWER));
 
         Button buttonForROUND_TOWER = new Button();
         buttonForROUND_TOWER.setGraphic(getImageOFBuildingWithName(BuildingName.ROUND_TOWER));
@@ -724,7 +732,7 @@ public class GameMenu extends Application {
         Button buttonForCHURCH = new Button();
         buttonForCHURCH.setGraphic(getImageOFBuildingWithName(BuildingName.CHURCH));
         buttonForCHURCH.setStyle("-fx-background-color: transparent;");
-        buttonForCHURCH.setOnAction(e ->setDragOnBuilding(buttonForCHURCH, CHURCH));
+        buttonForCHURCH.setOnAction(e -> setDragOnBuilding(buttonForCHURCH, CHURCH));
 
         HBox content = new HBox();
         content.setPrefSize(200, 40);
@@ -743,7 +751,6 @@ public class GameMenu extends Application {
         return imageView;
     }
 
-    private static boolean isSetOnBuildingButton = true;
 
     private void createBuilding(BuildingName buildingName, int i, int j) {
         System.out.println(buildingName + " " + i + " " + j);
@@ -778,8 +785,232 @@ public class GameMenu extends Application {
 //                }
 
         Building building = Building.getInstance(buildingName.name, i, j);
-        addInMap(new ImageView(new Image(building.getImageView().toExternalForm())), i, j);
-        isSetOnBuildingButton = false;
+        Button button = new Button();
+        ImageView imageView = new ImageView(new Image(building.getImageView().toExternalForm()));
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
+        button.setGraphic(imageView);
+        button.setMaxWidth(29);
+        button.setMaxHeight(29);
+        button.setMinHeight(29);
+        button.setMinWidth(29);
+        button.setStyle("-fx-background-color: transparent;");
+        button.setOnAction(event -> createBuildingMenu(buildingName, i, j));
+        addInMap(button, i, j);
+    }
+
+    private void createBuildingMenu(BuildingName buildingName, int i, int j) {
+        //GameMenuController.selectBuilding(i, j);
+        Stage popup = new Stage();
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Popup");
+        VBox vbox = new VBox();
+        vbox.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+
+
+        Button buttonForRepair = new Button("Repair");
+        buttonForRepair.setOnAction(event -> repairBuildingView());
+        vbox.getChildren().add(buttonForRepair);
+
+        Button buttonForShowHealth = new Button("Show Health");
+        buttonForShowHealth.setOnAction(event -> showHealthBuildingView());
+        vbox.getChildren().add(buttonForShowHealth);
+        Building building = Building.getInstance(buildingName.name, 0, 0);
+
+        for (Attribute attribute :
+                building.getAttributes()) {
+            if (attribute instanceof CreateUnit) {
+                //todo
+            } else if (attribute instanceof ChangeTaxRate) {
+                Button buttonForChangeTaxRate = new Button("Change Tax Rate");
+                buttonForChangeTaxRate.setOnAction(event -> popupForTaxRate());
+                vbox.getChildren().add(buttonForChangeTaxRate);
+            } else if (attribute instanceof Shop) {
+                //todo
+            } else if (attribute instanceof DrinkServing) {
+                Button buttonForServeDrink = new Button("Serve Drink");
+                buttonForServeDrink.setOnAction(event -> serveDrinkPopup());
+                vbox.getChildren().add(buttonForServeDrink);
+            } else if (attribute instanceof Process) {
+                Button buttonForProcess = new Button("Process");
+                buttonForProcess.setOnAction(event -> ProcessPopup());
+                vbox.getChildren().add(buttonForProcess);
+            } else if (attribute instanceof Capacity) {
+                Button buttonForCapacity = new Button("Show Capacity");
+                buttonForCapacity.setOnAction(event -> showCapacity());
+                vbox.getChildren().add(buttonForCapacity);
+            } else if (attribute instanceof ChangeFoodRate) {
+                Button buttonForChangeFoodRate = new Button("Change Food Rate");
+                buttonForChangeFoodRate.setOnAction(event -> changeFoodRatePopup());
+                vbox.getChildren().add(buttonForChangeFoodRate);
+            }
+        }
+        vbox.setSpacing(30);
+        vbox.setAlignment(Pos.CENTER);
+        Scene popupScene = new Scene(vbox, 400, 600);
+        popup.setScene(popupScene);
+        popup.showAndWait();
+    }
+
+    private void changeFoodRatePopup() {
+        Stage popup1 = new Stage();
+        popup1.initModality(Modality.APPLICATION_MODAL);
+        popup1.setTitle("Food Rate");
+        Label label = new Label("Enter New Food Rate:");
+        TextField textField = new TextField();
+        Button okButton = new Button("OK");
+        okButton.setOnAction(event1 -> {
+            String text = textField.getText();
+            try {
+                int number = Integer.parseInt(text);
+                changeFoodRate(number);
+                popup1.close();
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid number entered!");
+            }
+        });
+
+        VBox vbox1 = new VBox(label, textField, okButton);
+        vbox1.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+        vbox1.setAlignment(Pos.CENTER);
+        Scene popupScene1 = new Scene(vbox1, 200, 150);
+        popup1.setScene(popupScene1);
+        popup1.showAndWait();
+    }
+
+    private void changeFoodRate(int number) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        switch (GameMenuController.foodRate(number)) {
+            case OUT_OF_BOUNDS:
+                alert.setContentText("food rate must be between 2 & -2");
+                break;
+        }
+        alert.showAndWait();
+    }
+
+    private void showCapacity() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(GameEntityController.showCondition());
+        alert.showAndWait();
+    }
+
+    private void ProcessPopup() {
+        Stage popup1 = new Stage();
+        popup1.initModality(Modality.APPLICATION_MODAL);
+        popup1.setTitle("Process");
+        Label label = new Label("Number Of Process Resource:");
+        TextField textField = new TextField();
+        Button okButton = new Button("OK");
+        okButton.setOnAction(event1 -> {
+            String text = textField.getText();
+            try {
+                int number = Integer.parseInt(text);
+                ProcessResource(number);
+                popup1.close();
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid number entered!");
+            }
+        });
+        VBox vbox1 = new VBox(label, textField, okButton);
+        vbox1.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+        vbox1.setAlignment(Pos.CENTER);
+        Scene popupScene1 = new Scene(vbox1, 200, 150);
+        popup1.setScene(popupScene1);
+        popup1.showAndWait();
+    }
+
+    private void ProcessResource(int number) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        switch (GameEntityController.process(number)) {
+            case NOT_ENOUGH_RESOURCES:
+                alert.setContentText("you don't have this amount");
+                alert.showAndWait();
+                break;
+        }
+    }
+
+    private void serveDrinkPopup() {
+        Stage popup1 = new Stage();
+        popup1.initModality(Modality.APPLICATION_MODAL);
+        popup1.setTitle("Serve Drink");
+        Label label = new Label("Number Of Drink Serve:");
+        TextField textField = new TextField();
+        Button okButton = new Button("OK");
+        okButton.setOnAction(event1 -> {
+            String text = textField.getText();
+            try {
+                int number = Integer.parseInt(text);
+                serveDrink(number);
+                popup1.close();
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid number entered!");
+            }
+        });
+        VBox vbox1 = new VBox(label, textField, okButton);
+        vbox1.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+        vbox1.setAlignment(Pos.CENTER);
+        Scene popupScene1 = new Scene(vbox1, 200, 150);
+        popup1.setScene(popupScene1);
+        popup1.showAndWait();
+    }
+
+
+    private void serveDrink(int number) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        switch (GameEntityController.serveDrink(number)) {
+            case NOT_ENOUGH_RESOURCES:
+                alert.setContentText("you don't have enough wine");
+                alert.showAndWait();
+                break;
+        }
+    }
+
+    private void changeTaxRate(int rate) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        switch (GameMenuController.taxRate(rate)) {
+            case OUT_OF_BOUNDS:
+                alert.setContentText("tax rate must be between 8 & -3");
+                alert.showAndWait();
+                break;
+        }
+    }
+
+    private void showHealthBuildingView() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("HP = " + GameEntityController.getBuildingHealth());
+        alert.showAndWait();
+    }
+
+    private void repairBuildingView() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        if (GameEntityController.repairBuilding(false)) alert.setContentText("Repaired successfully.");
+        else alert.setContentText("Error: You do not have enough GoldCoin.");
+        alert.showAndWait();
+    }
+
+    private void popupForTaxRate() {
+        Stage popup1 = new Stage();
+        popup1.initModality(Modality.APPLICATION_MODAL);
+        popup1.setTitle("Tax Rate");
+        Label label = new Label("Enter New Tax Rate:");
+        TextField textField = new TextField();
+        Button okButton = new Button("OK");
+        okButton.setOnAction(event1 -> {
+            String text = textField.getText();
+            try {
+                int number = Integer.parseInt(text);
+                changeTaxRate(number);
+                popup1.close();
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid number entered!");
+            }
+        });
+        VBox vbox1 = new VBox(label, textField, okButton);
+        vbox1.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+        vbox1.setAlignment(Pos.CENTER);
+        Scene popupScene1 = new Scene(vbox1, 200, 150);
+        popup1.setScene(popupScene1);
+        popup1.showAndWait();
     }
 
 }
