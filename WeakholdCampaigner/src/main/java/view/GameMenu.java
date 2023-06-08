@@ -102,14 +102,14 @@ public class GameMenu extends Application {
         scrollPane.setScaleY(3 * scrollPane.getScaleY() / 2);
         setZoom(scrollPane);
         dropBuilding();
-        scene.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+
         stage.setScene(scene);
         showDetailWithDragClick(gridPane);
         pressedNode(gridPane, stage);
         stage.setFullScreen(true);
         stage.show();
     }
-    private void pressedNode(GridPane gridPane, Stage stage){
+    private void pressedNode(GridPane gridPane, Stage stage) {
         for (Node node: gridPane.getChildren()){
             node.setOnMousePressed(event -> {
                 if(rectangle != null){
@@ -123,6 +123,7 @@ public class GameMenu extends Application {
                 chosenX = i;
                 chosenY = j;
                 addInMap(rectangle, i, j);
+
                 scrollPane.setOnKeyPressed(keyEvent ->{
                     if(keyEvent.getCode() == KeyCode.M){
                         TextInputDialog dialog = new TextInputDialog();
@@ -174,6 +175,12 @@ public class GameMenu extends Application {
                                 }
                             }
                         }
+                    }
+                    else if(keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.V) {
+                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                        String buildingName = clipboard.getString();
+                        createBuilding(getBuildingName(buildingName), i , j);
+                        gamePane.getChildren().remove(clipboardPane);
                     }
                 });
             });
