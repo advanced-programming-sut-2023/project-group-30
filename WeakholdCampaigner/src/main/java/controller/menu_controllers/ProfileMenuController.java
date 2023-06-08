@@ -11,10 +11,6 @@ import java.util.ArrayList;
 
 
 public class ProfileMenuController extends MenuController {
-    public static void showProfile() {
-
-    }
-
     public static MenuMessages changeUsername(String username) {
         if (!isUsernameValid(username)) return MenuMessages.INVALID_USERNAME;
         else if (Database.getUserByName(username) != null) {
@@ -39,8 +35,8 @@ public class ProfileMenuController extends MenuController {
         } else if (!isPasswordStrong(newPassword).equals(MenuMessages.STRONG_PASSWORD)) {
             return isPasswordStrong(newPassword);
         }
-        if (!AppMenu.getOneLine("Please enter your new password again: ").equals(newPassword))
-            return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
+        //if (!AppMenu.getOneLine("Please enter your new password again: ").equals(newPassword))
+        //    return MenuMessages.WRONG_PASSWORD_CONFIRMATION;
         MainController.getCurrentUser().setPassword(sha256(newPassword));
         Database.saveAllUsers();
         return MenuMessages.PASSWORD_HAS_CHANGED;
@@ -90,5 +86,32 @@ public class ProfileMenuController extends MenuController {
         if (MainController.getCurrentUser().getSlogan() != null) {
             AppMenu.show("Slogan: " + MainController.getCurrentUser().getSlogan());
         }
+    }
+
+    public static String getUsername() {
+        return MainController.getCurrentUser().getUsername();
+    }
+
+    public static String getNickname() {
+        return MainController.getCurrentUser().getNickname();
+    }
+
+    public static String getEmail() {
+        return MainController.getCurrentUser().getEmail();
+    }
+
+    public static String getAvatarURL() {
+        return MainController.getCurrentUser().getAvatarURL();
+    }
+
+    public static void setAvatarURL(String selectedAvatarURL) {
+        MainController.getCurrentUser().setAvatarURL(selectedAvatarURL);
+        //smelly:
+        Database.saveAllUsers();
+    }
+
+    public static String getSlogan() {
+        String slogan = MainController.getCurrentUser().getSlogan();
+        return (slogan != null) ? slogan : "slogan is empty";
     }
 }

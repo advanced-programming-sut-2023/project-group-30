@@ -8,6 +8,7 @@ public class User {
     private String slogan;
     private Integer highScore = 0;
     private PasswordRecoveryQNA securityQuestion;
+    private String avatarURL;
 
 
     public String getNickname() {
@@ -26,6 +27,17 @@ public class User {
         this.email = email;
         this.slogan = slogan;
         this.securityQuestion = securityQuestion;
+    }
+
+    public User(String username, String password, String nickname, String email, String slogan
+            , PasswordRecoveryQNA securityQuestion, String avatarURL) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.slogan = slogan;
+        this.securityQuestion = securityQuestion;
+        this.avatarURL = avatarURL;
     }
 
     public Integer getHighScore() {
@@ -70,5 +82,11 @@ public class User {
         return securityQuestion;
     }
 
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
+    }
 
+    public String getAvatarURL() {
+        return this.avatarURL;
+    }
 }

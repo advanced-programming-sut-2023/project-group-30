@@ -34,7 +34,7 @@ public class LoginMenuController extends MenuController {
     public static MenuMessages forgotPassword(String username) {
         User user = Database.getUserByName(username);
         if (user == null)
-            return MenuMessages.USERNAME_DOES_NOT_EXIST;
+            return MenuMessages.USERNAME_DOES_NOT_EXIST; //is this return value handled in the caller?
         else {
             String answer = AppMenu.getOneLine(user.getSecurityQuestion().getQuestion());
             if (answer.equals(user.getSecurityQuestion().getAnswer())) {
