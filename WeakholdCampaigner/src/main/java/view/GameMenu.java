@@ -2,7 +2,6 @@ package view;
 
 import controller.menu_controllers.GameEntityController;
 import controller.menu_controllers.GameMenuController;
-import controller.messages.MenuMessages;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -12,10 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -32,13 +28,10 @@ import model.game.game_entities.Building;
 import model.game.game_entities.BuildingName;
 import model.game.game_entities.Unit;
 import model.game.map.Map;
-import view.utils.GameEntityUtils;
-import view.utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static controller.messages.MenuMessages.NOT_ENOUGH_RESOURCES;
 import static model.enums.FileName.*;
 
 import static model.game.game_entities.BuildingName.*;
@@ -273,7 +266,7 @@ public class GameMenu extends Application {
         return movingUnits;
     }
 
-    public void setPopularity() {
+    public void setPopularity() {//todo for next turn
         textForPopularity.setStyle("-fx-background-color: transparent;");
         textForPopularity.setText(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"1000");//todo
         StackPane.setMargin(textForPopularity, new Insets(750, 0, 0, 270));
@@ -805,6 +798,12 @@ public class GameMenu extends Application {
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Popup");
         VBox vbox = new VBox();
+        vbox.setBackground(new Background(new BackgroundImage(new Image(GameMenu.class
+                .getResource("/Backgrounds/default.jpg").toExternalForm())
+                , BackgroundRepeat.NO_REPEAT
+                , BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER
+                , new BackgroundSize(1.0, 1.0, true, true
+                , false, false))));
         vbox.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
 
 
@@ -815,6 +814,11 @@ public class GameMenu extends Application {
         Button buttonForShowHealth = new Button("Show Health");
         buttonForShowHealth.setOnAction(event -> showHealthBuildingView());
         vbox.getChildren().add(buttonForShowHealth);
+
+        Button buttonForCopy = new Button("Copy");
+        buttonForCopy.setOnAction(event -> copyBuilding(buildingName, buttonForCopy));
+        vbox.getChildren().add(buttonForCopy);
+
         Building building = Building.getInstance(buildingName.name, 0, 0);
 
         for (Attribute attribute :
@@ -850,6 +854,25 @@ public class GameMenu extends Application {
         Scene popupScene = new Scene(vbox, 400, 600);
         popup.setScene(popupScene);
         popup.showAndWait();
+    }
+
+    private Label clipBoard = new Label();
+    private BorderPane clipboardPane;
+
+    private void copyBuilding(BuildingName buildingName, Button buttonForCopy) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(buildingName.name);
+        clipboard.setContent(content);
+        // Update the label to show the copied value
+        clipBoard.setText("ClipBoard\n" + buildingName + " Copied");
+        clipboardPane = new BorderPane(clipBoard);
+        clipboardPane.setPrefSize(100, 100);
+        clipboardPane.setStyle("-fx-background-color: #e57550;");
+        StackPane.setMargin(clipboardPane, new Insets(30, 0, 800, 1400));
+        gamePane.getChildren().add(clipboardPane);
+        buttonForCopy.setText("Copied");
+
     }
 
     private void changeFoodRatePopup() {
