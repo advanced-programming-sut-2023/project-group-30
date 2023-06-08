@@ -1,0 +1,33 @@
+/*.text-field {*/
+/*    -fx-accent: -fx-primary-color;*/
+/*    -fx-background-color: -fx-grey-color, white;*/
+/*    -fx-background-insets: 0, 0 0 1 0;*/
+/*    -fx-background-radius: 0;*/
+/*    -fx-max-height: 50;*/
+/*    -fx-max-width: 300;*/
+/*}*/
+/*.text-field:focused {*/
+/*    -fx-background-color: -fx-primary-color, white;*/
+/*}*/
+.text-input-dialog {
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
+    -fx-background-color: #f5f5f5;
+}
+
+.text-input-dialog .dialog-pane {
+    -fx-background-color: #ffffff;
+}
+
+.text-input-dialog .dialog-pane .header-panel {
+    -fx-background-color: #0077cc;
+    -fx-text-fill: #ffffff;
+}
+
+.text-input-dialog .dialog-pane .content-panel {
+    -fx-padding: 20px;
+}
+
+.text-input-dialog .dialog-pane .button-bar {
+    -fx-padding: 10px 20px 20px 20px;
+}

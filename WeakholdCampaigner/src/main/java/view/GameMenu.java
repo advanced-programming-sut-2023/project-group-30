@@ -1,6 +1,8 @@
 package view;
 
+import controller.menu_controllers.GameEntityController;
 import controller.menu_controllers.GameMenuController;
+import controller.messages.MenuMessages;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -8,10 +10,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -19,6 +18,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Database;
 import model.game.Game;
@@ -27,9 +28,13 @@ import model.game.game_entities.Unit;
 import model.game.game_entities.UnitName;
 import model.game.map.Map;
 import model.game.map.MapCell;
+import view.menus.AbstractMenu;
+import view.menus.AppMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static model.game.map.MapCell.Texture.*;
 
@@ -47,7 +52,7 @@ public class GameMenu extends Application {
     private int chosenY;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage){
         gridPane = new GridPane();
         gridPane.setVgap(-0.5);
         gridPane.setHgap(-0.5);
@@ -71,13 +76,14 @@ public class GameMenu extends Application {
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));//TODO: after finishing game menu change 1
         setZoom(scrollPane);
+        scene.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
         stage.setScene(scene);
         showDetailWithDragClick(gridPane);
-        pressedNode(gridPane);
+        pressedNode(gridPane, stage);
         stage.setFullScreen(true);
         stage.show();
     }
-    private void pressedNode(GridPane gridPane){
+    private void pressedNode(GridPane gridPane, Stage stage){
         for (Node node: gridPane.getChildren()){
             node.setOnMousePressed(event -> {
                 if(rectangle != null){
@@ -91,7 +97,118 @@ public class GameMenu extends Application {
                 chosenX = i;
                 chosenY = j;
                 addInMap(rectangle, i, j);
+                scrollPane.setOnKeyPressed(keyEvent ->{
+                    if(keyEvent.getCode() == KeyCode.M){
+                        TextInputDialog dialog = new TextInputDialog();
+                        dialog.initOwner(stage);
+                        dialog.setTitle("Move Units");
+                        dialog.setHeaderText("Unit type and destination components");
+                        dialog.setContentText("Enter your x and y components");
+//                        Optional<String> result = dialog.showAndWait();
+//                        if(result.isPresent()) {
+//                            dialog.setContentText("Enter your units type");
+//                            Optional<String> result2 = dialog.showAndWait();
+//
+//                            if (result2.isPresent()) {
+//                                String component = result.get();
+//                                String types = result2.get();
+//                                System.out.println(component+ types);
+//                            }
+//                        }
+                        TextField xTextField = new TextField();
+                        TextField yTextField = new TextField();
+                        TextField unitType = new TextField();
+                        GridPane dialogGridPane = new GridPane();
+                        dialogGridPane.add(new Label("x:"), 0, 0);
+                        dialogGridPane.add(xTextField, 1, 0);
+                        dialogGridPane.add(new Label("y:"), 0, 1);
+                        dialogGridPane.add(yTextField, 1, 1);
+                        dialogGridPane.add(new Label("type:"), 0, 2);
+                        dialogGridPane.add(unitType, 1, 2);
+                        dialogGridPane.setHgap(40);
+                        dialog.getDialogPane().setContent(dialogGridPane);
+                        dialog.getDialogPane().getStylesheets().add
+                                (GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+                        Optional<String> result = dialog.showAndWait();
+                        if(result.isPresent()){
+                            String x = xTextField.getText();
+                            String y = yTextField.getText();
+                            String type = unitType.getText();
+                            if(!checkStringsAreNumbers(x, y)){
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Error");
+                                alert.setHeaderText("Inputs Error");
+                                alert.setContentText("Your x and y components should be numbers");
+                                alert.showAndWait();
+                            }
+                            else {
+                                MenuMessages messages = selectUnit(chosenX, chosenY, type);
+                                if(messages == MenuMessages.SUCCESS){
+
+                                }
+                            }
+                        }
+                    }
+                });
             });
+        }
+    }
+    public static boolean checkStringsAreNumbers(String... entrances) {
+        Pattern patternForCheckStrIsNumber = Pattern.compile("-?\\d+$");
+        for (String entrance : entrances) {
+            if (entrance == null)
+                return false;
+            if (!patternForCheckStrIsNumber.matcher(entrance).matches())
+                return false;
+        }
+        return true;
+    }
+    public static MenuMessages selectUnit(int x, int y, String type) {
+        MenuMessages message = GameMenuController.selectUnit(x, y, type);
+        switch (message) {
+            case INVALID_TYPE:
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("Unit type error");
+                alert2.setContentText("Invalid unit type");
+                alert2.showAndWait();
+                break;
+            case NO_MATCHING_UNIT:
+                Alert alert3 = new Alert(Alert.AlertType.ERROR);
+                alert3.setTitle("Error");
+                alert3.setHeaderText("There ");
+                alert3.setContentText("There is no user with this username!");
+                alert3.showAndWait();
+                break;
+            case SUCCESS:
+                Alert alert4 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert4.setTitle("Move");
+                alert4.setHeaderText("Unit moved");
+                alert4.setContentText("Done!");
+                alert4.showAndWait();
+                break;
+        }
+        return message;
+    }
+
+    public static void moveUnit(int x,int y) {
+        switch (GameEntityController.moveUnitTo(x, y)) {
+            case INVALID_LOCATION:
+                AbstractMenu.show("Error: Location out of bounds.");
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                AbstractMenu.show("Error: The destination is unreachable due to its texture.");
+                break;
+            case NO_REMAINING_MOVEMENT:
+                AbstractMenu.show("Error: This unit does not have any remaining movement.");
+                break;
+            case IS_PATROLLING:
+                AbstractMenu.show("Error: The Unit is currently patrolling.");
+                AbstractMenu.show("You can use 'unit halt' to end its patrol.");
+                break;
+            case SUCCESS:
+                AbstractMenu.show("Unit moved successfully.");
+                break;
         }
     }
 
