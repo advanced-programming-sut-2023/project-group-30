@@ -85,7 +85,8 @@ public class AppMenu extends AbstractMenu {
     }
 
     public static String getOneLine(String prompt) {
-        System.out.println(prompt);
-        return scanner.nextLine();
+        //System.out.println(prompt);
+        //return scanner.nextLine();
+        return view.GUI.AbstractMenu.showTextInputDialogAndWait(prompt);
     }
 }

@@ -1,5 +1,8 @@
 package model.game.game_entities;
 
+
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import model.enums.Resource;
 import model.attributes.Attribute;
 import model.game.Government.GovernmentColor;
@@ -14,11 +17,13 @@ public abstract class GameEntity {
     protected GovernmentColor governmentColor;
     protected int[] currentLocation;
 
+
     public GameEntity(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes, int x, int y) {
         this.productionCost = productionCost;
         this.attributes = attributes;
         this.governmentColor = null; //you should always call setGovernmentColor ?
         this.currentLocation = new int[]{x, y};
+
     }
 
     public void setGovernmentColor(GovernmentColor governmentColor) { //This is expected to be called (?)

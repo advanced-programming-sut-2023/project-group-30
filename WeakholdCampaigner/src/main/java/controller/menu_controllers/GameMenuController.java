@@ -108,7 +108,7 @@ public class GameMenuController extends GameController {
         else AppMenu.show("tax rate : " + government.getTaxRate());
     }
 
-    public static MenuMessages setFearRate(int rate) {
+    public static MenuMessages setFearRate(double rate) {
         if (rate > 5 || rate < -5)
             return MenuMessages.OUT_OF_BOUNDS;
         currentGame.getCurrentGovernment().setFearRate(rate);
