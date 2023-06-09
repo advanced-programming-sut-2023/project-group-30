@@ -65,7 +65,7 @@ public class GameMenu extends Application {
 
 
     private ArrayList<Building> buildings;
-    private int unitNumbers ;
+    private int unitNumbers;
     private boolean drag;
     private Rectangle rectangle;
     private int chosenX;
@@ -82,10 +82,10 @@ public class GameMenu extends Application {
         scrollPane.setPrefViewportHeight(stage.getMaxHeight()); // 40 cells high (20 pixels each)
         gamePane = new StackPane(scrollPane);
         Scene scene = new Scene(gamePane, stage.getMaxWidth(), stage.getMaxHeight());
-        scene.setOnKeyPressed(event ->{
-            if(event.getCode() == KeyCode.UP){
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.UP) {
                 scrollUp();
-            }else if(event.getCode() == KeyCode.DOWN){
+            } else if (event.getCode() == KeyCode.DOWN) {
                 scrollDown();
             } else if (event.getCode() == KeyCode.RIGHT) {
                 scrollRight();
@@ -97,7 +97,9 @@ public class GameMenu extends Application {
         });
         gamePane.getStylesheets().add(GameMenu.class.getResource("/CSS/Style.css").toExternalForm());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
-        createMap(Database.getMapById(1));//TODO: after finishing game menu change 1
+        createMap(Database.getMapById(2));//TODO: after finishing game menu change 1
+        createMiniMap(2);
+
         scrollPane.setScaleX(3 * scrollPane.getScaleX() / 2);
         scrollPane.setScaleY(3 * scrollPane.getScaleY() / 2);
         setZoom(scrollPane);
@@ -109,23 +111,24 @@ public class GameMenu extends Application {
         stage.setFullScreen(true);
         stage.show();
     }
+
     private void pressedNode(GridPane gridPane, Stage stage) {
-        for (Node node: gridPane.getChildren()){
+        for (Node node : gridPane.getChildren()) {
             node.setOnMousePressed(event -> {
-                if(rectangle != null){
+                if (rectangle != null) {
                     removeInMap(rectangle, chosenX, chosenY);
                 }
                 int i = gridPane.getChildren().indexOf(node) % 200;
                 int j = gridPane.getChildren().indexOf(node) / 200;
                 rectangle = new Rectangle(60, 60, Color.TRANSPARENT);
-                rectangle.setFill(Color.rgb( 96, 96,217));
+                rectangle.setFill(Color.rgb(96, 96, 217));
                 rectangle.setOpacity(0.5);
                 chosenX = i;
                 chosenY = j;
                 addInMap(rectangle, i, j);
 
-                scrollPane.setOnKeyPressed(keyEvent ->{
-                    if(keyEvent.getCode() == KeyCode.M){
+                scrollPane.setOnKeyPressed(keyEvent -> {
+                    if (keyEvent.getCode() == KeyCode.M) {
                         TextInputDialog dialog = new TextInputDialog();
                         dialog.initOwner(stage);
                         dialog.setTitle("Move Units");
@@ -157,35 +160,34 @@ public class GameMenu extends Application {
                         dialog.getDialogPane().getStylesheets().add
                                 (GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
                         Optional<String> result = dialog.showAndWait();
-                        if(result.isPresent()){
+                        if (result.isPresent()) {
                             String x = xTextField.getText();
                             String y = yTextField.getText();
                             String type = unitType.getText();
-                            if(!checkStringsAreNumbers(x, y)){
+                            if (!checkStringsAreNumbers(x, y)) {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Error");
                                 alert.setHeaderText("Inputs Error");
                                 alert.setContentText("Your x and y components should be numbers");
                                 alert.showAndWait();
-                            }
-                            else {
+                            } else {
                                 MenuMessages messages = selectUnit(chosenX, chosenY, type);
-                                if(messages == MenuMessages.SUCCESS){
+                                if (messages == MenuMessages.SUCCESS) {
 
                                 }
                             }
                         }
-                    }
-                    else if(keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.V) {
+                    } else if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.V) {
                         Clipboard clipboard = Clipboard.getSystemClipboard();
                         String buildingName = clipboard.getString();
-                        createBuilding(getBuildingName(buildingName), i , j);
+                        createBuilding(getBuildingName(buildingName), i, j);
                         gamePane.getChildren().remove(clipboardPane);
                     }
                 });
             });
         }
     }
+
     public static boolean checkStringsAreNumbers(String... entrances) {
         Pattern patternForCheckStrIsNumber = Pattern.compile("-?\\d+$");
         for (String entrance : entrances) {
@@ -196,6 +198,7 @@ public class GameMenu extends Application {
         }
         return true;
     }
+
     public static MenuMessages selectUnit(int x, int y, String type) {
         MenuMessages message = GameMenuController.selectUnit(x, y, type);
         switch (message) {
@@ -224,7 +227,7 @@ public class GameMenu extends Application {
         return message;
     }
 
-    public static void moveUnit(int x,int y) {
+    public static void moveUnit(int x, int y) {
         switch (GameEntityController.moveUnitTo(x, y)) {
             case INVALID_LOCATION:
                 AbstractMenu.show("Error: Location out of bounds.");
@@ -266,21 +269,21 @@ public class GameMenu extends Application {
             drag = true;
         });
         gridPane.setOnMouseReleased(event -> {
-            for(Node node : gridPane.getChildren()){
-                if(node.getBoundsInParent().intersects(draggedSection.getBoundsInParent())){
+            for (Node node : gridPane.getChildren()) {
+                if (node.getBoundsInParent().intersects(draggedSection.getBoundsInParent())) {
                     int i = gridPane.getChildren().indexOf(node) % 200;
                     int j = gridPane.getChildren().indexOf(node) / 200;
                     unitNumbers += Database.getMapById(1).getCell(i, j).getUnits().size();//TODO: after finishing game menu change 1
-                    if(Database.getMapById(1).getCell(i,  j).getBuilding() != null){//TODO: after finishing game menu change 1
+                    if (Database.getMapById(1).getCell(i, j).getBuilding() != null) {//TODO: after finishing game menu change 1
                         buildings.add(Database.getMapById(1).getCell(i, j).getBuilding());
                     }
                 }
             }
             String popupText = "";
-            for(Building building : buildings){
+            for (Building building : buildings) {
                 popupText = popupText + building.getBuildingName();
             }
-            if(drag) {
+            if (drag) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Details");
                 alert.setHeaderText("Dragged cells information");
@@ -323,6 +326,7 @@ public class GameMenu extends Application {
         launch();
     }
 
+
     public void createMap(Map map) {
         imagePatternHashMap = new HashMap<>();
         setImagePattern(imagePatternHashMap);
@@ -335,19 +339,19 @@ public class GameMenu extends Application {
                 pane.getChildren().add(cell);
                 Tooltip tooltip = new Tooltip();
                 tooltip.setText("Texture:" + map.getCell(i, j).getTexture().name());
-                if(map.getCell(i, j).getBuilding() != null){
-                    tooltip.setText(tooltip.getText() + "\nBuilding:"+ map.getCell(i, j).getBuilding());
+                if (map.getCell(i, j).getBuilding() != null) {
+                    tooltip.setText(tooltip.getText() + "\nBuilding:" + map.getCell(i, j).getBuilding());
                 }
-                if(map.getCell(i, j).getUnits() != null){
+                if (map.getCell(i, j).getUnits() != null) {
                     tooltip.setText(tooltip.getText() + "\nNumber of Units: " + map.getCell(i, j).getUnits().size());
                     for (Unit unit : map.getCell(i, j).getUnits()) {
-                            tooltip.setText("\n" + tooltip.getText() + unit.unitName + "health : "+ unit.getHP()+
-                                    "Melee damage : "+ unit.getMeleeDamage());
+                        tooltip.setText("\n" + tooltip.getText() + unit.unitName + "health : " + unit.getHP() +
+                                "Melee damage : " + unit.getMeleeDamage());
                     }
                 }
-                if(movingUnits(map.getCell(i, j).getUnits()).size() != 0){
+                if (movingUnits(map.getCell(i, j).getUnits()).size() != 0) {
                     tooltip.setText(tooltip.getText() + "\nMoving Unit:");
-                    for(Unit unit : movingUnits(map.getCell(i, j).getUnits())){
+                    for (Unit unit : movingUnits(map.getCell(i, j).getUnits())) {
                         tooltip.setText(tooltip.getText() + unit.unitName + " ");
                     }
                 }
@@ -362,6 +366,15 @@ public class GameMenu extends Application {
         setPopularity();
 
 
+    }
+
+    private void createMiniMap(int mapId) {
+        ImageView imageView = new ImageView(GameMenu.class.getResource("/miniMap/" + mapId + ".jpg")
+                .toExternalForm());
+        imageView.setFitHeight(80);
+        imageView.setFitWidth(80);
+        StackPane.setMargin(imageView, new Insets(700, 0, -80, 100));
+        gamePane.getChildren().add(imageView);
     }
 
     private void setImagePattern(HashMap<Enum, ImagePattern> imagePatternHashMap) {
@@ -480,11 +493,20 @@ public class GameMenu extends Application {
     }
 
     public void setPopularity() {//todo for next turn
+        Label label = new Label(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"100");
+        label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+        label.getStyleClass().add("old-text");
         textForPopularity.setStyle("-fx-background-color: transparent;");
-        textForPopularity.setText(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"1000");//todo
-        StackPane.setMargin(textForPopularity, new Insets(750, 0, 0, 270));
+        textForPopularity.setGraphic(label);//todo
+        StackPane.setMargin(textForPopularity, new Insets(740, 0, 0, 270));
         gamePane.getChildren().add(textForPopularity);
         textForPopularity.setOnAction(e -> showPopularity());
+
+        Label labelForGold = new Label(/*GameMenuController.getCurrentGame().getCurrentGovernment().getGold()*/ "100");
+        labelForGold.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+        labelForGold.getStyleClass().add("old-text");
+        StackPane.setMargin(labelForGold, new Insets(780, 0, 0, 260));
+        gamePane.getChildren().add(labelForGold);
     }
 
     public void showPopularity() {
@@ -681,7 +703,8 @@ public class GameMenu extends Application {
         buttonForCastle.setOnAction(e -> showCastleScroll(scrollOfBuilding));
         buttonForTree.setOnAction(e -> showTreeScroll(scrollOfBuilding));
         buttonForWeapon.setOnAction(e -> showWeaponScroll(scrollOfBuilding));
-        StackPane.setMargin(scrollOfBuilding, new Insets(780, 680, 5, 410));
+        //StackPane.setMargin(scrollOfBuilding, new Insets(780, 680, 5, 410));
+        StackPane.setMargin(scrollOfBuilding, new Insets(780, 780, 5, 410));
         gamePane.getChildren().add(scrollOfBuilding);
     }
 
@@ -941,7 +964,7 @@ public class GameMenu extends Application {
         buttonForCHURCH.setOnAction(e -> setDragOnBuilding(buttonForCHURCH, CHURCH));
 
         HBox content = new HBox();
-        content.setPrefSize(200, 40);
+        content.setPrefSize(2000, 40);
         content.getChildren().addAll(buttonForAPPLE_GARDEN, buttonForMOTEL, buttonForMILL, buttonForDIARY_FARMER
                 , buttonForWHEAT_FIELD, buttonForBAKERY, buttonForFOOD_STORE, buttonForCHURCH, buttonForHOUSE);
         scrollPane1.setContent(content);

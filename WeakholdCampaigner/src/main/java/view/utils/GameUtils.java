@@ -776,28 +776,28 @@ public class GameUtils extends Utils {
     }
 
     public static void trade(ParsedLine parsedLine) {
-        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t", "-a", "-p", "-m"}
-                , new String[]{}, new String[]{"-p", "-a"});
-
-        if (options == null) {
-            invalidFormatError("trade -t [resourceType] -a [resourceAmount] -p [price] -m [message]");
-            return;
-        }
-        switch (TradeMenuController.trade(options.get("-t"), Integer.parseInt(options.get("-a")),
-                Integer.parseInt(options.get("-p")), options.get("-m"))) {
-            case INVALID_RESOURCE:
-                System.out.println("error: resource is not correct");
-                break;
-            case INVALID_MONEY:
-                System.out.println("you does not haven enough gold coin");
-                break;
-            case NOT_ENOUGH_SPACE:
-                System.out.println("not enough space");
-                break;
-            case OK:
-                System.out.println("your request/donation added");
-                break;
-        }
+//        HashMap<String, String> options = formatOptions(parsedLine.options, new String[]{"-t", "-a", "-p", "-m"}
+//                , new String[]{}, new String[]{"-p", "-a"});
+//
+//        if (options == null) {
+//            invalidFormatError("trade -t [resourceType] -a [resourceAmount] -p [price] -m [message]");
+//            return;
+//        }
+//        switch (TradeMenuController.trade(options.get("-t"), Integer.parseInt(options.get("-a")),
+//                Integer.parseInt(options.get("-p")), options.get("-m"))) {
+//            case INVALID_RESOURCE:
+//                System.out.println("error: resource is not correct");
+//                break;
+//            case INVALID_MONEY:
+//                System.out.println("you does not haven enough gold coin");
+//                break;
+//            case NOT_ENOUGH_SPACE:
+//                System.out.println("not enough space");
+//                break;
+//            case OK:
+//                System.out.println("your request/donation added");
+//                break;
+//        }
     }
 
     public static void tradeList(ParsedLine parsedLine) {

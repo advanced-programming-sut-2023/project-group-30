@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import static model.enums.Resource.getResourceByName;
 
 public class TradeMenuController {
-    public static MenuMessages trade(String resource, int resourceAmount, int price, String message) {
+    public static MenuMessages trade(User receiver, String resource, int resourceAmount, int price, String message) {
         if (getResourceByName(resource) == null)
             return MenuMessages.INVALID_RESOURCE;
         if (GameMenuController.getCurrentGame().getCurrentGovernment().getGold() < price)
@@ -23,7 +23,7 @@ public class TradeMenuController {
                         + resourceAmount))
             return MenuMessages.NOT_ENOUGH_SPACE;
 
-        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), resourceAmount
+        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), receiver, resourceAmount
                 , getResourceByName(resource),
                 price, message);
 
@@ -81,8 +81,8 @@ public class TradeMenuController {
 
         removeFromTradList(trade.getId());
 
-        government.addToTradeHistory(new Trade(trade.getApplicant(), trade.getResourceAmount(),
-                trade.getResourceType(), trade.getPrice(), message));
+//        government.addToTradeHistory(new Trade(trade.getApplicant(), trade.getResourceAmount(),
+//                trade.getResourceType(), trade.getPrice(), message));
 
         applicantGovernment.addGold(-trade.getPrice());
         government.addGold(trade.getPrice());

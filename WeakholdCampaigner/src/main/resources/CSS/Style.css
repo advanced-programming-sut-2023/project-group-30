@@ -2,4 +2,9 @@
     -fx-background-color: #F5DEB3;
     -fx-background-radius: 5px;
 }
-.
+.old-text {
+    -fx-font-family: "Times New Roman", serif;
+    -fx-font-size: 15px;
+    -fx-text-fill: #8B4513; /* Use a brownish color for the text */
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 2,0,0,1 );
+}

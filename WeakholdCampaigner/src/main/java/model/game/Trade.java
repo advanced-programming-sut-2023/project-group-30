@@ -7,14 +7,16 @@ import java.util.Random;
 
 public class Trade {
     private User applicant;
+    private User receiver;
     private int resourceAmount;
     private Resource resourceType;
     private int price;
     private String message;
     private int id;
 
-    public Trade(User applicant, int resourceAmount, Resource resourceType, int price, String message) {
+    public Trade(User applicant, User receiver, int resourceAmount, Resource resourceType, int price, String message) {
         this.applicant = applicant;
+        this.receiver = receiver;
         this.resourceAmount = resourceAmount;
         this.resourceType = resourceType;
         this.price = price;
