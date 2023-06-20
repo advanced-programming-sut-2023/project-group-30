@@ -23,11 +23,11 @@ public class TradeMenuController {
                         + resourceAmount))
             return MenuMessages.NOT_ENOUGH_SPACE;
 
-        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), receiver, resourceAmount
-                , getResourceByName(resource),
-                price, message);
+//        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), receiver, resourceAmount
+//                , getResourceByName(resource),
+//                price, message);
 
-        addTradItem(tradeItem, GameMenuController.getCurrentGame().getCurrentGovernment().getOwner());
+        //addTradItem(tradeItem, GameMenuController.getCurrentGame().getCurrentGovernment().getOwner());
         return MenuMessages.OK;
     }
 

@@ -94,6 +94,10 @@ public class GameMenu extends Application {
             } else if (event.getCode() == KeyCode.S) {
                 setRates();
             }
+            else if (event.getCode() == KeyCode.T) {
+                TradeMenu tradeMenu = new TradeMenu();
+                tradeMenu.run();
+            }
         });
         gamePane.getStylesheets().add(GameMenu.class.getResource("/CSS/Style.css").toExternalForm());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());

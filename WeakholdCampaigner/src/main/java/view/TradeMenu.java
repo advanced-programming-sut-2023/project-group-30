@@ -43,6 +43,13 @@ public class TradeMenu {
     private void newTrade(Stage stage) {
         VBox vBox = new VBox();
         ArrayList<Government> governments = GameMenuController.getCurrentGame().getGovernments();
+        final Boolean[] request = {true};
+        Button donateBtn = new Button("Donate");
+        Button requestBtn = new Button("Request");
+        donateBtn.setOnAction(e -> request[0] = false);
+        requestBtn.setOnAction(e -> request[0] = true);
+        HBox hBox = new HBox(donateBtn, requestBtn);
+        vBox.getChildren().add(hBox);
         for (Government i : governments) {
             Label label = new Label(i.getOwner().getUsername());
             label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
@@ -57,7 +64,8 @@ public class TradeMenu {
     }
 
     private void individualTrade(Government i, Stage stage) {
-        //HBox hBox = new
+        HBox hBox = new HBox();
+
     }
 
 }

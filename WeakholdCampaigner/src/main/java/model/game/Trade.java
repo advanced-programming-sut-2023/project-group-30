@@ -12,15 +12,18 @@ public class Trade {
     private Resource resourceType;
     private int price;
     private String message;
+    private Boolean request;
     private int id;
 
-    public Trade(User applicant, User receiver, int resourceAmount, Resource resourceType, int price, String message) {
+    public Trade(User applicant, User receiver, int resourceAmount, Resource resourceType, int price, String message
+            , Boolean request) {
         this.applicant = applicant;
         this.receiver = receiver;
         this.resourceAmount = resourceAmount;
         this.resourceType = resourceType;
         this.price = price;
         this.message = message;
+        this.request = request;
         setId();
     }
 

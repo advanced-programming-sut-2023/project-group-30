@@ -10,6 +10,7 @@ import view.menus.AppMenu;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,19 +78,23 @@ public class Database {
     public static void loadMap() {
         Gson gson = new Gson();
         try {
-            FileReader reader = new FileReader("src/main/resources/defaultMap.json");
+            FileReader reader = new FileReader(Database.class.getResource("defaultMap.json").toExternalForm());
             Map firstMap = gson.fromJson(reader, Map.class);
             maps.put(1, firstMap);
-            FileReader secondReader = new FileReader("src/main/resources/secondDefaultMap.json");
+            FileReader secondReader = new FileReader(Database.class.getResource("secondDefaultMap.json")
+                    .toExternalForm());
             Map secondMap = gson.fromJson(secondReader, Map.class);
             maps.put(2, secondMap);
-            FileReader thirdReader = new FileReader("src/main/resources/thirdDefaultMap.json");
+            FileReader thirdReader = new FileReader(Database.class.getResource("thirdDefaultMap.json")
+                    .toExternalForm());
             Map thirdMap = gson.fromJson(thirdReader, Map.class);
             maps.put(3, thirdMap);
-            FileReader forthReader = new FileReader("src/main/resources/forthDefaultMap.json");
+            FileReader forthReader = new FileReader(Database.class.getResource("forthDefaultMap.json")
+                    .toExternalForm());
             Map forthMap = gson.fromJson(forthReader, Map.class);
             maps.put(4, forthMap);
-            FileReader fifthReader = new FileReader("src/main/resources/fifthDefaultMap.json");
+            FileReader fifthReader = new FileReader(Database.class.getResource("fifthDefaultMap.json")
+                    .toExternalForm());
             Map fifthMap = gson.fromJson(fifthReader, Map.class);
             maps.put(5, fifthMap);
         } catch (IOException e) {
