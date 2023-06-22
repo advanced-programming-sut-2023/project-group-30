@@ -12,22 +12,28 @@ import java.util.ArrayList;
 import static model.enums.Resource.getResourceByName;
 
 public class TradeMenuController {
-    public static MenuMessages trade(User receiver, String resource, int resourceAmount, int price, String message) {
-        if (getResourceByName(resource) == null)
-            return MenuMessages.INVALID_RESOURCE;
-        if (GameMenuController.getCurrentGame().getCurrentGovernment().getGold() < price)
-            return MenuMessages.INVALID_MONEY;
-        Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
-        if (government.getMaximumResource(government.getResourcesCategory(getResourceByName(resource))) <
-                (government.getStoredUnit(government.getResourcesCategory(getResourceByName(resource)))
-                        + resourceAmount))
-            return MenuMessages.NOT_ENOUGH_SPACE;
+    public static MenuMessages trade(User receiver, String resource, int resourceAmount, int price, String message
+            , Boolean request) {
+        if (request) {
+            if (getResourceByName(resource) == null)
+                return MenuMessages.INVALID_RESOURCE;
+            if (GameMenuController.getCurrentGame().getCurrentGovernment().getGold() < price)
+                return MenuMessages.INVALID_MONEY;
+            Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
+            if (government.getMaximumResource(government.getResourcesCategory(getResourceByName(resource))) <
+                    (government.getStoredUnit(government.getResourcesCategory(getResourceByName(resource)))
+                            + resourceAmount))
+                return MenuMessages.NOT_ENOUGH_SPACE;
+        } else {
+            if (GameMenuController.getCurrentGame().getCurrentGovernment().getResources(getResourceByName(resource))
+                    < resourceAmount)
+                return MenuMessages.INVALID_AMOUNT;
+        }
 
-//        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), receiver, resourceAmount
-//                , getResourceByName(resource),
-//                price, message);
+        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), receiver
+                , resourceAmount, getResourceByName(resource), price, message, request);
 
-        //addTradItem(tradeItem, GameMenuController.getCurrentGame().getCurrentGovernment().getOwner());
+        addTradItem(tradeItem, GameMenuController.getCurrentGame().getCurrentGovernment().getOwner());
         return MenuMessages.OK;
     }
 

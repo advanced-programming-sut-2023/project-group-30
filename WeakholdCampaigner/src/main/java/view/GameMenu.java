@@ -1,5 +1,6 @@
 package view;
 
+import controller.MainController;
 import controller.menu_controllers.GameEntityController;
 import controller.menu_controllers.GameMenuController;
 import controller.messages.MenuMessages;
@@ -76,7 +77,8 @@ public class GameMenu extends Application {
         gridPane = new GridPane();
         gridPane.setVgap(-0.5);
         gridPane.setHgap(-0.5);
-        Database.loadMap();
+        Database.loadData();
+        forTest();//Todo for test
         scrollPane = new ScrollPane(gridPane);
         scrollPane.setPrefViewportWidth(stage.getMaxWidth()); // 40 cells wide (20 pixels each)
         scrollPane.setPrefViewportHeight(stage.getMaxHeight()); // 40 cells high (20 pixels each)
@@ -93,11 +95,13 @@ public class GameMenu extends Application {
                 scrollLeft();
             } else if (event.getCode() == KeyCode.S) {
                 setRates();
-            }
-            else if (event.getCode() == KeyCode.T) {
+            } else if (event.getCode() == KeyCode.T) {
                 TradeMenu tradeMenu = new TradeMenu();
                 tradeMenu.run();
+            } else if (event.getCode() == KeyCode.N) {
+                nextTurn();
             }
+
         });
         gamePane.getStylesheets().add(GameMenu.class.getResource("/CSS/Style.css").toExternalForm());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
@@ -114,6 +118,12 @@ public class GameMenu extends Application {
         pressedNode(gridPane, stage);
         stage.setFullScreen(true);
         stage.show();
+    }
+
+    private void nextTurn() {
+        GameMenuController.endOnePlayersTurn();
+        setPopularity();
+
     }
 
     private void pressedNode(GridPane gridPane, Stage stage) {
@@ -496,21 +506,25 @@ public class GameMenu extends Application {
         return movingUnits;
     }
 
+    private Label labelForGold = new Label();
+
     public void setPopularity() {//todo for next turn
-        Label label = new Label(/*GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + ""*/"100");
+        Label label = new Label(GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + "");
         label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
         label.getStyleClass().add("old-text");
         textForPopularity.setStyle("-fx-background-color: transparent;");
-        textForPopularity.setGraphic(label);//todo
+        textForPopularity.setGraphic(label);
         StackPane.setMargin(textForPopularity, new Insets(740, 0, 0, 270));
-        gamePane.getChildren().add(textForPopularity);
+        if (!gamePane.getChildren().contains(textForPopularity))
+            gamePane.getChildren().add(textForPopularity);
         textForPopularity.setOnAction(e -> showPopularity());
 
-        Label labelForGold = new Label(/*GameMenuController.getCurrentGame().getCurrentGovernment().getGold()*/ "100");
+        labelForGold.setText(GameMenuController.getCurrentGame().getCurrentGovernment().getGold() + "");
         labelForGold.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
         labelForGold.getStyleClass().add("old-text");
         StackPane.setMargin(labelForGold, new Insets(780, 0, 0, 260));
-        gamePane.getChildren().add(labelForGold);
+        if (!gamePane.getChildren().contains(textForPopularity))
+            gamePane.getChildren().add(labelForGold);
     }
 
     public void showPopularity() {
@@ -555,20 +569,22 @@ public class GameMenu extends Application {
     private HBox getMaskCondition(double number, String name) {
         HBox hBox = new HBox();
 
-        Text numberText = new Text(number + "");
+        Label numberText = new Label(number + "");
         numberText.setStyle("-fx-font-family: Cardamon");
         numberText.setStyle("-fx-font-size: 20px");
+        numberText.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+        numberText.getStyleClass().add("old-text");
         hBox.getChildren().add(numberText);
         Rectangle rectangle = new Rectangle(25, 25);
         if (number == 0) {
             rectangle.setFill((imagePatternHashMap.get(ignoreMask)));
-            numberText.setFill(Color.WHITE);
+            numberText.setTextFill(Color.WHITE);
         } else if (number > 0) {
             rectangle.setFill(imagePatternHashMap.get(happyMask));
-            numberText.setFill(Color.GREEN);
+            numberText.setTextFill(Color.GREEN);
         } else {
             rectangle.setFill(imagePatternHashMap.get(angryMask));
-            numberText.setFill(Color.RED);
+            numberText.setTextFill(Color.RED);
         }
         hBox.getChildren().add(rectangle);
         Text textForName = new Text(name);
@@ -602,8 +618,10 @@ public class GameMenu extends Application {
         Label fearRate = new Label("Fear Rate");
         Label foodRate = new Label("Food Rate");
         Label taxRate = new Label("Tax Rate");
-        vBox.getChildren().addAll(fearRate, getFearSlider(), foodRate, setFoodAndTaxRate(-2, 2, 0)
-                , taxRate, setFoodAndTaxRate(-3, 8, 0));
+        vBox.getChildren().addAll(fearRate, getFearSlider(), foodRate, setFoodAndTaxRate(-2, 2
+                        , GameMenuController.getCurrentGame().getCurrentGovernment().getFoodRate())
+                , taxRate, setFoodAndTaxRate(-3, 8, GameMenuController.getCurrentGame()
+                        .getCurrentGovernment().getTaxRate()));
         vBox.setAlignment(Pos.CENTER);
         borderPane.getStylesheets().add(GameMenu.class.getResource("/CSS/Slider.css").toExternalForm());
         borderPane.setCenter(vBox);
@@ -614,7 +632,7 @@ public class GameMenu extends Application {
     private VBox getFearSlider() {
         double min = -5;
         double max = 5;
-        Slider slider = new Slider(min, max, 0);
+        Slider slider = new Slider(min, max, GameMenuController.getCurrentGame().getCurrentGovernment().getFearRate());
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
         slider.setBlockIncrement(10);
@@ -989,111 +1007,111 @@ public class GameMenu extends Application {
         System.out.println(buildingName + " " + i + " " + j);
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
-//                switch (GameMenuController.dropBuilding(i, j, buildingName.name, true)) {
-//                    case ALREADY_HAS_KEEP:
-//                        alert.setTitle("ERROR");
-//                        alert.setContentText("Error: You can have only one Keep.");
-//                        alert.showAndWait();
-//                        break;
-//                    case HAS_NOT_PLACED_KEEP:
-//                        alert.setTitle("ERROR");
-//                        alert.setContentText("Error: You must Place your Keep before any other building.");
-//                        alert.showAndWait();
-//                        break;
-//                    case CELL_IS_FULL:
-//                        alert.setTitle("ERROR");
-//                        alert.setContentText("Error: There is already a building in that location.");
-//                        alert.showAndWait();
-//
-//                        break;
-//                    case CELL_HAS_INCOMPATIBLE_TEXTURE:
-//                        alert.setTitle("ERROR");
-//                        alert.setContentText("Error: The cell has an incompatible texture.");
-//                        alert.showAndWait();
-//                        break;
-//                    case SUCCESS:
-//                        Building building = Building.getInstance(buildingName.name, i, j);
-//                        addInMap(new ImageView(new Image(building.getImageView().toExternalForm())), i, j);
-//                        break;
-//                }
+        switch (GameMenuController.dropBuilding(i, j, buildingName.name, true)) {
+            case ALREADY_HAS_KEEP:
+                alert.setTitle("ERROR");
+                alert.setContentText("Error: You can have only one Keep.");
+                alert.showAndWait();
+                break;
+            case HAS_NOT_PLACED_KEEP:
+                alert.setTitle("ERROR");
+                alert.setContentText("Error: You must Place your Keep before any other building.");
+                alert.showAndWait();
+                break;
+            case CELL_IS_FULL:
+                alert.setTitle("ERROR");
+                alert.setContentText("Error: There is already a building in that location.");
+                alert.showAndWait();
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                alert.setTitle("ERROR");
+                alert.setContentText("Error: The cell has an incompatible texture.");
+                alert.showAndWait();
+                break;
+            case SUCCESS:
+                Building building = Building.getInstance(buildingName.name, i, j);
+                Button button = new Button();
+                ImageView imageView = new ImageView(new Image(building.getImageView().toExternalForm()));
+                imageView.setFitWidth(30);
+                imageView.setFitHeight(30);
+                button.setGraphic(imageView);
+                button.setMaxWidth(29);
+                button.setMaxHeight(29);
+                button.setMinHeight(29);
+                button.setMinWidth(29);
+                button.setStyle("-fx-background-color: transparent;");
+                button.setOnAction(event -> createBuildingMenu(buildingName, i, j));
+                addInMap(button, i, j);
+                break;
+        }
 
-        Building building = Building.getInstance(buildingName.name, i, j);
-        Button button = new Button();
-        ImageView imageView = new ImageView(new Image(building.getImageView().toExternalForm()));
-        imageView.setFitWidth(30);
-        imageView.setFitHeight(30);
-        button.setGraphic(imageView);
-        button.setMaxWidth(29);
-        button.setMaxHeight(29);
-        button.setMinHeight(29);
-        button.setMinWidth(29);
-        button.setStyle("-fx-background-color: transparent;");
-        button.setOnAction(event -> createBuildingMenu(buildingName, i, j));
-        addInMap(button, i, j);
+
     }
 
     private void createBuildingMenu(BuildingName buildingName, int i, int j) {
-        //GameMenuController.selectBuilding(i, j);
-        Stage popup = new Stage();
-        popup.initModality(Modality.APPLICATION_MODAL);
-        popup.setTitle("Popup");
-        VBox vbox = new VBox();
-        vbox.setBackground(new Background(new BackgroundImage(new Image(GameMenu.class
-                .getResource("/Backgrounds/default.jpg").toExternalForm())
-                , BackgroundRepeat.NO_REPEAT
-                , BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER
-                , new BackgroundSize(1.0, 1.0, true, true
-                , false, false))));
-        vbox.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+        if (GameMenuController.selectBuilding(i, j).equals(MenuMessages.SUCCESS)) {
+            Stage popup = new Stage();
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.setTitle("Popup");
+            VBox vbox = new VBox();
+            vbox.setBackground(new Background(new BackgroundImage(new Image(GameMenu.class
+                    .getResource("/Backgrounds/default.jpg").toExternalForm())
+                    , BackgroundRepeat.NO_REPEAT
+                    , BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER
+                    , new BackgroundSize(1.0, 1.0, true, true
+                    , false, false))));
+            vbox.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+            Building building = Building.getInstance(buildingName.name, 0, 0);
 
+            if (!building.getCategory().equals(Building.Category.TREE)) {
+                Button buttonForRepair = new Button("Repair");
+                buttonForRepair.setOnAction(event -> repairBuildingView());
+                vbox.getChildren().add(buttonForRepair);
 
-        Button buttonForRepair = new Button("Repair");
-        buttonForRepair.setOnAction(event -> repairBuildingView());
-        vbox.getChildren().add(buttonForRepair);
-
-        Button buttonForShowHealth = new Button("Show Health");
-        buttonForShowHealth.setOnAction(event -> showHealthBuildingView());
-        vbox.getChildren().add(buttonForShowHealth);
-
-        Button buttonForCopy = new Button("Copy");
-        buttonForCopy.setOnAction(event -> copyBuilding(buildingName, buttonForCopy));
-        vbox.getChildren().add(buttonForCopy);
-
-        Building building = Building.getInstance(buildingName.name, 0, 0);
-
-        for (Attribute attribute :
-                building.getAttributes()) {
-            if (attribute instanceof CreateUnit) {
-                //todo
-            } else if (attribute instanceof ChangeTaxRate) {
-                Button buttonForChangeTaxRate = new Button("Change Tax Rate");
-                buttonForChangeTaxRate.setOnAction(event -> popupForTaxRate());
-                vbox.getChildren().add(buttonForChangeTaxRate);
-            } else if (attribute instanceof Shop) {
-                //todo
-            } else if (attribute instanceof DrinkServing) {
-                Button buttonForServeDrink = new Button("Serve Drink");
-                buttonForServeDrink.setOnAction(event -> serveDrinkPopup());
-                vbox.getChildren().add(buttonForServeDrink);
-            } else if (attribute instanceof Process) {
-                Button buttonForProcess = new Button("Process");
-                buttonForProcess.setOnAction(event -> ProcessPopup());
-                vbox.getChildren().add(buttonForProcess);
-            } else if (attribute instanceof Capacity) {
-                Button buttonForCapacity = new Button("Show Capacity");
-                buttonForCapacity.setOnAction(event -> showCapacity());
-                vbox.getChildren().add(buttonForCapacity);
-            } else if (attribute instanceof ChangeFoodRate) {
-                Button buttonForChangeFoodRate = new Button("Change Food Rate");
-                buttonForChangeFoodRate.setOnAction(event -> changeFoodRatePopup());
-                vbox.getChildren().add(buttonForChangeFoodRate);
+                Button buttonForShowHealth = new Button("Show Health");
+                buttonForShowHealth.setOnAction(event -> showHealthBuildingView());
+                vbox.getChildren().add(buttonForShowHealth);
             }
+
+            Button buttonForCopy = new Button("Copy");
+            buttonForCopy.setOnAction(event -> copyBuilding(buildingName, buttonForCopy));
+            vbox.getChildren().add(buttonForCopy);
+
+
+            for (Attribute attribute :
+                    building.getAttributes()) {
+                if (attribute instanceof CreateUnit) {
+                    //todo
+                } else if (attribute instanceof ChangeTaxRate) {
+                    Button buttonForChangeTaxRate = new Button("Change Tax Rate");
+                    buttonForChangeTaxRate.setOnAction(event -> popupForTaxRate());
+                    vbox.getChildren().add(buttonForChangeTaxRate);
+                } else if (attribute instanceof Shop) {
+                    //todo
+                } else if (attribute instanceof DrinkServing) {
+                    Button buttonForServeDrink = new Button("Serve Drink");
+                    buttonForServeDrink.setOnAction(event -> serveDrinkPopup());
+                    vbox.getChildren().add(buttonForServeDrink);
+                } else if (attribute instanceof Process) {
+                    Button buttonForProcess = new Button("Process");
+                    buttonForProcess.setOnAction(event -> ProcessPopup());
+                    vbox.getChildren().add(buttonForProcess);
+                } else if (attribute instanceof Capacity) {
+                    Button buttonForCapacity = new Button("Show Capacity");
+                    buttonForCapacity.setOnAction(event -> showCapacity1());
+                    vbox.getChildren().add(buttonForCapacity);
+                } else if (attribute instanceof ChangeFoodRate) {
+                    Button buttonForChangeFoodRate = new Button("Change Food Rate");
+                    buttonForChangeFoodRate.setOnAction(event -> changeFoodRatePopup());
+                    vbox.getChildren().add(buttonForChangeFoodRate);
+                }
+            }
+            vbox.setSpacing(30);
+            vbox.setAlignment(Pos.CENTER);
+            Scene popupScene = new Scene(vbox, 400, 600);
+            popup.setScene(popupScene);
+            popup.showAndWait();
         }
-        vbox.setSpacing(30);
-        vbox.setAlignment(Pos.CENTER);
-        Scene popupScene = new Scene(vbox, 400, 600);
-        popup.setScene(popupScene);
-        popup.showAndWait();
     }
 
     private Label clipBoard = new Label();
@@ -1151,7 +1169,7 @@ public class GameMenu extends Application {
         alert.showAndWait();
     }
 
-    private void showCapacity() {
+    private void showCapacity1() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(GameEntityController.showCondition());
         alert.showAndWait();
@@ -1274,6 +1292,15 @@ public class GameMenu extends Application {
         Scene popupScene1 = new Scene(vbox1, 200, 150);
         popup1.setScene(popupScene1);
         popup1.showAndWait();
+    }
+
+    private void forTest() {
+        ArrayList<String> userName = new ArrayList<>();
+        userName.add("player1");
+        MainController.setCurrentUser(Database.getAllUsers().get(1));
+        System.out.println(GameMenuController.createGame(2, userName));
+        System.out.println(GameMenuController.loadGame(1));
+
     }
 
 }

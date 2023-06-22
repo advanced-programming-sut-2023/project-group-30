@@ -3,10 +3,8 @@ package model.game.map;
 public class Map {
     private MapCell[][] map;
 
-    private int mapWidth;
 
     public Map(int mapWidth) {
-        this.mapWidth = mapWidth;
         map = new MapCell[mapWidth][mapWidth];
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapWidth; j++) {
@@ -20,6 +18,6 @@ public class Map {
     }
 
     public int getWidth() {
-        return mapWidth;
+        return map.length;
     }
 }

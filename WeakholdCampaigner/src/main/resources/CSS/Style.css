@@ -8,3 +8,15 @@
     -fx-text-fill: #8B4513; /* Use a brownish color for the text */
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 2,0,0,1 );
 }
+.old-text1 {
+    -fx-font-family: "Times New Roman", serif;
+    -fx-font-size: 25px;
+    -fx-text-fill: #8B4513; /* Use a brownish color for the text */
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 2,0,0,1 );
+}
+.old-text2 {
+    -fx-font-family: "Times New Roman", serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: #8B4513; /* Use a brownish color for the text */
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 2,0,0,1 );
+}
