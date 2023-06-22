@@ -57,12 +57,12 @@ import static model.game.map.MapCell.Texture.*;
 public class GameMenu extends Application {
     private GridPane gridPane;
     private ScrollPane scrollPane;
-    private StackPane gamePane;
-    private HashMap<Enum, ImagePattern> imagePatternHashMap;
+    private static StackPane gamePane;
+    private static HashMap<Enum, ImagePattern> imagePatternHashMap;
     private HashMap<Enum, ImageView> imageOfBuilding;
 
 
-    private Button textForPopularity = new Button();
+    private static Button textForPopularity = new Button();
 
 
     private ArrayList<Building> buildings;
@@ -506,9 +506,9 @@ public class GameMenu extends Application {
         return movingUnits;
     }
 
-    private Label labelForGold = new Label();
+    private static Label labelForGold = new Label();
 
-    public void setPopularity() {//todo for next turn
+    public static void setPopularity() {//todo for next turn
         Label label = new Label(GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + "");
         label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
         label.getStyleClass().add("old-text");
@@ -523,11 +523,11 @@ public class GameMenu extends Application {
         labelForGold.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
         labelForGold.getStyleClass().add("old-text");
         StackPane.setMargin(labelForGold, new Insets(780, 0, 0, 260));
-        if (!gamePane.getChildren().contains(textForPopularity))
+        if (!gamePane.getChildren().contains(labelForGold))
             gamePane.getChildren().add(labelForGold);
     }
 
-    public void showPopularity() {
+    public static void showPopularity() {
         Stage showThePopularityFactor = new Stage();
         Pane pane = new Pane();
         pane.setBackground(new Background(new BackgroundImage(
@@ -544,7 +544,7 @@ public class GameMenu extends Application {
         showThePopularityFactor.showAndWait();
     }
 
-    private void setPopularityFactorsInPopup(Pane pane) {
+    private static void setPopularityFactorsInPopup(Pane pane) {
         Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
         VBox vBox1 = new VBox(getMaskCondition(government.getFoodPopularity(), "Food")
                 , getMaskCondition(government.getTaxPopularity(), "Tax"),
@@ -566,7 +566,7 @@ public class GameMenu extends Application {
         pane.getChildren().add(hBoxForAll);
     }
 
-    private HBox getMaskCondition(double number, String name) {
+    private static HBox getMaskCondition(double number, String name) {
         HBox hBox = new HBox();
 
         Label numberText = new Label(number + "");
@@ -1004,7 +1004,6 @@ public class GameMenu extends Application {
 
 
     private void createBuilding(BuildingName buildingName, int i, int j) {
-        System.out.println(buildingName + " " + i + " " + j);
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         switch (GameMenuController.dropBuilding(i, j, buildingName.name, true)) {
@@ -1298,8 +1297,8 @@ public class GameMenu extends Application {
         ArrayList<String> userName = new ArrayList<>();
         userName.add("player1");
         MainController.setCurrentUser(Database.getAllUsers().get(1));
-        System.out.println(GameMenuController.createGame(2, userName));
-        System.out.println(GameMenuController.loadGame(1));
+        GameMenuController.createGame(2, userName);
+        GameMenuController.loadGame(1);
 
     }
 

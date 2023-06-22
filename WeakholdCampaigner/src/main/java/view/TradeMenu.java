@@ -11,8 +11,11 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.User;
 import model.enums.Resource;
 import model.game.Government;
+import model.game.Trade;
+import view.menus.AppMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +31,7 @@ public class TradeMenu {
     }
 
     private void mainMenu() {
+        setNotification();
         tradeMenu.initModality(Modality.APPLICATION_MODAL);
         tradeMenu.setTitle("Trade Menu");
         BorderPane tradePane = new BorderPane();
@@ -53,7 +57,8 @@ public class TradeMenu {
         showPreviousTrade.setGraphic(tradeHistoryNode);
         tradeList.setGraphic(tradeListNode);
         createNewTrade.setOnAction(event -> newTrade(tradeMenu));
-        showPreviousTrade.setOnAction(event -> previousTrade());
+        showPreviousTrade.setOnAction(event -> previousTrade(tradePane));
+        tradeList.setOnAction(event -> tradeListMenu(tradePane));
         VBox vBox = new VBox(createNewTrade, showPreviousTrade, tradeList);
         vBox.setSpacing(10);
         tradePane.setCenter(vBox);
@@ -70,7 +75,112 @@ public class TradeMenu {
 
     }
 
-    private void previousTrade() {
+    private void tradeListMenu(BorderPane tradeMenu) {
+        ArrayList<Trade> tradeList = GameMenuController.getCurrentGame().getCurrentGovernment().getTradeList();
+        Label labelForNotExistTrade = new Label("No Trade Exist");
+        labelForNotExistTrade.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+        labelForNotExistTrade.getStyleClass().add("old-text1");
+
+        if (tradeList.size() == 0) {
+            tradeMenu.setCenter(labelForNotExistTrade);
+            labelForNotExistTrade.setAlignment(Pos.CENTER);
+        }
+        else {
+            VBox vBox = new VBox();
+            for(Trade trade : tradeList) {
+                HBox hBox = new HBox();
+                String notification = new String();
+                notification += trade.getId() + ": resource_type:" + trade.getResourceType() + ", resource_amount "
+                        + trade.getResourceAmount() + ", price: " + trade.getPrice()
+                        + ", message: " + trade.getMessage();
+                if (trade.getRequest())
+                    notification += ", requested from : " + trade.getApplicant().getUsername();
+                else
+                    notification += ", donated from : " + trade.getApplicant().getUsername();
+                Label list = new Label(notification);
+                list.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+                list.getStyleClass().add("old-text");
+                Button acc = new Button("Accept");
+                acc.setFocusTraversable(false);
+                acc.getStyleClass().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+                acc.setOnAction(event -> {
+                    switch (TradeMenuController.tradeAccept(trade.getId(), trade.getMessage())) {
+                        case INVALID_AMOUNT:
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setContentText("you does not have this amount of this resource");
+                            alert.showAndWait();
+                            break;
+                        case OK:
+                            GameMenu.setPopularity();
+                            AppMenu.show("Accepted this trade");
+                            break;
+
+                    }
+
+                });
+                hBox.getChildren().addAll(list, acc);
+                hBox.setSpacing(5);
+                hBox.setAlignment(Pos.CENTER);
+                vBox.getChildren().add(hBox);
+            }
+            tradeMenu.setCenter(vBox);
+            vBox.setAlignment(Pos.CENTER);
+        }
+
+
+    }
+
+    private void setNotification() {
+        String body = TradeMenuController.enterTradeMenu();
+
+        if(body != null) {
+            Alert notification = new Alert(Alert.AlertType.INFORMATION);
+            notification.getDialogPane().setPrefSize(600,300);
+            notification.setTitle("Notification");
+            notification.setContentText(body);
+            notification.showAndWait();
+        }
+    }
+
+    private void previousTrade(BorderPane tradeMenu) {
+        User user = GameMenuController.getCurrentGame().getCurrentGovernment().getOwner();
+        Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
+        VBox vBox = new VBox();
+        Label labelForName = new Label("Requests/Donates");
+        labelForName.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+        labelForName.getStyleClass().add("old-text");
+        vBox.getChildren().add(labelForName);
+        for (Trade trade : government.getTradeHistory()) {
+            Label label = new Label();
+            if (trade.getApplicant().equals(user)) {
+                label.setText(trade.getId() + ": resource_type:" + trade.getResourceType() + ", resource_amount "
+                        + trade.getResourceAmount() + ", price: " + trade.getPrice()
+                        + ", message: " + trade.getMessage() + ", status: " + trade.isAccepted());
+                label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+                label.getStyleClass().add("old-text");
+                vBox.getChildren().add(label);
+            }
+        }
+        Label labelForName1 = new Label("Accepted Trade");
+        vBox.getChildren().add(labelForName1);
+        labelForName1.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+        labelForName1.getStyleClass().add("old-text");
+        for (Trade trade : government.getTradeHistory()) {
+            Label label = new Label();
+            if (!trade.getApplicant().equals(user)) {
+                label.setText(trade.getId() + ": resource_type:" + trade.getResourceType() + ", resource_amount "
+                        + trade.getResourceAmount() + ", price: " + trade.getPrice() + ", requested_user: "
+                        + trade.getApplicant().getUsername()
+                        + ", message: " + trade.getMessage());
+                label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+                label.getStyleClass().add("old-text");
+                vBox.getChildren().add(label);
+            }
+        }
+        tradeMenu.setCenter(vBox);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(3);
+
     }
 
     private void newTrade(Stage stage) {

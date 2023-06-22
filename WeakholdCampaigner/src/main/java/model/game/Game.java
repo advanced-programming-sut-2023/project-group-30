@@ -159,7 +159,8 @@ public class Game {
             for (int j = 0; j < map.getWidth(); j++) {
                 if (map.getCell(i, j).getBuilding() != null) {
                     if (map.getCell(i, j).getBuilding().getBuildingName().equals(building.getBuildingName()) &&
-                            building.getGovernmentColor().equals(government.getColor())) {
+                            map.getCell(i, j).getBuilding().getGovernmentColor().equals(government.getColor())) {
+                        System.out.println(government.getColor() + " color");
                         output++;
                     }
                 }
