@@ -573,7 +573,7 @@ public class GameMenu extends Application {
         numberText.setStyle("-fx-font-family: Cardamon");
         numberText.setStyle("-fx-font-size: 20px");
         numberText.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
-        numberText.getStyleClass().add("old-text");
+
         hBox.getChildren().add(numberText);
         Rectangle rectangle = new Rectangle(25, 25);
         if (number == 0) {
