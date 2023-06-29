@@ -6,6 +6,8 @@ import model.enums.Resource;
 import model.game.map.MapCell;
 import org.jetbrains.annotations.Nullable;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +18,10 @@ public class Unit extends GameEntity {
     private UnitStance stance;
     public final UnitName unitName;
 
+    public URL getImageView() {
+        return imageView;
+    }
+
     public UnitName getUnitName() {
         return unitName;
     }
@@ -24,6 +30,7 @@ public class Unit extends GameEntity {
     private boolean isPatrolling;
     private boolean hasAttacked;
     public final boolean isArab;
+    private URL imageView;
 
     protected Unit(HashMap<Resource, Integer> productionCost, ArrayList<Attribute> attributes, UnitName unitName,
                    int speed, int defence, int attack, int x, int y, boolean isArab) {
@@ -42,6 +49,11 @@ public class Unit extends GameEntity {
         this.hasAttacked = false;
         this.stance = UnitStance.STAND_GROUND;
         this.isArab = isArab;
+        try {
+            this.imageView = new URL(Unit.class.getResource("/Units/"+ unitName.name+"2.png" ).toExternalForm());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Unit getInstance(String name, int x, int y) {

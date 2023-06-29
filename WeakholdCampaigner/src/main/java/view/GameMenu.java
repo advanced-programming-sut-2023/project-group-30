@@ -52,6 +52,7 @@ public class GameMenu extends Application {
     private Rectangle rectangle;
     private int chosenX;
     private int chosenY;
+    private HashMap<Unit, ImageView> unitsInMap;
 
     @Override
     public void start(Stage stage){
@@ -78,7 +79,7 @@ public class GameMenu extends Application {
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(Database.getMapById(1));//TODO: after finishing game menu change 1
         setZoom(scrollPane);
-        dropUnit(stage);
+        dropUnit(stage ,scene);
         scene.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
         stage.setScene(scene);
         showDetailWithDragClick(gridPane);
@@ -87,7 +88,8 @@ public class GameMenu extends Application {
         stage.show();
     }
 
-    private void dropUnit(Stage stage) {
+    private void dropUnit(Stage stage, Scene scene) {
+        unitsInMap  = new HashMap<>();
         Image buttonImage = new Image(GameMenu.class.getResource("/Icon/dropUnit.png").toExternalForm());
         ImageView imageView = new ImageView(buttonImage);
         Button button = new Button();
@@ -108,56 +110,281 @@ public class GameMenu extends Application {
                 Background background = new Background(backgroundImage);
                 unitPane.setBackground(background);
                 unitPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
-                Image buttonImage2 = new Image(GameMenu.class.getResource("/Units/fireThrower2.png").toExternalForm());
+                Image buttonImage2 = new Image(GameMenu.class.getResource("/Units/Fire Throwers2.png").toExternalForm());
                 ImageView imageView2 = new ImageView(buttonImage2);
                 Button fireThrower = new Button();
                 fireThrower.setGraphic(imageView2);
                 fireThrower.setStyle("-fx-background-color: transparent");
                 unitPane.add(fireThrower, 1, 1);
-                Image buttonImage3 = new Image(GameMenu.class.getResource("/Units/knight2.png").toExternalForm());
+                Image buttonImage3 = new Image(GameMenu.class.getResource("/Units/Knight2.png").toExternalForm());
                 ImageView imageView3 = new ImageView(buttonImage3);
                 Button knight = new Button();
                 knight.setGraphic(imageView3);
                 knight.setStyle("-fx-background-color: transparent");
                 unitPane.add(knight, 2, 1);
-                Image buttonImage4 = new Image(GameMenu.class.getResource("/Units/swordMan2.png").toExternalForm());
+                Image buttonImage4 = new Image(GameMenu.class.getResource("/Units/Swordsmen2.png").toExternalForm());
                 ImageView imageView4 = new ImageView(buttonImage4);
                 Button swordMan = new Button();
                 swordMan.setGraphic(imageView4);
                 swordMan.setStyle("-fx-background-color: transparent");
                 unitPane.add(swordMan, 3, 1);
-                Image buttonImage5 = new Image(GameMenu.class.getResource("/Units/arabianBow2.png").toExternalForm());
+                Image buttonImage5 = new Image(GameMenu.class.getResource("/Units/Crossbowmen2.png").toExternalForm());
                 ImageView imageView5 = new ImageView(buttonImage5);
                 Button arabianBow = new Button();
                 arabianBow.setGraphic(imageView5);
                 arabianBow.setStyle("-fx-background-color: transparent");
                 unitPane.add(arabianBow, 1, 2);
-                Image buttonImage6 = new Image(GameMenu.class.getResource("/Units/Assassin2.png").toExternalForm());
+                Image buttonImage6 = new Image(GameMenu.class.getResource("/Units/Assassins2.png").toExternalForm());
                 ImageView imageView6 = new ImageView(buttonImage6);
                 Button assassin = new Button();
                 assassin.setGraphic(imageView6);
                 assassin.setStyle("-fx-background-color: transparent");
                 unitPane.add(assassin, 2, 2);
-                Image buttonImage7 = new Image(GameMenu.class.getResource("/Units/Slinger2.png").toExternalForm());
+                Image buttonImage7 = new Image(GameMenu.class.getResource("/Units/Slingers2.png").toExternalForm());
                 ImageView imageView7 = new ImageView(buttonImage7);
                 Button slinger = new Button();
                 slinger.setGraphic(imageView7);
                 slinger.setStyle("-fx-background-color: transparent");
                 unitPane.add(slinger, 3, 2);
-                Text text = new Text("Enter your mapCell's component and choose your unit");
-                text.setFill(Color.WHITE);
-                text.setStyle("-fx-font-size: 100");
-                gridPane.getChildren().add(text);
-//                TextField xTextField = new TextField("x component");
-//                gridPane.add(xTextField, 5, 1);
-                unitPane.setHgap(25);
-                unitPane.setVgap(20);
+                Label label = new Label("Enter your mapCell's component");
+                label.setStyle("-fx-font-size: 20;-fx-text-fill: white");
+                label.setAlignment(Pos.BOTTOM_RIGHT);
+                VBox vBox = new VBox(label);
+                unitPane.add(vBox, 2, 3);
+                TextField xTextField = new TextField();
+                xTextField.setPromptText("x component");
+                xTextField.setStyle("-fx-background-color: #f2f2f2;-fx-border-color: #cccccc;-fx-border-radius: 5;" +
+                        "-fx-padding: 5;-fx-font-size: 14");
+                unitPane.add(xTextField, 1, 4);
+                TextField yTextField = new TextField();
+                yTextField.setPromptText("y component");
+                yTextField.setStyle("-fx-background-color: #f2f2f2;-fx-border-color: #cccccc;-fx-border-radius: 5;" +
+                        "-fx-padding: 5;-fx-font-size: 14");
+                unitPane.add(yTextField,3,4);
+                unitPane.setHgap(5);
+                unitPane.setVgap(40);
                 unitPane.setAlignment(Pos.TOP_RIGHT);
+                fireThrower.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if(xTextField.getText().equals("") || yTextField.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Wrong input");
+                            alert.setContentText("You should enter your components");
+                            alert.initOwner(stage);
+                            alert.showAndWait();
+                        }else {
+                            int xLocation = Integer.parseInt(xTextField.getText());
+                            int yLocation = Integer.parseInt(yTextField.getText());
+                            MenuMessages messages = dropUnitToController(xLocation,
+                                    yLocation, "Fire Throwers", stage);
+                            if(messages.equals(MenuMessages.SUCCESS)){
+                                stage.setScene(scene);
+                                stage.setFullScreen(true);
+                                Unit unit = Unit.getInstance("Fire Throwers", xLocation, yLocation);
+                                ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
+                                imageView.setFitWidth(30);
+                                imageView.setFitHeight(30);
+                                addInMap(imageView, xLocation, yLocation);
+                                unitsInMap.put(unit, imageView);
+                            }
+                        }
+                    }
+                });
+                knight.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if(xTextField.getText().equals("") || yTextField.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Wrong input");
+                            alert.setContentText("You should enter your components");
+                            alert.initOwner(stage);
+                            alert.showAndWait();
+                        }else {
+                            int xLocation = Integer.parseInt(xTextField.getText());
+                            int yLocation = Integer.parseInt(yTextField.getText());
+                            MenuMessages messages = dropUnitToController(xLocation,
+                                    yLocation, "Knight", stage);
+                            if(messages.equals(MenuMessages.SUCCESS)){
+                                stage.setScene(scene);
+                                stage.setFullScreen(true);
+                                Unit unit = Unit.getInstance("Knight", xLocation, yLocation);
+                                ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
+                                imageView.setFitWidth(55);
+                                imageView.setFitHeight(55);
+                                addInMap(imageView, xLocation, yLocation);
+                                unitsInMap.put(unit, imageView);
+                            }
+                        }
+                    }
+                });
+                swordMan.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if(xTextField.getText().equals("") || yTextField.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Wrong input");
+                            alert.setContentText("You should enter your components");
+                            alert.initOwner(stage);
+                            alert.showAndWait();
+                        }else {
+                            int xLocation = Integer.parseInt(xTextField.getText());
+                            int yLocation = Integer.parseInt(yTextField.getText());
+                            MenuMessages messages = dropUnitToController(xLocation,
+                                    yLocation, "Swordsmen", stage);
+                            if(messages.equals(MenuMessages.SUCCESS)){
+                                stage.setScene(scene);
+                                stage.setFullScreen(true);
+                                Unit unit = Unit.getInstance("Swordsmen", xLocation, yLocation);
+                                ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
+                                imageView.setFitWidth(45);
+                                imageView.setFitHeight(45);
+                                addInMap(imageView, xLocation, yLocation);
+                                unitsInMap.put(unit, imageView);
+                            }
+                        }
+                    }
+                });
+                arabianBow.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if(xTextField.getText().equals("") || yTextField.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Wrong input");
+                            alert.setContentText("You should enter your components");
+                            alert.initOwner(stage);
+                            alert.showAndWait();
+                        }else {
+                            int xLocation = Integer.parseInt(xTextField.getText());
+                            int yLocation = Integer.parseInt(yTextField.getText());
+                            MenuMessages messages = dropUnitToController(xLocation,
+                                    yLocation, "Crossbowmen", stage);
+                            if(messages.equals(MenuMessages.SUCCESS)){
+                                stage.setScene(scene);
+                                stage.setFullScreen(true);
+                                Unit unit = Unit.getInstance("Crossbowmen", xLocation, yLocation);
+                                ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
+                                imageView.setFitWidth(60);
+                                imageView.setFitHeight(60);
+                                addInMap(imageView, xLocation, yLocation);
+                                unitsInMap.put(unit, imageView);
+                            }
+                        }
+                    }
+                });
+                assassin.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if(xTextField.getText().equals("") || yTextField.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Wrong input");
+                            alert.setContentText("You should enter your components");
+                            alert.initOwner(stage);
+                            alert.showAndWait();
+                        }else {
+                            int xLocation = Integer.parseInt(xTextField.getText());
+                            int yLocation = Integer.parseInt(yTextField.getText());
+                            MenuMessages messages = dropUnitToController(xLocation,
+                                    yLocation, "Assassins", stage);
+                            if(messages.equals(MenuMessages.SUCCESS)){
+                                stage.setScene(scene);
+                                stage.setFullScreen(true);
+                                Unit unit = Unit.getInstance("Assassins", xLocation, yLocation);
+                                ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
+                                imageView.setFitWidth(50);
+                                imageView.setFitHeight(50);
+                                addInMap(imageView, xLocation, yLocation);
+                                unitsInMap.put(unit, imageView);
+                            }
+                        }
+                    }
+                });
+                slinger.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if(xTextField.getText().equals("") || yTextField.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Wrong input");
+                            alert.setContentText("You should enter your components");
+                            alert.initOwner(stage);
+                            alert.showAndWait();
+                        }else {
+                            int xLocation = Integer.parseInt(xTextField.getText());
+                            int yLocation = Integer.parseInt(yTextField.getText());
+                            MenuMessages messages = dropUnitToController(xLocation,
+                                    yLocation, "Slingers", stage);
+                            if(messages.equals(MenuMessages.SUCCESS)){
+                                stage.setScene(scene);
+                                stage.setFullScreen(true);
+                                Unit unit = Unit.getInstance("Slingers", xLocation, yLocation);
+                                ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
+                                imageView.setFitWidth(50);
+                                imageView.setFitHeight(50);
+                                addInMap(imageView, xLocation, yLocation);
+                                unitsInMap.put(unit, imageView);
+                            }
+                        }
+                    }
+                });
+
+                scene2.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
                 stage.setScene(scene2);
                 stage.setFullScreen(true);
                 stage.show();
             }
         });
+    }
+    public static MenuMessages dropUnitToController(int x, int y, String type, Stage stage) {
+        boolean godMode = true;//TODO:make god mode false for game
+        MenuMessages message = GameMenuController.dropUnit(x,y, type, godMode);
+        switch (message) {
+            case INVALID_LOCATION:
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Location");
+                alert.setContentText("Location is out of bound");
+                alert.initOwner(stage);
+                alert.showAndWait();
+                break;
+            case CELL_HAS_INCOMPATIBLE_TEXTURE:
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("Texture");
+                alert2.setContentText("The cell's texture is incompatible");
+                alert2.initOwner(stage);
+                alert2.showAndWait();
+                break;
+            case NOT_ENOUGH_RESOURCES:
+                Alert alert3 = new Alert(Alert.AlertType.ERROR);
+                alert3.setTitle("Error");
+                alert3.setHeaderText("Resource");
+                alert3.setContentText("Your government does not have enough resources");
+                alert3.initOwner(stage);
+                alert3.showAndWait();
+                break;
+            case SUCCESS:
+                Alert alert4 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert4.setTitle("Unit");
+                alert4.setHeaderText("Unit dropped");
+                alert4.setContentText("Done!");
+                alert4.initOwner(stage);
+                alert4.showAndWait();
+                break;
+        }
+        return message;
+    }
+    public static void showAlert(String header, String content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private void pressedNode(GridPane gridPane, Stage stage){
