@@ -1,8 +1,11 @@
 package view.GUI;
 
+import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.LoginMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import view.GameMenu;
+import view.menus.AppMenu;
 
 public class MainMenu extends AbstractMenu{
     public static void main(String[] args) {
@@ -42,7 +45,17 @@ public class MainMenu extends AbstractMenu{
     private static Button getEnterGameButton() {
         Button button = new Button("Enter a game");
         button.setOnMouseClicked((mouseEvent) -> {
-            //todo
+            String id = AppMenu.getOneLine("Enter game id");
+            if (!GameMenuController.loadGame(Integer.parseInt(id))) {
+                AppMenu.show("No game with this id exists.");
+            }
+            else {
+                try {
+                    new GameMenu().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
 
         return button;

@@ -175,7 +175,7 @@ public class Government {
         } else {
             if (getMaximumResource(Capacity.Stored.RECOURSE) < (getStoredUnit(Capacity.Stored.RECOURSE) + amount)
                     && (!resource.equals(Resource.GOLD) && !resource.equals(Resource.GOLD_COIN))) ;
-            else{
+            else {
 
                 resources.put(resource, resources.get(resource) + amount);
             }
@@ -282,6 +282,9 @@ public class Government {
 
     public int getPopularity() {
         popularity += (popularityOfFear + popularityOfTax + popularityOfFood + popularityOfReligion);
+        return popularity;
+    }
+    public int getStaticPopularity() {
         return popularity;
     }
 

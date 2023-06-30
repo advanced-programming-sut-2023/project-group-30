@@ -111,7 +111,7 @@ public class TradeMenu {
                             alert.showAndWait();
                             break;
                         case OK:
-                            GameMenu.setPopularity();
+                            GameMenu.setGold();
                             AppMenu.show("Accepted this trade");
                             break;
 

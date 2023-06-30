@@ -77,8 +77,8 @@ public class GameMenu extends Application {
         gridPane = new GridPane();
         gridPane.setVgap(-0.5);
         gridPane.setHgap(-0.5);
-        Database.loadData();
-        forTest();//Todo for test
+        //Database.loadData();
+        //forTest();//Todo for test
         scrollPane = new ScrollPane(gridPane);
         scrollPane.setPrefViewportWidth(stage.getMaxWidth()); // 40 cells wide (20 pixels each)
         scrollPane.setPrefViewportHeight(stage.getMaxHeight()); // 40 cells high (20 pixels each)
@@ -105,7 +105,7 @@ public class GameMenu extends Application {
         });
         gamePane.getStylesheets().add(GameMenu.class.getResource("/CSS/Style.css").toExternalForm());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
-        createMap(Database.getMapById(2));//TODO: after finishing game menu change 1
+        createMap(GameMenuController.getCurrentGame().getMap());//TODO: after finishing game menu change 1
         createMiniMap(2);
 
         scrollPane.setScaleX(3 * scrollPane.getScaleX() / 2);
@@ -122,6 +122,7 @@ public class GameMenu extends Application {
 
     private void nextTurn() {
         GameMenuController.endOnePlayersTurn();
+        setGold();
         setPopularity();
 
     }
@@ -287,9 +288,9 @@ public class GameMenu extends Application {
                 if (node.getBoundsInParent().intersects(draggedSection.getBoundsInParent())) {
                     int i = gridPane.getChildren().indexOf(node) % 200;
                     int j = gridPane.getChildren().indexOf(node) / 200;
-                    unitNumbers += Database.getMapById(1).getCell(i, j).getUnits().size();//TODO: after finishing game menu change 1
-                    if (Database.getMapById(1).getCell(i, j).getBuilding() != null) {//TODO: after finishing game menu change 1
-                        buildings.add(Database.getMapById(1).getCell(i, j).getBuilding());
+                    unitNumbers += GameMenuController.getCurrentGame().getMap().getCell(i, j).getUnits().size();//TODO: after finishing game menu change 1
+                    if (GameMenuController.getCurrentGame().getMap().getCell(i, j).getBuilding() != null) {//TODO: after finishing game menu change 1
+                        buildings.add(GameMenuController.getCurrentGame().getMap().getCell(i, j).getBuilding());
                     }
                 }
             }
@@ -336,9 +337,9 @@ public class GameMenu extends Application {
         scrollPane.setVvalue(vValue + deltaY / height);
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
+//    //public static void main(String[] args) {
+//        launch();
+//    }
 
 
     public void createMap(Map map) {
@@ -377,6 +378,7 @@ public class GameMenu extends Application {
                 .toExternalForm());
         StackPane.setMargin(imageView, new Insets(700, 0, 0, 0));
         gamePane.getChildren().add(imageView);
+        setGold();
         setPopularity();
 
 
@@ -508,8 +510,16 @@ public class GameMenu extends Application {
 
     private static Label labelForGold = new Label();
 
-    public static void setPopularity() {//todo for next turn
-        Label label = new Label(GameMenuController.getCurrentGame().getCurrentGovernment().getPopularity() + "");
+    public static void setGold() {//todo for next turn
+        labelForGold.setText(GameMenuController.getCurrentGame().getCurrentGovernment().getGold() + "");
+        labelForGold.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
+        labelForGold.getStyleClass().add("old-text");
+        StackPane.setMargin(labelForGold, new Insets(780, 0, 0, 260));
+        if (!gamePane.getChildren().contains(labelForGold))
+            gamePane.getChildren().add(labelForGold);
+    }
+    private void setPopularity(){
+        Label label = new Label(GameMenuController.getCurrentGame().getCurrentGovernment().getStaticPopularity() + "");
         label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
         label.getStyleClass().add("old-text");
         textForPopularity.setStyle("-fx-background-color: transparent;");
@@ -519,12 +529,6 @@ public class GameMenu extends Application {
             gamePane.getChildren().add(textForPopularity);
         textForPopularity.setOnAction(e -> showPopularity());
 
-        labelForGold.setText(GameMenuController.getCurrentGame().getCurrentGovernment().getGold() + "");
-        labelForGold.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
-        labelForGold.getStyleClass().add("old-text");
-        StackPane.setMargin(labelForGold, new Insets(780, 0, 0, 260));
-        if (!gamePane.getChildren().contains(labelForGold))
-            gamePane.getChildren().add(labelForGold);
     }
 
     public static void showPopularity() {
@@ -1086,7 +1090,9 @@ public class GameMenu extends Application {
                     buttonForChangeTaxRate.setOnAction(event -> popupForTaxRate());
                     vbox.getChildren().add(buttonForChangeTaxRate);
                 } else if (attribute instanceof Shop) {
-                    //todo
+                    Button buttonForShop = new Button("Shop");
+                    buttonForShop.setOnAction(event -> new ShopMenu().run());
+                    vbox.getChildren().add(buttonForShop);
                 } else if (attribute instanceof DrinkServing) {
                     Button buttonForServeDrink = new Button("Serve Drink");
                     buttonForServeDrink.setOnAction(event -> serveDrinkPopup());
