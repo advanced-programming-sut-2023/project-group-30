@@ -64,6 +64,7 @@ public class Game {
     public void dropBuilding(Building building, int x, int y) {
         building.setGovernmentColor(currentGovernment.getColor());
         map.getCell(x, y).setBuilding(building);
+        System.out.println("Debug Log(color check): a <" + currentGovernment.getColor() + "> <" + building.getBuildingName() + "> was added to the map."); //todo remove
     }
 
     @NotNull
@@ -74,6 +75,7 @@ public class Game {
     public void dropUnit(@NotNull Unit unit, int x, int y) {
         unit.setGovernmentColor(currentGovernment.getColor());
         map.getCell(x, y).addUnit(unit);
+        System.out.println("Debug Log(color check): a <" + currentGovernment.getColor() + "> <" + unit.unitName + "> was added to the map."); //todo remove
     }
 
     public void removeUnit(Unit unit, int x, int y) { //does not actually need x,y
