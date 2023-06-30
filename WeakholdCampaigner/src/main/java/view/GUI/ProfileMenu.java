@@ -24,8 +24,9 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
     protected void initialize() {
         captchaValidity = new TextField();
 
-        VBox vBox = SceneBuilder.getLabeledVBox("Profile Menu", getUserInfo(), getUserSlogan(),
-                getAvatarRectangle(), getChangeAvatarButton(), getChangeUsernameVBox() , getChangePasswordVBox(),
+        VBox vBox = SceneBuilder.getLabeledVBox("Profile Menu",
+                SceneBuilder.getHBox(getUserInfo(), getUserSlogan(), getAvatarRectangle()),
+                getChangeAvatarButton(), getChangeUsernameVBox() , getChangePasswordVBox(),
                 getChangeNicknameVBox(), getChangeEmailVBox(), getChangeSloganVBox(), getMainMenuButton());
         borderPane.setCenter(vBox);
     }
