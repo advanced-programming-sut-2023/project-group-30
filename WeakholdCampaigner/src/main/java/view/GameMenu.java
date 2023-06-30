@@ -106,7 +106,7 @@ public class GameMenu extends Application {
         gamePane.getStylesheets().add(GameMenu.class.getResource("/CSS/Style.css").toExternalForm());
         scrollPane.setPrefSize(stage.getMaxWidth(), stage.getMaxHeight());
         createMap(GameMenuController.getCurrentGame().getMap());//TODO: after finishing game menu change 1
-        createMiniMap(2);
+        createMiniMap(GameMenuController.getCurrentGame().getMapID());
 
         scrollPane.setScaleX(3 * scrollPane.getScaleX() / 2);
         scrollPane.setScaleY(3 * scrollPane.getScaleY() / 2);
