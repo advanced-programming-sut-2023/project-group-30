@@ -4,11 +4,13 @@ import controller.menu_controllers.GameMenuController;
 import controller.menu_controllers.LoginMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import view.GameMenu;
 import view.menus.AppMenu;
 import view.menus.AppMenu;
 
 import java.util.ArrayList;
+
 
 public class MainMenu extends AbstractMenu{
     public static void main(String[] args) {
@@ -79,7 +81,8 @@ public class MainMenu extends AbstractMenu{
             }
             else {
                 try {
-                    new GameMenu().start(stage);
+                    stage.close();
+                    new GameMenu().start(new Stage());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

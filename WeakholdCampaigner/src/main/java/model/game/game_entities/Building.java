@@ -51,6 +51,7 @@ public class Building extends GameEntity {
         ArrayList<Attribute> attributes = new ArrayList<>();
         Category category = Category.OTHER;
         int HP = 100;
+        attributes.add(new Fire());
 
         switch (buildingName) {
             case KEEP:

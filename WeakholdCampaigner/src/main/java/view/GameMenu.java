@@ -40,6 +40,8 @@ import model.game.game_entities.Unit;
 import model.game.game_entities.UnitName;
 import model.game.map.Map;
 import model.game.map.MapCell;
+import org.w3c.dom.ls.LSOutput;
+import view.animation.FireTransition;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 
@@ -116,14 +118,19 @@ public class GameMenu extends Application {
         stage.setScene(scene);
         showDetailWithDragClick(gridPane);
         pressedNode(gridPane, stage);
+        GameMenuController.setGridPane(gridPane);
         stage.setFullScreen(true);
         stage.show();
     }
 
     private void nextTurn() {
-        GameMenuController.endOnePlayersTurn();
+        if(GameMenuController.endOnePlayersTurn()) {
+            for (FireTransition i: fireTransitions)
+                i.addTurn();
+        }
         setGold();
         setPopularity();
+
 
     }
 
@@ -337,9 +344,9 @@ public class GameMenu extends Application {
         scrollPane.setVvalue(vValue + deltaY / height);
     }
 
-//    //public static void main(String[] args) {
-//        launch();
-//    }
+    public static void main(String[] args) {
+        launch();
+    }
 
 
     public void createMap(Map map) {
@@ -460,6 +467,12 @@ public class GameMenu extends Application {
         pane.getChildren().remove(node);
     }
 
+    public void removeBuilding(int i, int j) {
+        Pane pane = (Pane) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
+        pane.getChildren().remove(1);
+    }
+
+
     public void setZoom(ScrollPane scrollPane) {
         Button zoomInButton = new Button();
         Button zoomOutButton = new Button();
@@ -518,8 +531,12 @@ public class GameMenu extends Application {
         if (!gamePane.getChildren().contains(labelForGold))
             gamePane.getChildren().add(labelForGold);
     }
-    private void setPopularity(){
-        Label label = new Label(GameMenuController.getCurrentGame().getCurrentGovernment().getStaticPopularity() + "");
+
+    private void setPopularity() {
+        Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
+        Label label = new Label(government.getFoodPopularity() + government.getTaxPopularity()
+                + government.getReligionPopularity() + government.getFearPopularity()
+                + government.getOtherPopularity() + "");
         label.getStylesheets().add(GameMenu.class.getResource("/CSS/style.css").toExternalForm());
         label.getStyleClass().add("old-text");
         textForPopularity.setStyle("-fx-background-color: transparent;");
@@ -1305,6 +1322,16 @@ public class GameMenu extends Application {
         MainController.setCurrentUser(Database.getAllUsers().get(1));
         GameMenuController.createGame(2, userName);
         GameMenuController.loadGame(1);
+
+    }
+
+    private ArrayList<FireTransition> fireTransitions = new ArrayList<>();
+
+    public void fire(int i, int j) {
+        Pane pane = (Pane) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
+        FireTransition fireTransition = new FireTransition(pane, 18, 30, 30);
+        fireTransitions.add(fireTransition);
+        GameMenuController.fireInMap(i, j);
 
     }
 

@@ -52,6 +52,9 @@ public class MapCell {
         this.units.remove(unit);
         allMapUnits.remove(unit);
     }
+    public void removeBuilding() {
+        building = null;
+    }
 
     public enum Texture {
         LAND,

@@ -342,7 +342,7 @@ public class Government {
     public void updateAllForNextTurn() {
         setFoodVariety();
         if (getFoodUnit() >= consumableFood()) decreaseFood();
-        popularity += getPopularity();
+        getPopularity();
         if ((getTax() * (-1)) <= getGold()) addGold(getTax());
         popularityOfFood += getPopularityOfFood();
         popularityOfFear += getPopularityOfFear();
