@@ -3,12 +3,11 @@ package view;
 import controller.menu_controllers.GameEntityController;
 import controller.menu_controllers.GameMenuController;
 import controller.messages.MenuMessages;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -21,19 +20,14 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import model.Database;
-import model.game.Game;
 import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
-import model.game.game_entities.UnitName;
 import model.game.map.Map;
 import model.game.map.MapCell;
 import view.menus.AbstractMenu;
-import view.menus.AppMenu;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -53,6 +47,7 @@ public class GameMenu extends Application {
     private int chosenX;
     private int chosenY;
     private HashMap<Unit, ImageView> unitsInMap;
+    private ArrayList<TranslateTransition> transition = new ArrayList<>();
 
     @Override
     public void start(Stage stage){
@@ -409,8 +404,13 @@ public class GameMenu extends Application {
                         dialog.setHeaderText("Unit type and destination components");
                         dialog.setContentText("Enter your x and y components");
                         TextField xTextField = new TextField();
+                        xTextField.setPromptText("x component");
                         TextField yTextField = new TextField();
+                        yTextField.setPromptText("y component");
                         TextField unitType = new TextField();
+                        unitType.setPromptText("unit type");
+                        TextField numberOfUnit = new TextField();
+                        numberOfUnit.setPromptText("unit's number");
                         GridPane dialogGridPane = new GridPane();
                         dialogGridPane.add(new Label("x:"), 0, 0);
                         dialogGridPane.add(xTextField, 1, 0);
@@ -418,6 +418,8 @@ public class GameMenu extends Application {
                         dialogGridPane.add(yTextField, 1, 1);
                         dialogGridPane.add(new Label("type:"), 0, 2);
                         dialogGridPane.add(unitType, 1, 2);
+                        dialogGridPane.add(new Label("number:"), 0 ,3);
+                        dialogGridPane.add(numberOfUnit, 1, 3);
                         dialogGridPane.setHgap(40);
                         dialog.getDialogPane().setContent(dialogGridPane);
                         dialog.getDialogPane().getStylesheets().add
@@ -427,17 +429,53 @@ public class GameMenu extends Application {
                             String x = xTextField.getText();
                             String y = yTextField.getText();
                             String type = unitType.getText();
-                            if(!checkStringsAreNumbers(x, y)){
+                            String number = numberOfUnit.getText();
+                            if(!checkStringsAreNumbers(x, y, number)){
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Error");
                                 alert.setHeaderText("Inputs Error");
                                 alert.setContentText("Your x and y components should be numbers");
+                                alert.initOwner(stage);
                                 alert.showAndWait();
                             }
                             else {
                                 MenuMessages messages = selectUnit(chosenX, chosenY, type);
                                 if(messages == MenuMessages.SUCCESS){
-                                    moveUnit(Integer.parseInt(x), Integer.parseInt(y));
+                                    MenuMessages message = moveUnit(Integer.parseInt(x), Integer.parseInt(y));
+                                    if(message.equals(MenuMessages.SUCCESS)){
+                                        ArrayList <Unit> units = Database.getMapById(1).getCell(i, j).getUnits();//TODO:change with map
+                                        int unitsNumber = Integer.parseInt(number);
+                                        int counter = 0;
+                                        ArrayList<Unit> movingUnits = new ArrayList<>();
+                                        for(Unit unit: units){
+                                            if(unit.unitName.name.equals(type)){
+                                                counter++;
+                                                movingUnits.add(unit);
+                                            }
+                                            if(counter == unitsNumber){
+                                                break;
+                                            }
+                                        }
+                                        if(unitsNumber != counter){
+                                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                                            alert.setTitle("Error");
+                                            alert.setHeaderText("Inputs Error");
+                                            alert.setContentText("Over limited number of unit");
+                                            alert.initOwner(stage);
+                                            alert.showAndWait();
+                                        }else {
+                                            for(Unit unit : movingUnits){
+                                                ImageView imageView = unitsInMap.get(unit);
+                                                TranslateTransition translateTransition =
+                                                        new TranslateTransition(Duration.seconds(2), imageView);
+                                                translateTransition.setFromX(chosenX);
+                                                translateTransition.setFromY(chosenY);
+                                                translateTransition.setToX(Integer.parseInt(x));
+                                                translateTransition.setToY(Integer.parseInt(y));
+                                                translateTransition.play();
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -448,8 +486,13 @@ public class GameMenu extends Application {
                         dialog.setHeaderText("Unit type for melee attack and destination components");
                         dialog.setContentText("Enter your x and y components and unit type");
                         TextField xTextField = new TextField();
+                        xTextField.setPromptText("x component");
                         TextField yTextField = new TextField();
+                        yTextField.setPromptText("y component");
                         TextField unitType = new TextField();
+                        unitType.setPromptText("unit type");
+                        TextField numberOfUnit = new TextField();
+                        numberOfUnit.setPromptText("unit's number");
                         GridPane dialogGridPane = new GridPane();
                         dialogGridPane.add(new Label("x:"), 0, 0);
                         dialogGridPane.add(xTextField, 1, 0);
@@ -457,6 +500,8 @@ public class GameMenu extends Application {
                         dialogGridPane.add(yTextField, 1, 1);
                         dialogGridPane.add(new Label("type:"), 0, 2);
                         dialogGridPane.add(unitType, 1, 2);
+                        dialogGridPane.add(new Label("number:"), 0 ,3);
+                        dialogGridPane.add(numberOfUnit, 1, 3);
                         dialogGridPane.setHgap(40);
                         dialog.getDialogPane().setContent(dialogGridPane);
                         dialog.getDialogPane().getStylesheets().add
@@ -466,7 +511,8 @@ public class GameMenu extends Application {
                             String x = xTextField.getText();
                             String y = yTextField.getText();
                             String type = unitType.getText();
-                            if(!checkStringsAreNumbers(x, y)){
+                            String number = numberOfUnit.getText();
+                            if(!checkStringsAreNumbers(x, y, number)){
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Error");
                                 alert.setHeaderText("Inputs Error");
@@ -477,8 +523,40 @@ public class GameMenu extends Application {
                                 MenuMessages messages = selectUnit(chosenX, chosenY, type);
                                 if(messages == MenuMessages.SUCCESS){
                                     MenuMessages message = moveUnit(Integer.parseInt(x), Integer.parseInt(y));
+                                    //todo:change logic of attack
                                     if(message == MenuMessages.SUCCESS){
-
+                                        ArrayList <Unit> units = Database.getMapById(1).getCell(i, j).getUnits();//TODO:change with map
+                                        int unitsNumber = Integer.parseInt(number);
+                                        int counter = 0;
+                                        ArrayList<Unit> movingUnits = new ArrayList<>();
+                                        for(Unit unit: units){
+                                            if(unit.unitName.name.equals(type)){
+                                                counter++;
+                                                movingUnits.add(unit);
+                                            }
+                                            if(counter == unitsNumber){
+                                                break;
+                                            }
+                                        }
+                                        if(unitsNumber != counter){
+                                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                                            alert.setTitle("Error");
+                                            alert.setHeaderText("Inputs Error");
+                                            alert.setContentText("Over limited number of unit");
+                                            alert.initOwner(stage);
+                                            alert.showAndWait();
+                                        }else {
+                                            for(Unit unit : movingUnits){
+                                                ImageView imageView = unitsInMap.get(unit);
+                                                TranslateTransition translateTransition =
+                                                        new TranslateTransition(Duration.seconds(2), imageView);
+                                                translateTransition.setFromX(chosenX);
+                                                translateTransition.setFromY(chosenY);
+                                                translateTransition.setToX(Integer.parseInt(x));
+                                                translateTransition.setToY(Integer.parseInt(y));
+                                                translateTransition.play();
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -523,15 +601,99 @@ public class GameMenu extends Application {
                             }
                         }
                     } else if (keyEvent.getCode() == KeyCode.P) {
-
+                        TextInputDialog dialog = new TextInputDialog();
+                        dialog.initOwner(stage);
+                        dialog.setTitle("Patrol units");
+                        dialog.setHeaderText("Unit type and destination components");
+                        dialog.setContentText("Enter your start and final component");
+                        TextField firstX = new TextField();
+                        firstX.setPromptText("first x");
+                        TextField lastX = new TextField();
+                        lastX.setPromptText("final x");
+                        TextField firstY = new TextField();
+                        firstY.setPromptText("first y");
+                        TextField lastY = new TextField();
+                        lastY.setPromptText("final y");
+                        TextField unitType = new TextField();
+                        unitType.setPromptText("unit type");
+                        GridPane dialogGridPane = new GridPane();
+                        dialogGridPane.add(new Label("x:"), 0, 0);
+                        dialogGridPane.add(firstX, 1, 0);
+                        dialogGridPane.add(new Label("x2:"), 0, 1);
+                        dialogGridPane.add(lastX, 1, 1);
+                        dialogGridPane.add(new Label("y:"), 0, 2);
+                        dialogGridPane.add(firstY, 1, 2);
+                        dialogGridPane.add(new Label("y2:"), 0, 3);
+                        dialogGridPane.add(lastY, 1, 3);
+                        dialogGridPane.add(new Label("type:"), 0, 4);
+                        dialogGridPane.add(unitType, 1, 4);
+                        dialogGridPane.setHgap(40);
+                        dialog.getDialogPane().setContent(dialogGridPane);
+                        dialog.getDialogPane().getStylesheets().add
+                                (GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+                        Optional<String> result = dialog.showAndWait();
+                        if(result.isPresent()){
+                            String x = firstX.getText();
+                            String y = firstY.getText();
+                            String x2 = lastX.getText();
+                            String y2 = lastY.getText();
+                            String type = unitType.getText();
+                            if(!checkStringsAreNumbers(x, y, x2, y2)){
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Error");
+                                alert.setHeaderText("Inputs Error");
+                                alert.setContentText("Your entered component should be numbers");
+                                alert.initOwner(stage);
+                                alert.showAndWait();
+                            }
+                            else {
+                                MenuMessages messages = selectUnit(chosenX, chosenY, type);
+                                if(messages == MenuMessages.SUCCESS){
+                                    MenuMessages message = patrolUnit(Integer.parseInt(x), Integer.parseInt(y),
+                                            Integer.parseInt(x2), Integer.parseInt(y2));
+                                    if(message.equals(MenuMessages.SUCCESS)){
+                                        ArrayList <Unit> units = Database.getMapById(1).getCell(i, j).getUnits();//TODO:change with map
+                                        for(Unit unit : units){
+                                            if(unit.unitName.name.equals(type)){
+                                                ImageView imageView = unitsInMap.get(unit);
+                                                TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), imageView);
+                                                translateTransition.setFromX(Integer.parseInt(x));
+                                                translateTransition.setFromY(Integer.parseInt(y));
+                                                translateTransition.setToX(Integer.parseInt(x2));
+                                                translateTransition.setToY(Integer.parseInt(y2));
+                                                translateTransition.setCycleCount(-1);
+                                                translateTransition.setAutoReverse(true);
+                                                translateTransition.play();
+                                                transition.add(translateTransition);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }else if (keyEvent.getCode() == KeyCode.H) {
+                        if(transition.size() == 0){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Input Error");
+                            alert.setContentText("There is no patrolling unit");
+                            alert.initOwner(stage);
+                            alert.showAndWait();
+                        }else {
+                            GameEntityController.halt();
+                            TranslateTransition transition1 = transition.get(0);
+                            transition1.stop();
+                            transition.remove(transition1);
+                        }
                     }
                 });
             });
         }
     }
-    public static void patrolUnit(int fromX, int fromY, int toX ,int toY) {
-
-        switch (GameEntityController.patrolUnit(fromX, fromY, toX, toY)) {
+    public static MenuMessages patrolUnit(int fromX, int fromY, int toX ,int toY) {
+        MenuMessages messages = GameEntityController.patrolUnit(fromX, fromY, toX, toY);
+        switch (messages) {
             case INVALID_LOCATION:
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setTitle("Error");
@@ -550,6 +712,7 @@ public class GameMenu extends Application {
                 AbstractMenu.show("You can use 'unit halt' to stop the unit's movement.");
                 break;
         }
+        return messages;
     }
 
     public static boolean checkStringsAreNumbers(String... entrances) {
