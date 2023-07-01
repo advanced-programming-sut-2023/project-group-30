@@ -42,6 +42,7 @@ import model.game.Game;
 import model.game.game_entities.Building;
 import model.game.game_entities.BuildingName;
 import model.game.game_entities.Unit;
+import model.game.game_entities.UnitName;
 import model.game.map.Map;
 import model.game.map.MapCell;
 import org.w3c.dom.ls.LSOutput;
@@ -78,7 +79,7 @@ public class GameMenu extends Application {
     private Rectangle rectangle;
     private int chosenX;
     private int chosenY;
-    private HashMap<Unit, ImageView> unitsInMap;
+    private HashMap<Enum, ImageView> unitsInMap;
     private ArrayList<TranslateTransition> transition = new ArrayList<>();
 
     @Override
@@ -222,14 +223,14 @@ public class GameMenu extends Application {
                     MenuMessages messages = dropUnitToController(xLocation,
                             yLocation, "Fire Throwers", stage);
                     if (messages.equals(MenuMessages.SUCCESS)) {
-                        stage.setScene(scene);
+
                         stage.setFullScreen(true);
                         Unit unit = Unit.getInstance("Fire Throwers", xLocation, yLocation);
                         ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
                         imageView.setFitWidth(30);
                         imageView.setFitHeight(30);
                         addInMap(imageView, xLocation, yLocation);
-                        unitsInMap.put(unit, imageView);
+                        unitsInMap.put(UnitName.FIRE_THROWERS, imageView);
                     }
                 }
             }
@@ -250,14 +251,14 @@ public class GameMenu extends Application {
                     MenuMessages messages = dropUnitToController(xLocation,
                             yLocation, "Knight", stage);
                     if (messages.equals(MenuMessages.SUCCESS)) {
-                        stage.setScene(scene);
+
                         stage.setFullScreen(true);
                         Unit unit = Unit.getInstance("Knight", xLocation, yLocation);
                         ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
-                        imageView.setFitWidth(55);
-                        imageView.setFitHeight(55);
+                        imageView.setFitWidth(30);
+                        imageView.setFitHeight(30);
                         addInMap(imageView, xLocation, yLocation);
-                        unitsInMap.put(unit, imageView);
+                        unitsInMap.put(UnitName.KNIGHT, imageView);
                     }
                 }
             }
@@ -278,14 +279,13 @@ public class GameMenu extends Application {
                     MenuMessages messages = dropUnitToController(xLocation,
                             yLocation, "Swordsmen", stage);
                     if (messages.equals(MenuMessages.SUCCESS)) {
-                        stage.setScene(scene);
                         stage.setFullScreen(true);
                         Unit unit = Unit.getInstance("Swordsmen", xLocation, yLocation);
                         ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
-                        imageView.setFitWidth(45);
-                        imageView.setFitHeight(45);
+                        imageView.setFitWidth(30);
+                        imageView.setFitHeight(30);
                         addInMap(imageView, xLocation, yLocation);
-                        unitsInMap.put(unit, imageView);
+                        unitsInMap.put(UnitName.SWORDSMEN, imageView);
                     }
                 }
             }
@@ -306,14 +306,14 @@ public class GameMenu extends Application {
                     MenuMessages messages = dropUnitToController(xLocation,
                             yLocation, "Crossbowmen", stage);
                     if (messages.equals(MenuMessages.SUCCESS)) {
-                        stage.setScene(scene);
+
                         stage.setFullScreen(true);
                         Unit unit = Unit.getInstance("Crossbowmen", xLocation, yLocation);
                         ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
-                        imageView.setFitWidth(60);
-                        imageView.setFitHeight(60);
+                        imageView.setFitWidth(30);
+                        imageView.setFitHeight(30);
                         addInMap(imageView, xLocation, yLocation);
-                        unitsInMap.put(unit, imageView);
+                        unitsInMap.put(UnitName.CROSSBOWMEN, imageView);
                     }
                 }
             }
@@ -334,14 +334,14 @@ public class GameMenu extends Application {
                     MenuMessages messages = dropUnitToController(xLocation,
                             yLocation, "Assassins", stage);
                     if (messages.equals(MenuMessages.SUCCESS)) {
-                        stage.setScene(scene);
+
                         stage.setFullScreen(true);
                         Unit unit = Unit.getInstance("Assassins", xLocation, yLocation);
                         ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
-                        imageView.setFitWidth(50);
-                        imageView.setFitHeight(50);
+                        imageView.setFitWidth(30);
+                        imageView.setFitHeight(30);
                         addInMap(imageView, xLocation, yLocation);
-                        unitsInMap.put(unit, imageView);
+                        unitsInMap.put(UnitName.ASSASSINS, imageView);
                     }
                 }
             }
@@ -362,14 +362,14 @@ public class GameMenu extends Application {
                     MenuMessages messages = dropUnitToController(xLocation,
                             yLocation, "Slingers", stage);
                     if (messages.equals(MenuMessages.SUCCESS)) {
-                        stage.setScene(scene);
+
                         stage.setFullScreen(true);
                         Unit unit = Unit.getInstance("Slingers", xLocation, yLocation);
                         ImageView imageView = new ImageView(new Image(unit.getImageView().toExternalForm()));
-                        imageView.setFitWidth(50);
-                        imageView.setFitHeight(50);
+                        imageView.setFitWidth(30);
+                        imageView.setFitHeight(30);
                         addInMap(imageView, xLocation, yLocation);
-                        unitsInMap.put(unit, imageView);
+                        unitsInMap.put(UnitName.SLINGERS, imageView);
                     }
                 }
             }
@@ -380,7 +380,6 @@ public class GameMenu extends Application {
         stage.setFullScreen(true);
         stage.show();
     }
-
 
 
     public static MenuMessages dropUnitToController(int x, int y, String type, Stage stage) {
@@ -501,22 +500,23 @@ public class GameMenu extends Application {
                             } else {
                                 MenuMessages messages = selectUnit(chosenX, chosenY, type);
                                 if (messages == MenuMessages.SUCCESS) {
+
+                                    ArrayList<Unit> units = GameMenuController.getCurrentGame().getMap()
+                                            .getCell(i, j).getUnits();
+                                    int unitsNumber = Integer.parseInt(number);
+                                    int counter = 0;
+                                    ArrayList<Unit> movingUnits = new ArrayList<>();
+                                    for (Unit unit : units) {
+                                        if (unit.unitName.name.equals(type)) {
+                                            counter++;
+                                            movingUnits.add(unit);
+                                        }
+                                        if (counter == unitsNumber) {
+                                            break;
+                                        }
+                                    }
                                     MenuMessages message = moveUnit(Integer.parseInt(x), Integer.parseInt(y));
                                     if (message.equals(MenuMessages.SUCCESS)) {
-                                        ArrayList<Unit> units = GameMenuController.getCurrentGame().getMap()
-                                                .getCell(i, j).getUnits();
-                                        int unitsNumber = Integer.parseInt(number);
-                                        int counter = 0;
-                                        ArrayList<Unit> movingUnits = new ArrayList<>();
-                                        for (Unit unit : units) {
-                                            if (unit.unitName.name.equals(type)) {
-                                                counter++;
-                                                movingUnits.add(unit);
-                                            }
-                                            if (counter == unitsNumber) {
-                                                break;
-                                            }
-                                        }
                                         if (unitsNumber != counter) {
                                             Alert alert = new Alert(Alert.AlertType.ERROR);
                                             alert.setTitle("Error");
@@ -526,15 +526,17 @@ public class GameMenu extends Application {
                                             alert.showAndWait();
                                         } else {
                                             for (Unit unit : movingUnits) {
-                                                ImageView imageView = unitsInMap.get(unit);
-                                                TranslateTransition translateTransition =
-                                                        new TranslateTransition(Duration.seconds(2), imageView);
-                                                translateTransition.setFromX(chosenX);
-                                                translateTransition.setFromY(chosenY);
-                                                translateTransition.setToX(Integer.parseInt(x));
-                                                translateTransition.setToY(Integer.parseInt(y));
-                                                translateTransition.play();
+                                                ImageView imageView = unitsInMap.get(unit.unitName);
+//                                                TranslateTransition translateTransition =
+//                                                        new TranslateTransition(Duration.seconds(2), imageView);
+//                                                translateTransition.setToX(Integer.parseInt(x) * 30);
+//                                                translateTransition.setToY(Integer.parseInt(y) * 30);
+//                                                translateTransition.setOnFinished(e -> imageView.toFront());
+//                                                translateTransition.play();
+                                                addInMap(imageView, Integer.parseInt(x), Integer.parseInt(y));
+
                                             }
+
                                         }
                                     }
                                 }
@@ -608,7 +610,7 @@ public class GameMenu extends Application {
                                             alert.showAndWait();
                                         } else {
                                             for (Unit unit : movingUnits) {
-                                                ImageView imageView = unitsInMap.get(unit);
+                                                ImageView imageView = unitsInMap.get(unit.unitName);
                                                 TranslateTransition translateTransition =
                                                         new TranslateTransition(Duration.seconds(2), imageView);
                                                 translateTransition.setFromX(chosenX);
@@ -715,7 +717,7 @@ public class GameMenu extends Application {
                                                 .getCell(i, j).getUnits();
                                         for (Unit unit : units) {
                                             if (unit.unitName.name.equals(type)) {
-                                                ImageView imageView = unitsInMap.get(unit);
+                                                ImageView imageView = unitsInMap.get(unit.unitName);
                                                 TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(2), imageView);
                                                 translateTransition.setFromX(Integer.parseInt(x));
                                                 translateTransition.setFromY(Integer.parseInt(y));
@@ -810,11 +812,6 @@ public class GameMenu extends Application {
                 alert3.showAndWait();
                 break;
             case SUCCESS:
-                Alert alert4 = new Alert(Alert.AlertType.CONFIRMATION);
-                alert4.setTitle("Move");
-                alert4.setHeaderText("Unit moved");
-                alert4.setContentText("Done!");
-                alert4.showAndWait();
                 break;
         }
         return message;
@@ -1694,7 +1691,7 @@ public class GameMenu extends Application {
                     building.getAttributes()) {
                 if (attribute instanceof CreateUnit) {
                     Button buttonForCreateUnit = new Button("Create Unit");
-                    buttonForCreateUnit.setOnAction(event -> dropUnit(stage, scene));
+                    buttonForCreateUnit.setOnAction(event -> dropUnit(new Stage(), scene));
                     vbox.getChildren().add(buttonForCreateUnit);
 
                 } else if (attribute instanceof ChangeTaxRate) {
