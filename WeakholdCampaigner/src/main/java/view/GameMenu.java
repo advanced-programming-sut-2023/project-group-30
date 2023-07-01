@@ -533,7 +533,7 @@ public class GameMenu extends Application {
 //                                                translateTransition.setToY(Integer.parseInt(y) * 30);
 //                                                translateTransition.setOnFinished(e -> imageView.toFront());
 //                                                translateTransition.play();
-                                                addInMap(imageView, Integer.parseInt(x), Integer.parseInt(y));
+                                                addInMap(imageView, Integer.parseInt(y), Integer.parseInt(x));
 
                                             }
 
@@ -739,6 +739,8 @@ public class GameMenu extends Application {
                         String buildingName = clipboard.getString();
                         createBuilding(getBuildingName(buildingName), i, j);
                         gamePane.getChildren().remove(clipboardPane);
+                    } else if (keyEvent.getCode() == KeyCode.F) {
+                        fire(chosenX + 1, chosenY);
                     } else if (keyEvent.getCode() == KeyCode.H) {
                         if (transition.size() == 0) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -1921,7 +1923,7 @@ public class GameMenu extends Application {
 
     public void fire(int i, int j) {
         Pane pane = (Pane) gridPane.getChildren().get(gridPane.getRowCount() * j + i);
-        FireTransition fireTransition = new FireTransition(pane, 18, 30, 30);
+        FireTransition fireTransition = new FireTransition(pane, 18, 40, 40);
         fireTransitions.add(fireTransition);
         GameMenuController.fireInMap(i, j);
 
