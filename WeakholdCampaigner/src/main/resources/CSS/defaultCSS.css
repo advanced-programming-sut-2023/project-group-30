@@ -1,33 +1,67 @@
-/*.text-field {*/
-/*    -fx-accent: -fx-primary-color;*/
-/*    -fx-background-color: -fx-grey-color, white;*/
-/*    -fx-background-insets: 0, 0 0 1 0;*/
-/*    -fx-background-radius: 0;*/
-/*    -fx-max-height: 50;*/
-/*    -fx-max-width: 300;*/
-/*}*/
-/*.text-field:focused {*/
-/*    -fx-background-color: -fx-primary-color, white;*/
-/*}*/
-.text-input-dialog {
-    -fx-font-size: 14px;
-    -fx-font-family: Arial;
-    -fx-background-color: #f5f5f5;
+TextField, PasswordField{
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+
+    -fx-highlight-fill: derive(-fx-control-inner-background,-20%);
+    -fx-highlight-text-fill: -fx-text-inner-color;
+    -fx-prompt-text-fill: transparent;
+
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent transparent #616161 transparent;
+    -fx-border-width: 1;
+    -fx-border-insets: 0 0 1 0;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-cursor: text;
+    -fx-padding: 0.166667em 0em 0.333333em 0em;
 }
 
-.text-input-dialog .dialog-pane {
-    -fx-background-color: #ffffff;
+.title{
+    -fx-font-size: 32px;
+    -fx-font-family: "Arial Black";
+    -fx-fill: #818181;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
 
-.text-input-dialog .dialog-pane .header-panel {
-    -fx-background-color: #0077cc;
-    -fx-text-fill: #ffffff;
+CheckBox, Label{
+
+    -fx-text-fill: linear-gradient(white, CYAN);
 }
 
-.text-input-dialog .dialog-pane .content-panel {
-    -fx-padding: 20px;
+ComboBox, CheckBox, Label, TextField, PasswordField{
+    -fx-background-color:
+            #090a0c,
+            linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+            linear-gradient(#20262b, #191d22),
+            radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
 }
 
-.text-input-dialog .dialog-pane .button-bar {
-    -fx-padding: 10px 20px 20px 20px;
+ComboBox, TextField, PasswordField{
+    -fx-text-fill: White;
 }
+
+Button {
+    -fx-background-color:
+            #090a0c,
+            linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+            linear-gradient(#20262b, #191d22),
+            radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, CYAN);
+    -fx-font-size: 12px;
+    -fx-padding: 5 20 5 20;
+}
+Button, TextField, PasswordField{
+    -fx-opacity: 0.6;
+}
+Button:hover, TextField:hover, PasswordField:hover {-fx-opacity: 1}
+
+/*
+https://www.w3schools.com/css/css3_buttons.asp
+http://fxexperience.com/2011/12/styling-fx-buttons-with-css/
+
+*/

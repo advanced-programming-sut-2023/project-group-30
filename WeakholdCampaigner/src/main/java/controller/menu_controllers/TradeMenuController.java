@@ -12,20 +12,26 @@ import java.util.ArrayList;
 import static model.enums.Resource.getResourceByName;
 
 public class TradeMenuController {
-    public static MenuMessages trade(String resource, int resourceAmount, int price, String message) {
-        if (getResourceByName(resource) == null)
-            return MenuMessages.INVALID_RESOURCE;
-        if (GameMenuController.getCurrentGame().getCurrentGovernment().getGold() < price)
-            return MenuMessages.INVALID_MONEY;
-        Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
-        if (government.getMaximumResource(government.getResourcesCategory(getResourceByName(resource))) <
-                (government.getStoredUnit(government.getResourcesCategory(getResourceByName(resource)))
-                        + resourceAmount))
-            return MenuMessages.NOT_ENOUGH_SPACE;
+    public static MenuMessages trade(User receiver, String resource, int resourceAmount, int price, String message
+            , Boolean request) {
+        if (request) {
+            if (getResourceByName(resource) == null)
+                return MenuMessages.INVALID_RESOURCE;
+            if (GameMenuController.getCurrentGame().getCurrentGovernment().getGold() < price)
+                return MenuMessages.INVALID_MONEY;
+            Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
+            if (government.getMaximumResource(government.getResourcesCategory(getResourceByName(resource))) <
+                    (government.getStoredUnit(government.getResourcesCategory(getResourceByName(resource)))
+                            + resourceAmount))
+                return MenuMessages.NOT_ENOUGH_SPACE;
+        } else {
+            if (GameMenuController.getCurrentGame().getCurrentGovernment().getResources(getResourceByName(resource))
+                    < resourceAmount)
+                return MenuMessages.INVALID_AMOUNT;
+        }
 
-        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), resourceAmount
-                , getResourceByName(resource),
-                price, message);
+        Trade tradeItem = new Trade(GameMenuController.getCurrentGame().getCurrentGovernment().getOwner(), receiver
+                , resourceAmount, getResourceByName(resource), price, message, request);
 
         addTradItem(tradeItem, GameMenuController.getCurrentGame().getCurrentGovernment().getOwner());
         return MenuMessages.OK;
@@ -35,9 +41,10 @@ public class TradeMenuController {
     public static void addTradItem(Trade tradeItem, User currentUser) {
         ArrayList<Government> governments = GameMenuController.getCurrentGame().getGovernments();
         for (int i = 0; i < governments.size(); i++) {
-            if (!governments.get(i).getOwner().equals(currentUser)) {
+            if (governments.get(i).getOwner().equals(currentUser)) {
+                governments.get(i).addToTradeHistory(tradeItem);
+            } else if (governments.get(i).getOwner().equals(tradeItem.getReceiver()))
                 governments.get(i).addToTradeList(tradeItem);
-            } else governments.get(i).addToTradeHistory(tradeItem);
         }
     }
 
@@ -73,19 +80,23 @@ public class TradeMenuController {
         Trade trade = getTradeById(id);
         Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
         Government applicantGovernment = getGovernmentByUser(trade.getApplicant());
-
-        if (trade.getResourceAmount() > government.getResources(trade.getResourceType()))
-            return MenuMessages.INVALID_AMOUNT;
-
-        government.addResources(trade.getResourceType(), -trade.getResourceAmount());
-
-        removeFromTradList(trade.getId());
-
-        government.addToTradeHistory(new Trade(trade.getApplicant(), trade.getResourceAmount(),
-                trade.getResourceType(), trade.getPrice(), message));
-
-        applicantGovernment.addGold(-trade.getPrice());
-        government.addGold(trade.getPrice());
+        if (trade.getRequest()) {
+            if (trade.getResourceAmount() > government.getResources(trade.getResourceType()))
+                return MenuMessages.INVALID_AMOUNT;
+            government.addResources(trade.getResourceType(), -trade.getResourceAmount());
+            applicantGovernment.addResources(trade.getResourceType(), +trade.getResourceAmount());
+            removeFromTradList(trade.getId());
+            government.addToTradeHistory(trade);
+            trade.setAccepted(true);
+            applicantGovernment.addGold(-trade.getPrice());
+            government.addGold(trade.getPrice());
+        } else {
+            government.addResources(trade.getResourceType(), +trade.getResourceAmount());
+            applicantGovernment.addResources(trade.getResourceType(), -trade.getResourceAmount());
+            removeFromTradList(trade.getId());
+            government.addToTradeHistory(trade);
+            trade.setAccepted(true);
+        }
 
 
         return MenuMessages.OK;
@@ -102,7 +113,7 @@ public class TradeMenuController {
                     j--;
                 }
             }
-            for (int j = 0; j < tradeList.size(); j++) {
+            for (int j = 0; j < tradeNotification.size(); j++) {
                 if (tradeNotification.get(j).getId() == id) {
                     tradeNotification.remove(j);
                     j--;
@@ -133,21 +144,25 @@ public class TradeMenuController {
 
     }
 
-    public static void enterTradeMenu() {
+    public static String enterTradeMenu() {
         MainController.setCurrentMenu(AppMenu.MenuName.TRAD_MENU);
-        AppMenu.show("entered trade menu");
         Government government = GameMenuController.getCurrentGame().getCurrentGovernment();
+        String notification = new String();
         if (government.getTradeNotification().size() != 0) {
-            AppMenu.show("notification: ");
-
-            for (Trade trade : government.getTradeNotification())
-                AppMenu.show(trade.getId() + ": resource_type:" + trade.getResourceType() + ", resource_amount "
-                        + trade.getResourceAmount() + ", price: " + trade.getPrice() + ", requested_user: "
-                        + trade.getApplicant().getUsername()
-                        + ", message: " + trade.getMessage());
+            notification += "notification: \n";
+            for (Trade trade : government.getTradeNotification()) {
+                notification += trade.getId() + ": resource_type:" + trade.getResourceType() + ", resource_amount "
+                        + trade.getResourceAmount() + ", price: " + trade.getPrice()
+                        + ", message: " + trade.getMessage();
+                if (trade.getRequest())
+                    notification += ", requested from : " + trade.getApplicant().getUsername() + "\n";
+                else
+                    notification += ", donated from : " + trade.getApplicant().getUsername() + "\n";
+            }
 
             government.getTradeNotification().clear();
-        }
+            return notification;
+        } else return null;
 
     }
 }

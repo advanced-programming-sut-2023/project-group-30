@@ -2,11 +2,12 @@ package controller.menu_controllers;
 
 import controller.MainController; //TODO: check every import on every file, and attempt to reduce dependencies.
 import controller.messages.MenuMessages;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import model.Database;
 import model.attributes.Attribute;
-import model.attributes.building_attributes.Harvesting;
-import model.attributes.building_attributes.IncreasePopularity;
-import model.attributes.building_attributes.NeedsSpecialPlacement;
+import model.attributes.building_attributes.*;
+import model.attributes.building_attributes.Process;
 import model.enums.Resource;
 import model.game.Game;
 import model.game.Government;
@@ -15,13 +16,18 @@ import model.game.game_entities.Building;
 import model.game.game_entities.Unit;
 import model.game.game_entities.UnitName;
 import model.game.map.MapCell;
+import view.GameMenu;
 import view.menus.AbstractMenu;
 import view.menus.AppMenu;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
+
 public class GameMenuController extends GameController {
+    private static GridPane gridPane;
+
     public static MenuMessages createGame(int mapId, ArrayList<String> usernames) {
         if (Database.getMapById(mapId) == null) return MenuMessages.MAP_DOES_NOT_EXIST;
 
@@ -108,7 +114,7 @@ public class GameMenuController extends GameController {
         else AppMenu.show("tax rate : " + government.getTaxRate());
     }
 
-    public static MenuMessages setFearRate(int rate) {
+    public static MenuMessages setFearRate(double rate) {
         if (rate > 5 || rate < -5)
             return MenuMessages.OUT_OF_BOUNDS;
         currentGame.getCurrentGovernment().setFearRate(rate);
@@ -208,11 +214,13 @@ public class GameMenuController extends GameController {
         GameMenuController.currentGame = currentGame;
     }
 
-    public static void endOnePlayersTurn() {
+    public static Boolean endOnePlayersTurn() {
         if (currentGame.nextGovernment()) {
             AbstractMenu.show("Every player played their turn, so one full turn has finished.");
             nextTurn();
+            return true;
         }
+        return false;
     }
 
     public static void nextTurn() { //gets called when one full turn has passed
@@ -250,7 +258,7 @@ public class GameMenuController extends GameController {
         }
 
         //TODO: might be too time-consuming to search for entities this way.
-        for (int x = 0; x < currentGame.getMapWidth(); x++)
+        for (int x = 0; x < currentGame.getMapWidth(); x++) {
             for (int y = 0; y < currentGame.getMapHeight(); y++) {
 
                 Building building = currentGame.getBuilding(x, y);
@@ -260,11 +268,26 @@ public class GameMenuController extends GameController {
                             ((Harvesting) i).nextTurn();
                         else if (i instanceof IncreasePopularity)
                             ((IncreasePopularity) i).nextTurn();
-                    }
+                        else if (i instanceof Fire) {
+                            if (((Fire) i).getHaveFire()) {
+                                ((Fire) i).addTurn();
+                                if (building.damage(20)) {
+                                    currentGame.getMap().getCell(building.getCurrentX(), building.getCurrentY())
+                                            .removeBuilding();
+                                    Pane pane = (Pane) gridPane.getChildren().get(gridPane.getRowCount() * y + x);
+                                    pane.getChildren().remove(1);
+                                }
+                            }
 
+
+                        }
+                    }
                 }
+
             }
+        }
     }
+
 
     public static String whoseTurn() {
         return currentGame.getCurrentGovernment().getColor().toString() +
@@ -283,5 +306,27 @@ public class GameMenuController extends GameController {
 
     public static void setReligionRate(int rate) {
         currentGame.getCurrentGovernment().setReligionRate(rate);
+    }
+
+
+    public static void fireInMap(int i, int j) {
+        Building building = currentGame.getBuilding(i, j);
+        if (building != null) {
+            Fire fire = getFire(building);
+            fire.turnOn();
+        }
+    }
+
+    public static Fire getFire(Building building) {
+        for (Attribute i : building.getAttributes()) {
+            if (i instanceof Fire) {
+                return (Fire) i;
+            }
+        }
+        return null;
+    }
+
+    public static void setGridPane(GridPane gridPane) {
+        GameMenuController.gridPane = gridPane;
     }
 }

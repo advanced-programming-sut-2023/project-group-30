@@ -22,7 +22,7 @@ public class Government {
     private int otherPopularity = 0;
     private int numOfVillagers;
     private int taxRate = 0;
-    private int fearRate = 0;
+    private double fearRate = 0;
     //we want main castle but concept is unknown  //TODO
     private ArrayList<Trade> tradeList;
     private ArrayList<Trade> tradeHistory;
@@ -40,7 +40,7 @@ public class Government {
 
     private void installResource() {
         resources.put(Resource.GOLD_COIN, 20.0);
-        resources.put(Resource.GOLD, (double) 0);
+        resources.put(Resource.GOLD, (double) 20);
         resources.put(Resource.FLOUR, (double) 0);
         resources.put(Resource.GRAIN, (double) 0);
         resources.put(Resource.IRON, (double) 0);
@@ -57,7 +57,7 @@ public class Government {
 
     private void installFoods() {
         foods.put(Resource.BREAD, (double) 0);
-        foods.put(Resource.APPLE, (double) 0);
+        foods.put(Resource.APPLE, (double) 20);
         foods.put(Resource.MEAT, (double) 0);
         foods.put(Resource.CHEESE, (double) 0);
     }
@@ -135,7 +135,7 @@ public class Government {
         this.taxRate = taxRate;
     }
 
-    public void setFearRate(int fearRate) {
+    public void setFearRate(double fearRate) {
         this.fearRate = fearRate;
     }
 
@@ -173,9 +173,12 @@ public class Government {
             else
                 weapons.put(resource, (int) (amount + weapons.get(resource)));
         } else {
-            if (getMaximumResource(Capacity.Stored.RECOURSE) < (getStoredUnit(Capacity.Stored.RECOURSE) + amount)) ;
-            else
+            if (getMaximumResource(Capacity.Stored.RECOURSE) < (getStoredUnit(Capacity.Stored.RECOURSE) + amount)
+                    && (!resource.equals(Resource.GOLD) && !resource.equals(Resource.GOLD_COIN))) ;
+            else {
+
                 resources.put(resource, resources.get(resource) + amount);
+            }
         }
 
     }
@@ -203,12 +206,11 @@ public class Government {
     }
 
     public Double getGold() {
-        return GameMenuController.getCurrentGame().getCurrentGovernment().getResources(Resource.GOLD_COIN);
+        return this.getResources(Resource.GOLD_COIN);
     }
 
     public void addGold(double gold) {
-        GameMenuController.getCurrentGame().getCurrentGovernment().addResources(Resource.GOLD_COIN, gold);
-
+        this.addResources(Resource.GOLD_COIN, gold);
     }
 
     public HashMap<Resource, Double> getFoods() {
@@ -270,16 +272,19 @@ public class Government {
         religionRate = religionRate + amount;
     }
 
-    public int getFearRate() {
+    public double getFearRate() {
         return fearRate + unSuitableBuildings - suitableBuildings;
     }
 
-    public int getPopularityOfFear() {
+    public double getPopularityOfFear() {
         return (-1 * fearRate) - unSuitableBuildings + suitableBuildings;
     }
 
     public int getPopularity() {
         popularity += (popularityOfFear + popularityOfTax + popularityOfFood + popularityOfReligion);
+        return popularity;
+    }
+    public int getStaticPopularity() {
         return popularity;
     }
 
@@ -337,7 +342,7 @@ public class Government {
     public void updateAllForNextTurn() {
         setFoodVariety();
         if (getFoodUnit() >= consumableFood()) decreaseFood();
-        popularity += getPopularity();
+        getPopularity();
         if ((getTax() * (-1)) <= getGold()) addGold(getTax());
         popularityOfFood += getPopularityOfFood();
         popularityOfFear += getPopularityOfFear();
@@ -372,6 +377,7 @@ public class Government {
 
     public int getMaximumResource(Capacity.Stored stored) {
         //TODO why are we instantiating here?
+        System.out.println(this.getColor() + " " + stored);
         if (stored == Capacity.Stored.FOOD)
             return GameMenuController.getCurrentGame().numberOfSpecialBuildingInGovernment(this
                     , Building.getInstance("food store", 0, 0)) * 100;

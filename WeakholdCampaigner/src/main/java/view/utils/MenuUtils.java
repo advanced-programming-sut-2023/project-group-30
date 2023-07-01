@@ -61,14 +61,14 @@ public class MenuUtils {
                     "--email <email> -n <nickname> [-s <slogan>]");
             return;
         }
-        switch (SignupMenuController.createUser(username, password, passwordConfirmation, email, nickname, slogan)) {
+        switch (SignupMenuController.deprecatedCreateUser(username, password, passwordConfirmation, email, nickname, slogan)) {
             case USER_CREATED_SUCCESSFULLY:
                 System.out.println("Done!");
                 break;
             case INVALID_USERNAME:
                 System.out.println("Error: Username consists of letters ,numbers and underscore");
                 break;
-            case OPERATION_CANCELLED:
+            case USERNAME_TAKEN:
                 System.out.println("Operation cancelled");
                 break;
             case TAKEN_EMAIL:

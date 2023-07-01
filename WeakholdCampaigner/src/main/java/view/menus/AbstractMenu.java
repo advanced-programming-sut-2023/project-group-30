@@ -63,7 +63,8 @@ public abstract class AbstractMenu {
     }
 
     public static void show(String output) {
-        System.out.println(output);
+        //System.out.println(output);
+        view.GUI.AbstractMenu.showInformationAlertAndWait(output);
     }
 
     public void run() {

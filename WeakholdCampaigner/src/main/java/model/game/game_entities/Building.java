@@ -1,5 +1,8 @@
 package model.game.game_entities;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import model.attributes.Attribute;
 import model.attributes.building_attributes.*;
 import model.attributes.building_attributes.Process;
@@ -7,6 +10,8 @@ import model.enums.Resource;
 import model.game.map.MapCell;
 import org.jetbrains.annotations.Nullable;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,6 +20,7 @@ public class Building extends GameEntity {
     private int maxHP, HP;
     private BuildingName buildingName;
     private String direction = null;
+    private URL imageView;
 
     public void setDirection(String direction) {
         this.direction = direction;
@@ -27,6 +33,13 @@ public class Building extends GameEntity {
         this.maxHP = maxHP;
         this.HP = maxHP;
         this.buildingName = buildingName;
+        try {
+            this.imageView = new URL(Building.class.getResource("/Building/" + buildingName + ".png")
+                    .toExternalForm());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Nullable
@@ -38,6 +51,7 @@ public class Building extends GameEntity {
         ArrayList<Attribute> attributes = new ArrayList<>();
         Category category = Category.OTHER;
         int HP = 100;
+        attributes.add(new Fire());
 
         switch (buildingName) {
             case KEEP:
@@ -300,6 +314,11 @@ public class Building extends GameEntity {
     public Category getCategory() {
         return category;
     }
+
+    public URL getImageView() {
+        return imageView;
+    }
+
 
     public enum Category {
         CASTLE,
