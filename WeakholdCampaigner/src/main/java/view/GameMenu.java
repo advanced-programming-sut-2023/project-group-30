@@ -5,21 +5,20 @@ import controller.menu_controllers.GameMenuController;
 import controller.messages.MenuMessages;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -31,7 +30,10 @@ import model.game.map.Map;
 import model.game.map.MapCell;
 import view.menus.AbstractMenu;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static model.game.map.MapCell.Texture.*;
 
@@ -526,7 +528,7 @@ public class GameMenu extends Application {
                                     MenuMessages message = moveUnit(Integer.parseInt(x), Integer.parseInt(y));
                                     //todo:change logic of attack
                                     if(message == MenuMessages.SUCCESS){
-                                        ArrayList <Unit> units = Database.getMapById(1).getCell(i, j).getUnits();//TODO:change with map
+                                        ArrayList<Unit> units = Database.getMapById(1).getCell(i, j).getUnits();//TODO:change with map
                                         int unitsNumber = Integer.parseInt(number);
                                         int counter = 0;
                                         ArrayList<Unit> movingUnits = new ArrayList<>();
