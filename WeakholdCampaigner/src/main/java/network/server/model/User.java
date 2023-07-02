@@ -1,5 +1,10 @@
 package network.server.model;
 
+import network.common.chat.Chat;
+import network.server.controller.menu_controllers.ChatMenuController;
+
+import java.util.ArrayList;
+
 public class User {
     private String username;
     private String password;
@@ -9,6 +14,8 @@ public class User {
     private Integer highScore = 0;
     private PasswordRecoveryQNA securityQuestion;
     private String avatarURL;
+    private final ArrayList<Chat> chats;
+    private Chat currentChat;
 
 
     public String getNickname() {
@@ -20,16 +27,6 @@ public class User {
     }
 
     public User(String username, String password, String nickname, String email, String slogan
-            , PasswordRecoveryQNA securityQuestion) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.email = email;
-        this.slogan = slogan;
-        this.securityQuestion = securityQuestion;
-    }
-
-    public User(String username, String password, String nickname, String email, String slogan
             , PasswordRecoveryQNA securityQuestion, String avatarURL) {
         this.username = username;
         this.password = password;
@@ -38,6 +35,9 @@ public class User {
         this.slogan = slogan;
         this.securityQuestion = securityQuestion;
         this.avatarURL = avatarURL;
+
+        this.chats = new ArrayList<>();
+        chats.add(ChatMenuController.makePublicChat(username));
     }
 
     public Integer getHighScore() {
@@ -88,5 +88,17 @@ public class User {
 
     public String getAvatarURL() {
         return this.avatarURL;
+    }
+
+    public ArrayList<Chat> getChats() {
+        return chats;
+    }
+
+    public Chat getCurrentChat() {
+        return currentChat;
+    }
+
+    public void setCurrentChat(Chat currentChat) {
+        this.currentChat = currentChat;
     }
 }

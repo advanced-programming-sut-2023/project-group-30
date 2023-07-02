@@ -15,12 +15,14 @@ module WeakholdCampaigner {
 
     exports network.server.controller;
     exports network.client.GUI;
-    exports network.server;
     opens network.server to com.google.gson, javafx.controls, javafx.fxml;
+    exports network.server;
     exports network.server.model;
     opens network.server.model to com.google.gson, javafx.controls, javafx.fxml;
     opens network.common to com.google.gson;
 
     exports network.common.messages;
     exports network.common;
+    opens network.common.chat to com.google.gson;
+    exports network.common.chat;
 }

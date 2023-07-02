@@ -4,6 +4,7 @@ import network.common.Cookie;
 import network.common.NetworkComponent;
 import network.common.Packet;
 import network.server.controller.MainController;
+import network.server.controller.menu_controllers.ChatMenuController;
 import network.server.controller.menu_controllers.LoginMenuController;
 import network.server.controller.menu_controllers.ProfileMenuController;
 import network.server.controller.menu_controllers.SignupMenuController;
@@ -194,7 +195,7 @@ public class SingleConnection extends Thread {
                         //return;
                     }
 
-                    HashMap<String, String > slogans = new HashMap<>();
+                    HashMap<String, String> slogans = new HashMap<>();
 
                     for (String slogan :
                             SignupMenuController.getAllSlogans()) {
@@ -325,6 +326,58 @@ public class SingleConnection extends Thread {
                     ProfileMenuController.setAvatarURL(packet.arguments.get("selectedAvatarURL"));
 
                     networkComponent.sendLine("Success");
+                    break;
+
+                case "getPrivateChats":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    networkComponent.sendPacket(new Packet("PrivateChats",
+                            ChatMenuController.getPrivateChats()));
+                    break;
+
+                case "getRooms":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    networkComponent.sendPacket(new Packet("Rooms",
+                            ChatMenuController.getRooms()));
+                    break;
+
+                case "getPublicChats":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    networkComponent.sendPacket(new Packet("PublicChats",
+                            ChatMenuController.getPublicChats()));
+                    break;
+
+                case "getChat":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    networkComponent.sendChat(
+                            ChatMenuController.getChat(packet.arguments.get("type"),
+                                    packet.arguments.get("name"))
+                    );
+                    break;
+
+                case "sendChatMessage":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ChatMenuController.sendChatMessage(packet.arguments.get("message")) ? "Success" : "Failure";
+                    networkComponent.sendLine(result);
                     break;
 
                 case "Disconnect":

@@ -48,14 +48,15 @@ public class Server {
 
         runApp();
 
-        System.out.println("Server started up successfully. Type 'exit' to end it.");
+        System.out.println("Server started up successfully. Type 'exit' to end it safely.");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             if (scanner.nextLine().equals("exit")) {
-                return;
+                break;
             }
         }
 
+        Database.saveAllUsers();
     }
 
     public synchronized void addClient(NetworkComponent networkComponent) {

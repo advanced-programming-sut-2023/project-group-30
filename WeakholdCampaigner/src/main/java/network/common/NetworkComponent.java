@@ -2,6 +2,7 @@ package network.common;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import network.common.chat.Chat;
 
 import java.io.*;
 import java.net.Socket;
@@ -100,6 +101,28 @@ public class NetworkComponent {
             }
 
             return cookie;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendChat(Chat chat) throws IOException{
+        dataOutputStream.writeUTF(new Gson().toJson(chat));
+    }
+
+    public Chat readChat() {
+        try {
+            String data = dataInputStream.readUTF();
+            Chat chat;
+
+            try {
+                chat = new Gson().fromJson(data, Chat.class);
+            } catch (JsonSyntaxException jsonSyntaxException) {
+                System.out.println("Error: not a chat.");
+                return null;
+            }
+
+            return chat;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
