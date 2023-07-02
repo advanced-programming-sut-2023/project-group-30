@@ -4,6 +4,9 @@ import controller.MainController;
 import controller.menu_controllers.GameEntityController;
 import controller.menu_controllers.GameMenuController;
 import controller.messages.MenuMessages;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -49,9 +52,11 @@ import org.w3c.dom.ls.LSOutput;
 import view.animation.FireTransition;
 import view.menus.AbstractMenu;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import static model.enums.FileName.*;
@@ -68,7 +73,10 @@ public class GameMenu extends Application {
     private static StackPane gamePane;
     private static HashMap<Enum, ImagePattern> imagePatternHashMap;
     private HashMap<Enum, ImageView> imageOfBuilding;
+    private HashMap<Enum, Button> buildingsButton = new HashMap<>();
 
+    private Government sickGovernment;
+    private ArrayList<Rectangle> sickArea;
 
     private static Button textForPopularity = new Button();
 
@@ -81,6 +89,8 @@ public class GameMenu extends Application {
     private int chosenY;
     private HashMap<Enum, ImageView> unitsInMap;
     private ArrayList<TranslateTransition> transition = new ArrayList<>();
+    private ArrayList<Integer> sickX;
+    private ArrayList<Integer> sickY;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -286,6 +296,13 @@ public class GameMenu extends Application {
                         imageView.setFitHeight(30);
                         addInMap(imageView, xLocation, yLocation);
                         unitsInMap.put(UnitName.SWORDSMEN, imageView);
+                        sickGovernment = null;
+                        if (sickArea != null) {
+                            for (int i = 0; i < sickArea.size(); i++) {
+                                removeInMap(sickArea.get(i), sickX.get(i), sickY.get(i));
+                            }
+                            sickGovernment = null;
+                        }
                     }
                 }
             }
@@ -374,8 +391,7 @@ public class GameMenu extends Application {
                 }
             }
         });
-
-        scene2.getStylesheets().add(GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
+        hover(gridPane);
         stage.setScene(scene2);
         stage.setFullScreen(true);
         stage.show();
@@ -437,8 +453,40 @@ public class GameMenu extends Application {
         }
         setGold();
         setPopularity();
+        sickness();
+    }
 
-
+    private void sickness() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(4);
+        if (sickGovernment == null) {
+            Map map = GameMenuController.getCurrentGame().getMap();
+            sickArea = new ArrayList<>();
+            sickX = new ArrayList<>();
+            sickY = new ArrayList<>();
+            for (int i = 0; i < map.getWidth(); i++) {
+                for (int j = 0; j < map.getWidth(); j++) {
+                    if (map.getCell(i, j).getBuilding() != null) {
+                        if (map.getCell(i, j).getBuilding().getGovernmentColor().equals
+                                (GameMenuController.getCurrentGame().getCurrentGovernment().getColor())) {
+                            Rectangle rec = new Rectangle(40, 40, Color.TRANSPARENT);
+                            rec.setFill(Color.rgb(12, 87, 00));
+                            rec.setOpacity(0.3);
+                            addInMap(rec, i, j);
+                            sickArea.add(rec);
+                            sickX.add(i);
+                            sickY.add(j);
+                            Button button = buildingsButton.get(map.getCell(i, j).getBuilding().getBuildingName());
+                            button.toFront();
+                        }
+                    }
+                }
+            }
+            if (sickArea.size() != 0) {
+                sickGovernment = GameMenuController.getCurrentGame().getCurrentGovernment();
+                sickGovernment.addPopularity(-5);
+            }
+        }
     }
 
     private void pressedNode(GridPane gridPane, Stage stage) {
@@ -528,13 +576,23 @@ public class GameMenu extends Application {
                                             for (Unit unit : movingUnits) {
                                                 ImageView imageView = unitsInMap.get(unit.unitName);
 //                                                TranslateTransition translateTransition =
-//                                                        new TranslateTransition(Duration.seconds(2), imageView);
+//                                                        new TranslateTransition(Duration.seconds(6), imageView);
 //                                                translateTransition.setToX(Integer.parseInt(x) * 30);
 //                                                translateTransition.setToY(Integer.parseInt(y) * 30);
+//                                                imageView.setVisible(true);
 //                                                translateTransition.setOnFinished(e -> imageView.toFront());
 //                                                translateTransition.play();
                                                 addInMap(imageView, Integer.parseInt(x), Integer.parseInt(y));
-
+//                                                imageView.toFront();
+//                                                Timeline timeline = new Timeline();
+//                                                KeyFrame start = new KeyFrame(Duration.ZERO,
+//                                                        new KeyValue(imageView.translateXProperty(), 0),
+//                                                        new KeyValue(imageView.translateYProperty(), 0));
+//                                                KeyFrame last = new KeyFrame(Duration.seconds(3),
+//                                                        new KeyValue(imageView.translateXProperty(), 100),
+//                                                        new KeyValue(imageView.translateYProperty(), 100));
+//                                                timeline.getKeyFrames().addAll(start, last);
+//                                                timeline.play();
                                             }
 
                                         }
@@ -542,12 +600,12 @@ public class GameMenu extends Application {
                                 }
                             }
                         }
-                    } else if (keyEvent.getCode() == KeyCode.A) {
+                    } else if (keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.R) {
                         TextInputDialog dialog = new TextInputDialog();
                         dialog.initOwner(stage);
-                        dialog.setTitle("Melee Attack");
-                        dialog.setHeaderText("Unit type for melee attack and destination components");
-                        dialog.setContentText("Enter your x and y components and unit type");
+                        dialog.setTitle("Move Units");
+                        dialog.setHeaderText("Unit type and destination components");
+                        dialog.setContentText("Enter your x and y components");
                         TextField xTextField = new TextField();
                         xTextField.setPromptText("x component");
                         TextField yTextField = new TextField();
@@ -579,28 +637,34 @@ public class GameMenu extends Application {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Error");
                                 alert.setHeaderText("Inputs Error");
-                                alert.setContentText("Your x and y components should be number");
+                                alert.setContentText("Your x and y components should be numbers");
+                                alert.initOwner(stage);
                                 alert.showAndWait();
                             } else {
                                 MenuMessages messages = selectUnit(chosenX, chosenY, type);
                                 if (messages == MenuMessages.SUCCESS) {
-                                    MenuMessages message = moveUnit(Integer.parseInt(x), Integer.parseInt(y));
-                                    //todo:change logic of attack
-                                    if (message == MenuMessages.SUCCESS) {
-                                        ArrayList<Unit> units = GameMenuController.getCurrentGame().getMap()
-                                                .getCell(i, j).getUnits();
-                                        int unitsNumber = Integer.parseInt(number);
-                                        int counter = 0;
-                                        ArrayList<Unit> movingUnits = new ArrayList<>();
-                                        for (Unit unit : units) {
-                                            if (unit.unitName.name.equals(type)) {
-                                                counter++;
-                                                movingUnits.add(unit);
-                                            }
-                                            if (counter == unitsNumber) {
-                                                break;
-                                            }
+
+                                    ArrayList<Unit> units = GameMenuController.getCurrentGame().getMap()
+                                            .getCell(i, j).getUnits();
+                                    int unitsNumber = Integer.parseInt(number);
+                                    int counter = 0;
+                                    ArrayList<Unit> movingUnits = new ArrayList<>();
+                                    for (Unit unit : units) {
+                                        if (unit.unitName.name.equals(type)) {
+                                            counter++;
+                                            movingUnits.add(unit);
                                         }
+                                        if (counter == unitsNumber) {
+                                            break;
+                                        }
+                                    }
+                                    MenuMessages message;
+                                    if (keyEvent.getCode() == KeyCode.A) {
+                                        message = attack(Integer.parseInt(x), Integer.parseInt(y), false);
+                                    }else {
+                                        message = attack(Integer.parseInt(x), Integer.parseInt(y), true);
+                                    }
+                                    if (message.equals(MenuMessages.SUCCESS)) {
                                         if (unitsNumber != counter) {
                                             Alert alert = new Alert(Alert.AlertType.ERROR);
                                             alert.setTitle("Error");
@@ -611,54 +675,11 @@ public class GameMenu extends Application {
                                         } else {
                                             for (Unit unit : movingUnits) {
                                                 ImageView imageView = unitsInMap.get(unit.unitName);
-                                                TranslateTransition translateTransition =
-                                                        new TranslateTransition(Duration.seconds(2), imageView);
-                                                translateTransition.setFromX(chosenX);
-                                                translateTransition.setFromY(chosenY);
-                                                translateTransition.setToX(Integer.parseInt(x));
-                                                translateTransition.setToY(Integer.parseInt(y));
-                                                translateTransition.play();
+                                                addInMap(imageView, Integer.parseInt(x), Integer.parseInt(y));
                                             }
+
                                         }
                                     }
-                                }
-                            }
-                        }
-                    } else if (keyEvent.getCode() == KeyCode.R) {
-                        TextInputDialog dialog = new TextInputDialog();
-                        dialog.initOwner(stage);
-                        dialog.setTitle("Ranged Attack");
-                        dialog.setHeaderText("Unit type for ranged attack and destination components");
-                        dialog.setContentText("Enter your x and y components and unit type");
-                        TextField xTextField = new TextField();
-                        TextField yTextField = new TextField();
-                        TextField unitType = new TextField();
-                        GridPane dialogGridPane = new GridPane();
-                        dialogGridPane.add(new Label("x:"), 0, 0);
-                        dialogGridPane.add(xTextField, 1, 0);
-                        dialogGridPane.add(new Label("y:"), 0, 1);
-                        dialogGridPane.add(yTextField, 1, 1);
-                        dialogGridPane.add(new Label("type:"), 0, 2);
-                        dialogGridPane.add(unitType, 1, 2);
-                        dialogGridPane.setHgap(40);
-                        dialog.getDialogPane().setContent(dialogGridPane);
-                        dialog.getDialogPane().getStylesheets().add
-                                (GameMenu.class.getResource("/CSS/defaultCSS.css").toExternalForm());
-                        Optional<String> result = dialog.showAndWait();
-                        if (result.isPresent()) {
-                            String x = xTextField.getText();
-                            String y = yTextField.getText();
-                            String type = unitType.getText();
-                            if (!checkStringsAreNumbers(x, y)) {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Error");
-                                alert.setHeaderText("Inputs Error");
-                                alert.setContentText("Your x and y components should be number");
-                                alert.showAndWait();
-                            } else {
-                                MenuMessages messages = selectUnit(chosenX, chosenY, type);
-                                if (messages == MenuMessages.SUCCESS) {
-                                    moveUnit(Integer.parseInt(x), Integer.parseInt(y));
                                 }
                             }
                         }
@@ -757,6 +778,32 @@ public class GameMenu extends Application {
                 });
             });
         }
+    }
+
+    public static MenuMessages attack(int x, int y, boolean isRanged) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        MenuMessages message = GameEntityController.attack(x, y, isRanged);
+        switch (message) {
+            case ALREADY_ATTACKED:
+                alert.setTitle("Error");
+                alert.setHeaderText("Invalid Unit");
+                alert.setContentText("This unit has already attacked in this turn.");
+                alert.showAndWait();
+                break;
+            case TOO_FAR:
+                alert.setTitle("Error");
+                alert.setHeaderText("Out of range");
+                alert.setContentText("The selected location is out of your unit's range.");
+                alert.showAndWait();
+                break;
+            case NO_MATCHING_UNIT:
+                alert.setTitle("Error");
+                alert.setHeaderText("No rival");
+                alert.setContentText("No enemy unit in that location.");
+                alert.showAndWait();
+                break;
+        }
+        return message;
     }
 
     public static MenuMessages patrolUnit(int fromX, int fromY, int toX, int toY) {
@@ -948,26 +995,8 @@ public class GameMenu extends Application {
                 Pane pane = new Pane();
                 pane.setPrefSize(30, 30);
                 pane.getChildren().add(cell);
-                Tooltip tooltip = new Tooltip();
-                tooltip.setText("Texture:" + map.getCell(i, j).getTexture().name());
-                if (map.getCell(i, j).getBuilding() != null) {
-                    tooltip.setText(tooltip.getText() + "\nBuilding:" + map.getCell(i, j).getBuilding());
-                }
-                if (map.getCell(i, j).getUnits() != null) {
-                    tooltip.setText(tooltip.getText() + "\nNumber of Units: " + map.getCell(i, j).getUnits().size());
-                    for (Unit unit : map.getCell(i, j).getUnits()) {
-                        tooltip.setText("\n" + tooltip.getText() + unit.unitName + "health : " + unit.getHP() +
-                                "Melee damage : " + unit.getMeleeDamage());
-                    }
-                }
-                if (movingUnits(map.getCell(i, j).getUnits()).size() != 0) {
-                    tooltip.setText(tooltip.getText() + "\nMoving Unit:");
-                    for (Unit unit : movingUnits(map.getCell(i, j).getUnits())) {
-                        tooltip.setText(tooltip.getText() + unit.unitName + " ");
-                    }
-                }
-                Tooltip.install(pane, tooltip);
                 gridPane.add(pane, i, j);
+                hover(gridPane);
             }
         }
         ImageView imageView = new ImageView(GameMenu.class.getResource("/Menu/BoarderMenuOfGame.png")
@@ -978,6 +1007,34 @@ public class GameMenu extends Application {
         setPopularity();
 
 
+    }
+
+    private void hover(Pane pane) {
+        Map map = GameMenuController.getCurrentGame().getMap();
+        pane.setOnMouseEntered(mouseEvent -> {
+            int i = (int) Math.floor(mouseEvent.getX() / (gridPane.getWidth() / 200));
+            int j = (int) Math.floor(mouseEvent.getY() / (gridPane.getHeight() / 200));
+            Tooltip tooltip = new Tooltip();
+            tooltip.setText("Texture:" + map.getCell(i, j).getTexture().name());
+            if (map.getCell(i, j).getBuilding() != null) {
+                tooltip.setText(tooltip.getText() + "\nBuilding:" + map.getCell(i, j).getBuilding());
+            }
+            if (map.getCell(i, j).getUnits() != null) {
+                tooltip.setText(tooltip.getText() + "\nNumber of Units: " + map.getCell(i, j).getUnits().size());
+                for (Unit unit : map.getCell(i, j).getUnits()) {
+                    tooltip.setText("\n" + tooltip.getText() + unit.unitName + "health : " + unit.getHP() +
+                            "Melee damage : " + unit.getMeleeDamage());
+                }
+            }
+            if (movingUnits(map.getCell(i, j).getUnits()).size() != 0) {
+                tooltip.setText(tooltip.getText() + "\nMoving Unit:");
+                for (Unit unit : movingUnits(map.getCell(i, j).getUnits())) {
+                    tooltip.setText(tooltip.getText() + unit.unitName + " ");
+                }
+            }
+            tooltip.setShowDuration(Duration.seconds(3));
+            Tooltip.install(pane, tooltip);
+        });
     }
 
     private void createMiniMap(int mapId) {
@@ -1478,6 +1535,7 @@ public class GameMenu extends Application {
     }
 
     private void showCastleScroll(ScrollPane scrollPane1) {
+
         Button buttonForKeep = new Button();
         buttonForKeep.setGraphic(getImageOFBuildingWithName(BuildingName.KEEP));
         buttonForKeep.setStyle("-fx-background-color: transparent;");
@@ -1651,6 +1709,8 @@ public class GameMenu extends Application {
                 button.setStyle("-fx-background-color: transparent;");
                 button.setOnAction(event -> createBuildingMenu(buildingName, i, j));
                 addInMap(button, i, j);
+                buildingsButton.put(building.getBuildingName(), button);
+                hover(gridPane);
                 break;
         }
 
