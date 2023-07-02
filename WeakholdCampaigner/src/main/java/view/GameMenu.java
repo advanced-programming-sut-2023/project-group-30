@@ -55,6 +55,7 @@ import view.menus.AbstractMenu;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import static model.enums.FileName.*;
@@ -449,6 +450,10 @@ public class GameMenu extends Application {
             for (FireTransition i : fireTransitions)
                 i.addTurn();
         }
+        if(sickGovernment!= null &&
+                sickGovernment.equals(GameMenuController.getCurrentGame().getCurrentGovernment())){
+            sickGovernment.addPopularity(-5);
+        }
         setGold();
         setPopularity();
         sickness();
@@ -457,7 +462,7 @@ public class GameMenu extends Application {
     private void sickness() {
         Random random = new Random();
         int randomNumber = random.nextInt(4);
-        if (sickGovernment == null) {
+        if (randomNumber ==  1 && sickGovernment == null) {
             Map map = GameMenuController.getCurrentGame().getMap();
             sickArea = new ArrayList<>();
             sickX = new ArrayList<>();
