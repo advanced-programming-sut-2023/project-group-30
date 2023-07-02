@@ -1,0 +1,92 @@
+package server.model;
+
+public class User {
+    private String username;
+    private String password;
+    private String nickname;
+    private String email;
+    private String slogan;
+    private Integer highScore = 0;
+    private PasswordRecoveryQNA securityQuestion;
+    private String avatarURL;
+
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getSlogan() {
+        return slogan;
+    }
+
+    public User(String username, String password, String nickname, String email, String slogan
+            , PasswordRecoveryQNA securityQuestion) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.slogan = slogan;
+        this.securityQuestion = securityQuestion;
+    }
+
+    public User(String username, String password, String nickname, String email, String slogan
+            , PasswordRecoveryQNA securityQuestion, String avatarURL) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.slogan = slogan;
+        this.securityQuestion = securityQuestion;
+        this.avatarURL = avatarURL;
+    }
+
+    public Integer getHighScore() {
+        return highScore;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
+    public PasswordRecoveryQNA getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
+    }
+
+    public String getAvatarURL() {
+        return this.avatarURL;
+    }
+}
