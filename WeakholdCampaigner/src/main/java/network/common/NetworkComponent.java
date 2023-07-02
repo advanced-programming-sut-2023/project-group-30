@@ -1,4 +1,4 @@
-package common;
+package network.common;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;

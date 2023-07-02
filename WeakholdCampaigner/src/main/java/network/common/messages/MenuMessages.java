@@ -1,4 +1,4 @@
-package common.messages;
+package network.common.messages;
 
 public enum MenuMessages {
     USER_CREATED_SUCCESSFULLY,

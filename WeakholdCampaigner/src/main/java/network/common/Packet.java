@@ -1,6 +1,4 @@
-package common;
-
-import com.google.gson.Gson;
+package network.common;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package client.GUI;
+package network.client.GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

@@ -1,8 +1,8 @@
-package server;
+package network.server;
 
-import common.Cookie;
-import common.NetworkComponent;
-import server.model.User;
+import network.server.model.User;
+import network.common.Cookie;
+import network.common.NetworkComponent;
 
 public class Session {
     private final Cookie cookie;
@@ -21,5 +21,9 @@ public class Session {
 
     public User getUser() {
         return user;
+    }
+
+    public NetworkComponent getNetworkComponent() {
+        return networkComponent;
     }
 }

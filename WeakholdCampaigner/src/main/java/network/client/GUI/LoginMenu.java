@@ -1,7 +1,6 @@
-package client.GUI;
+package network.client.GUI;
 
-import client.controller.menu_controllers.LoginMenuController;
-import common.messages.MenuMessages;
+import network.client.controller.menu_controllers.LoginMenuController;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -66,28 +65,28 @@ public class LoginMenu extends AbstractMenu {
             }
 
             switch (LoginMenuController.forgotPassword(username)) {
-                case MenuMessages.USERNAME_DOES_NOT_EXIST:
+                case USERNAME_DOES_NOT_EXIST:
                     showErrorAndWait("This username does not exist.");
                     break;
-                case MenuMessages.INCORRECT_QNA_ANSWER:
+                case INCORRECT_QNA_ANSWER:
                     showErrorAndWait("Wrong answer.");
                     break;
-                case MenuMessages.FEW_CHARACTERS:
+                case FEW_CHARACTERS:
                     showErrorAndWait("Your password should have at least 6 characters.");
                     break;
-                case MenuMessages.N0_LOWERCASE_LETTER:
+                case N0_LOWERCASE_LETTER:
                     showErrorAndWait("Your password should contain a lowercase letter.");
                     break;
-                case MenuMessages.N0_UPPERCASE_LETTER:
+                case N0_UPPERCASE_LETTER:
                     showErrorAndWait("Your password should contain an uppercase letter.");
                     break;
-                case MenuMessages.N0_NUMBER:
+                case N0_NUMBER:
                     showErrorAndWait("Your password should contain a digit.");
                     break;
-                case MenuMessages.NO_NON_WORD_NUMBER_CHARACTER:
+                case NO_NON_WORD_NUMBER_CHARACTER:
                     showErrorAndWait("Your password should contain a special character.");
                     break;
-                case MenuMessages.SECURITY_QUESTION_CONFIRMED:
+                case SECURITY_QUESTION_CONFIRMED:
                     showInformationAlertAndWait("Password changed successfully.");
                     break;
                 default:
@@ -116,16 +115,16 @@ public class LoginMenu extends AbstractMenu {
             }
 
             switch (LoginMenuController.userLogin(username, password, stayLoggedInCheckBox.isSelected())) {
-                case MenuMessages.USERNAME_DOES_NOT_EXIST:
+                case USERNAME_DOES_NOT_EXIST:
                     showErrorAndWait("This username does not exist");
                     break;
-                case MenuMessages.PASSWORD_INCORRECT:
+                case PASSWORD_INCORRECT:
                     showErrorAndWait("Password is incorrect");
                     break;
-                case MenuMessages.STAY:
+                case STAY:
                     //Thread.sleep(ms);
                     break;
-                case MenuMessages.USER_LOGGED_IN_SUCCESSFULLY:
+                case USER_LOGGED_IN_SUCCESSFULLY:
                     showCaptcha();
                     captchaValidity.textProperty().addListener((observable, oldValue, newValue) -> {
                         if (newValue.equals("Y")) {

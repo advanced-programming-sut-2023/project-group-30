@@ -1,9 +1,9 @@
-package server;
+package network.server;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import server.model.PasswordRecoveryQNA;
-import server.model.User;
+import network.server.model.PasswordRecoveryQNA;
+import network.server.model.User;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;

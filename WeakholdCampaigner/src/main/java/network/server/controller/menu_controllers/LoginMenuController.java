@@ -1,10 +1,9 @@
-package server.controller.menu_controllers;
+package network.server.controller.menu_controllers;
 
-import common.messages.MenuMessages;
-import server.controller.MainController;
-import server.Database;
-import server.model.User;
-import server.view.AppMenu;
+import network.server.controller.MainController;
+import network.common.messages.MenuMessages;
+import network.server.Database;
+import network.server.model.User;
 
 public class LoginMenuController extends MenuController {
     private static int attemptNumber = 0;
@@ -15,11 +14,7 @@ public class LoginMenuController extends MenuController {
             return MenuMessages.USERNAME_DOES_NOT_EXIST;
         else if (!user.getPassword().equals(sha256(password))) {
             if (attemptNumber >= 1) {
-                AppMenu.show("you entered password incorrect " + LoginMenuController.getAttemptNumber()
-                        + " times wait for " + (LoginMenuController.getAttemptNumber() * 5) + " seconds");
-                pause(5000 * attemptNumber);
-                attemptNumber++;
-                return MenuMessages.STAY;
+                //todo lock the user to prevent it from using brute force
             } else {
                 attemptNumber++;
                 return MenuMessages.PASSWORD_INCORRECT;
@@ -31,6 +26,7 @@ public class LoginMenuController extends MenuController {
         return MenuMessages.USER_LOGGED_IN_SUCCESSFULLY;
     }
 
+    /*todo
     public static MenuMessages forgotPassword(String username) {
         User user = Database.getUserByName(username);
         if (user == null)
@@ -39,8 +35,8 @@ public class LoginMenuController extends MenuController {
             String answer = AppMenu.getOneLine(user.getSecurityQuestion().getQuestion());
             if (answer.equals(user.getSecurityQuestion().getAnswer())) {
                 String newPassword = AppMenu.getOneLine("enter recovery password:");
-                if (!isPasswordStrong(newPassword).equals(MenuMessages.STRONG_PASSWORD))
-                    return isPasswordStrong(newPassword);
+                if (!MenuController.isPasswordStrong(newPassword).equals(MenuMessages.STRONG_PASSWORD))
+                    return MenuController.isPasswordStrong(newPassword);
                 else {
                     user.setPassword(sha256(newPassword));
                     Database.saveAllUsers();
@@ -53,19 +49,7 @@ public class LoginMenuController extends MenuController {
 
         }
 
-    }
-
-    public static void pause(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            System.err.format("IOException: %s%n", e);
-        }
-    }
-
-    public static int getAttemptNumber() {
-        return attemptNumber;
-    }
+    }*/
 
     public static void userLogOut() {
         Database.saveStayLoggedInUser(null);

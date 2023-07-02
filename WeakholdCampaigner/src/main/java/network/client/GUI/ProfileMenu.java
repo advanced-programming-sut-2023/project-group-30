@@ -1,8 +1,7 @@
-package client.GUI;
+package network.client.GUI;
 
-import client.controller.menu_controllers.MenuController;
-import client.controller.menu_controllers.ProfileMenuController;
-import common.messages.MenuMessages;
+import network.client.controller.menu_controllers.MenuController;
+import network.client.controller.menu_controllers.ProfileMenuController;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -122,14 +121,14 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
             }
 
             switch (ProfileMenuController.changeUsername(username)) {
-                case MenuMessages.USERNAME_HAS_CHANGED:
+                case USERNAME_HAS_CHANGED:
                     showInformationAlertAndWait("Username changed successfully.");
                     initialize();
                     break;
-                case MenuMessages.INVALID_USERNAME:
+                case INVALID_USERNAME:
                     showErrorAndWait("Please enter a valid username.");
                     break;
-                case MenuMessages.TAKEN_USERNAME:
+                case TAKEN_USERNAME:
                     showErrorAndWait("This username is taken");
                     break;
             }
@@ -225,28 +224,28 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
             captchaValidity.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue.equals("Y")) {
                     switch (ProfileMenuController.changePassword(oldPassword, newPassword)) {
-                        case MenuMessages.INCORRECT_CURRENT_PASSWORD:
+                        case INCORRECT_CURRENT_PASSWORD:
                             showErrorAndWait("Your old password is wrong!");
                             break;
-                        case MenuMessages.SAME_PASSWORD:
+                        case SAME_PASSWORD:
                             showErrorAndWait("Your new password is the same as the previous one");
                             break;
-                        case MenuMessages.PASSWORD_HAS_CHANGED:
+                        case PASSWORD_HAS_CHANGED:
                             showInformationAlertAndWait("Password changed successfully.");
                             break;
-                        case MenuMessages.FEW_CHARACTERS:
+                        case FEW_CHARACTERS:
                             showErrorAndWait("Your password should have at least 6 character");
                             break;
-                        case MenuMessages.N0_LOWERCASE_LETTER:
+                        case N0_LOWERCASE_LETTER:
                             showErrorAndWait("Your password doesn't have any lowercase letter");
                             break;
-                        case MenuMessages.N0_UPPERCASE_LETTER:
+                        case N0_UPPERCASE_LETTER:
                             showErrorAndWait("Your password doesn't have any uppercase letter");
                             break;
-                        case MenuMessages.N0_NUMBER:
+                        case N0_NUMBER:
                             showErrorAndWait("Your password doesn't have any number");
                             break;
-                        case MenuMessages.NO_NON_WORD_NUMBER_CHARACTER:
+                        case NO_NON_WORD_NUMBER_CHARACTER:
                             showErrorAndWait("Your password doesn't have any special characters");
                             break;
                     }
@@ -304,14 +303,14 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
             }
 
             switch (ProfileMenuController.changeEmail(email)) {
-                case MenuMessages.EMAIL_HAS_CHANGED:
+                case EMAIL_HAS_CHANGED:
                     showInformationAlertAndWait("Email changed successfully.");
                     initialize();
                     break;
-                case MenuMessages.INVALID_EMAIL:
+                case INVALID_EMAIL:
                     showErrorAndWait("Your email format is invalid.");
                     break;
-                case MenuMessages.TAKEN_EMAIL:
+                case TAKEN_EMAIL:
                     showErrorAndWait("This email address is taken.");
                     break;
             }

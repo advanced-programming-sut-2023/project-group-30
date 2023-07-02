@@ -1,4 +1,4 @@
-package server.model;
+package network.server.model;
 
 public class PasswordRecoveryQNA {
     private String question;

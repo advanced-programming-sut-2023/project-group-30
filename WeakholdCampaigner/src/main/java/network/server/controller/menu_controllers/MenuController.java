@@ -1,6 +1,6 @@
-package server.controller.menu_controllers;
+package network.server.controller.menu_controllers;
 
-import common.messages.MenuMessages;
+import network.common.messages.MenuMessages;
 
 import java.security.MessageDigest;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package common;
+package network.common;
 
 public class Cookie {
     public final int ID;

@@ -1,9 +1,9 @@
-package server.controller.menu_controllers;
+package network.server.controller.menu_controllers;
 
-import common.messages.MenuMessages;
-import server.Database;
-import server.model.PasswordRecoveryQNA;
-import server.model.User;
+import network.common.messages.MenuMessages;
+import network.server.Database;
+import network.server.model.PasswordRecoveryQNA;
+import network.server.model.User;
 
 import java.util.*;
 

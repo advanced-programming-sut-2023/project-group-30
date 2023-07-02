@@ -1,4 +1,4 @@
-package client.GUI;
+package network.client.GUI;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelBuffer;
@@ -11,7 +11,7 @@ import java.awt.image.DataBufferInt;
 import java.nio.IntBuffer;
 import java.util.Random;
 
-import static client.GUI.AbstractMenu.PIXEL_UNIT;
+import static network.client.GUI.AbstractMenu.PIXEL_UNIT;
 
 public class Captcha {
     public static Image getCaptcha(String randomCaptchaNumber) {

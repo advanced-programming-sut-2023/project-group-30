@@ -1,13 +1,9 @@
-package server.controller.menu_controllers;
+package network.server.controller.menu_controllers;
 
-import common.messages.MenuMessages;
-import server.controller.MainController;
-import server.Database;
-import server.model.User;
+import network.server.controller.MainController;
+import network.common.messages.MenuMessages;
+import network.server.Database;
 import org.jetbrains.annotations.Nullable;
-import server.view.AppMenu;
-
-import java.util.ArrayList;
 
 
 public class ProfileMenuController extends MenuController {
@@ -56,36 +52,6 @@ public class ProfileMenuController extends MenuController {
         MainController.getCurrentUser().setSlogan(slogan);
         Database.saveAllUsers();
         return MenuMessages.SLOGAN_HAS_CHANGED;
-    }
-
-    public static Integer displayHighScore() {
-        Integer highscore = MainController.getCurrentUser().getHighScore();
-        if (highscore == null) return 0;
-        return highscore;
-    }
-
-    private static Integer getRank(ArrayList<User> sortedUserByRank) {
-        return sortedUserByRank.indexOf(MainController.getCurrentUser());
-    }
-
-    public static Integer displayRank() {
-        return getRank(Database.sortUserByRank());
-    }
-
-    public static MenuMessages displaySlogan() {
-        if (MainController.getCurrentUser().getSlogan() == null) {
-            return MenuMessages.NULL_SLOGAN;
-        }
-        return MenuMessages.DISPLAY;
-    }
-
-    public static void displayProfile() {
-        AppMenu.show("Username: " + MainController.getCurrentUser().getUsername());
-        AppMenu.show("Email: " + MainController.getCurrentUser().getEmail());
-        AppMenu.show("Nickname: " + MainController.getCurrentUser().getNickname());
-        if (MainController.getCurrentUser().getSlogan() != null) {
-            AppMenu.show("Slogan: " + MainController.getCurrentUser().getSlogan());
-        }
     }
 
     public static String getUsername() {

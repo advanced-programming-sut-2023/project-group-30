@@ -1,13 +1,13 @@
-package server;
+package network.server;
 
-import common.Cookie;
-import common.NetworkComponent;
-import common.Packet;
-import server.controller.MainController;
-import server.controller.menu_controllers.LoginMenuController;
-import server.controller.menu_controllers.ProfileMenuController;
-import server.controller.menu_controllers.SignupMenuController;
-import common.messages.MenuMessages;
+import network.common.Cookie;
+import network.common.NetworkComponent;
+import network.common.Packet;
+import network.server.controller.MainController;
+import network.server.controller.menu_controllers.LoginMenuController;
+import network.server.controller.menu_controllers.ProfileMenuController;
+import network.server.controller.menu_controllers.SignupMenuController;
+import network.common.messages.MenuMessages;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -48,6 +48,7 @@ public class SingleConnection extends Thread {
             if (message.equals("Client connected."))
                 interactWithClient();
             endConnection();
+            System.out.println("Client disconnected.");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,6 +57,7 @@ public class SingleConnection extends Thread {
 
     private void endConnection() throws IOException {
         networkComponent.closeAll();
+        server.disconnectClient(networkComponent);
 
         isConnected = false;
     }
@@ -100,13 +102,34 @@ public class SingleConnection extends Thread {
                     }
                     break;
 
+                case "userLogOut":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    LoginMenuController.userLogOut();
+
+                    result = "Success";
+                    Cookie cookie = new Cookie(-1);
+                    if (!server.removeSession(authorizationCookie.ID)) {
+                        result = "Failure";
+                        System.out.println("Invalid attempt to logout");
+                    }
+
+                    networkComponent.sendLine(result);
+                    networkComponent.sendCookie(cookie);
+
+                    break;
+
                 case "forgotPassword":
                     if (ID != -1) {
                         networkComponent.sendLine("Error");
                         return;
                     }
 
-                    result = LoginMenuController.forgotPassword(packet.arguments.get("username")).toString();
+                    //todo result = LoginMenuController.forgotPassword(packet.arguments.get("username")).toString();
+                    result = "Password recovery is not supported";
 
                     networkComponent.sendLine(result);
                     break;
@@ -304,6 +327,9 @@ public class SingleConnection extends Thread {
                     networkComponent.sendLine("Success");
                     break;
 
+                case "Disconnect":
+                    isConnected = false;
+                    break;
                 default:
                     networkComponent.sendLine("Error");
                     break;

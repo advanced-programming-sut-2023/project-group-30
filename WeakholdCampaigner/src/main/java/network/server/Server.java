@@ -1,7 +1,7 @@
-package server;
+package network.server;
 
-import server.controller.MainController;
-import common.NetworkComponent;
+import network.server.controller.MainController;
+import network.common.NetworkComponent;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -74,5 +74,36 @@ public class Server {
 
     public void addSession(Session session) {
         this.loggedInUserSessions.add(session);
+    }
+
+    public boolean removeSession(Integer ID) {
+        Session toRemove = null;
+        for (Session session :
+                this.loggedInUserSessions) {
+            if (session.getID().equals(ID)) {
+                toRemove = session;
+                break;
+            }
+        }
+
+        if (toRemove == null) return false;
+
+        this.loggedInUserSessions.remove(toRemove);
+        return true;
+    }
+
+    public void disconnectClient(NetworkComponent networkComponent) {
+        if (this.clientsConnectedToSocket.remove(networkComponent)) {
+            Session toRemove = null;
+            for (Session session :
+                    this.loggedInUserSessions) {
+                if (session.getNetworkComponent().equals(networkComponent)) {
+                    toRemove = session;
+                    break;
+                }
+            }
+
+            this.loggedInUserSessions.remove(toRemove);
+        }
     }
 }

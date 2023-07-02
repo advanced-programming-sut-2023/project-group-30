@@ -1,4 +1,4 @@
-package client.GUI;
+package network.client.GUI;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

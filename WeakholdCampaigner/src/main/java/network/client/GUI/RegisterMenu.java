@@ -1,7 +1,7 @@
-package client.GUI;
+package network.client.GUI;
 
-import client.controller.menu_controllers.MenuController;
-import client.controller.menu_controllers.SignupMenuController;
+import network.client.controller.menu_controllers.MenuController;
+import network.client.controller.menu_controllers.SignupMenuController;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;

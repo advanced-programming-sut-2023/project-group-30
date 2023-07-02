@@ -1,10 +1,9 @@
-package client.controller.menu_controllers;
+package network.client.controller.menu_controllers;
 
-import common.Cookie;
-import server.Database;
-import client.Client;
-import common.Packet;
-import common.messages.MenuMessages;
+import network.client.Client;
+import network.common.Cookie;
+import network.common.Packet;
+import network.common.messages.MenuMessages;
 
 import java.util.HashMap;
 
@@ -34,10 +33,21 @@ public class LoginMenuController extends MenuController {
 
         String result = Client.clientNetworkComponent.readLine();
 
-        return getMenuMessage(result);
+        //todo return getMenuMessage(result);
+        System.out.println(result);
+        return MenuMessages.STAY;
     }
 
     public static void userLogOut() {
-        Database.saveStayLoggedInUser(null);
+        Client.clientNetworkComponent.sendPacket(new Packet("userLogOut", new HashMap<>()));
+
+        String result = Client.clientNetworkComponent.readLine();
+
+        if (!result.equals("Success"))
+            throw new RuntimeException();
+
+        Cookie cookie = Client.clientNetworkComponent.readCookie();
+        Client.clientNetworkComponent.changeCookie(cookie);
+        System.out.println("successfully received a (logout) cookie with id=" + cookie.ID);
     }
 }

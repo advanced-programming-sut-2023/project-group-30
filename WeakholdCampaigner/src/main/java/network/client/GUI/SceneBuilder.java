@@ -1,4 +1,4 @@
-package client.GUI;
+package network.client.GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -9,7 +9,7 @@ import javafx.scene.layout.*;
 
 import java.net.URL;
 
-import static client.GUI.AbstractMenu.*;
+import static network.client.GUI.AbstractMenu.*;
 
 public class SceneBuilder {
     public static Scene getScene(BorderPane borderPane) {

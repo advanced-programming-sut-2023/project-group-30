@@ -1,6 +1,6 @@
-package client.GUI;
+package network.client.GUI;
 
-import server.controller.menu_controllers.LoginMenuController;
+import network.client.controller.menu_controllers.LoginMenuController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 

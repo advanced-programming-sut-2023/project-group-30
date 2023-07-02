@@ -1,8 +1,8 @@
-package client.controller.menu_controllers;
+package network.client.controller.menu_controllers;
 
-import client.Client;
-import common.messages.MenuMessages;
-import common.Packet;
+import network.client.Client;
+import network.common.Packet;
+import network.common.messages.MenuMessages;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,5 +1,5 @@
-username = Test | pass = Pl@yer1 | mail = GUITest@mail.com | petName = pet
-
+username = Test | pass = Pl@yer1 | mail = network@mail.com | petName = pet
+username = Test2 | pass = Pl@yer2 | mail = network2@mail.com| petName = pet
 
 user login -u player1 -p Pl@yer1
 create game --mapID 1

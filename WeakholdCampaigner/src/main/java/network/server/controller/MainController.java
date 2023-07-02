@@ -1,12 +1,12 @@
-package server.controller;
+package network.server.controller;
 
-import server.Database;
-import server.model.User;
+import network.server.Database;
+import network.server.model.User;
 
 import java.util.Scanner;
 
 public class MainController {
-    private static User currentUser; //todo remove this
+    private static User currentUser; //todo: is this fine?
     private static final Scanner scanner = new Scanner(System.in);
 
     public void initializeApp() {
