@@ -49,7 +49,7 @@ public class ChatMenuController {
         if (!result.equals("Success")) {
             throw new RuntimeException();
         }
-        System.out.println("message sent");
+        //System.out.println("message sent");
     }
 
     public static String makePrivateChat(String username) {

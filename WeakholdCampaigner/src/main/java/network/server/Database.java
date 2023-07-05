@@ -2,6 +2,7 @@ package network.server;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import network.common.chat.Chat;
 import network.server.model.PasswordRecoveryQNA;
 import network.server.model.User;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class Database {
     private static ArrayList<User> allUsers = new ArrayList<>();
@@ -30,6 +32,7 @@ public class Database {
         Database.loadSecurityQuestions();
         Database.loadSlogan();
         Database.loadAllUsers();
+        loadAllChats();
         Database.loadStayLogin();
     }
 
@@ -44,6 +47,53 @@ public class Database {
                 allUsers = new ArrayList<>();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void loadAllChats() {
+        //todo very poor handling of saving the chats. but it works!
+        HashMap<String, Chat> publicChatsAndRooms = new HashMap<>();
+        HashMap<String, Chat> privateChats = new HashMap<>();
+        for (User user :
+                allUsers) {
+            String username = user.getUsername();
+            ArrayList<Chat> changeUserPrivateChats = new ArrayList<>();
+            ArrayList<Chat> changeUserPublicAndRooms = new ArrayList<>();
+
+            for (Chat chat :
+                    user.getChats()) {
+                String chatName = chat.getName(username);
+                if (chat.type.equals(Chat.Type.PRIVATE_CHAT)) {
+                    if (privateChats.containsKey(chatName)) {
+                        changeUserPrivateChats.add(
+                                privateChats.get(chatName)
+                        );
+                    } else privateChats.put(username, chat);
+                } else {
+                    if (publicChatsAndRooms.containsKey(chatName)) {
+                        changeUserPublicAndRooms.add(
+                                publicChatsAndRooms.get(chatName)
+                        );
+                    }
+                    else publicChatsAndRooms.put(chatName, chat);
+                }
+            }
+
+            for (Chat chat:
+                 changeUserPrivateChats) {
+                System.out.println("PrivateChanging " + username + " " + chat.getName(username));
+                boolean result = user.addChat(chat);
+                if (result)
+                    throw new RuntimeException();
+            }
+
+            for (Chat chat:
+                    changeUserPublicAndRooms) {
+                System.out.println("Changing " + username + " " + chat.getName(username));
+                boolean result = user.addChat(chat);
+                if (result)
+                    throw new RuntimeException();
+            }
         }
     }
 

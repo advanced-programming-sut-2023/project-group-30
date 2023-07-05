@@ -102,7 +102,24 @@ public class User {
         this.currentChat = currentChat;
     }
 
-    public void addChat(Chat chat) {
-        this.chats.add(chat);
+    public boolean addChat(Chat chatToAdd) {
+        String newChatName = chatToAdd.getName(username);
+        Chat alreadyExists = null;
+        for (Chat existingChat :
+                this.chats) {
+            if (existingChat.getName(username).equals(newChatName)) {
+                alreadyExists = existingChat;
+                break;
+            }
+        }
+
+        if (alreadyExists != null) {
+            this.chats.remove(alreadyExists);
+            this.chats.add(chatToAdd);
+            return false;
+        }
+
+        this.chats.add(chatToAdd);
+        return true;
     }
 }
