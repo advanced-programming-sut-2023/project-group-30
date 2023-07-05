@@ -69,8 +69,8 @@ public class Captcha {
         for (int i = 0; i < (width * height / 100); i++) {
             color = randomColor(150, 250);
             bufferedImageGraphics.setColor(color);
-            bufferedImageGraphics.drawOval(randomNum(width), randomNum(height), 5 + randomNum(width/30),
-                    5 + randomNum(height/30));
+            bufferedImageGraphics.drawOval(randomNum(width), randomNum(height), 5 + randomNum(width / 30),
+                    5 + randomNum(height / 30));
         }
         for (int i = 0; i < (width * height / 700); i++) {
             color = randomColor(150, 250);
@@ -83,7 +83,7 @@ public class Captcha {
         return bufferedImage;
     }
 
-    private static Image bufferedImageToImage(BufferedImage img){
+    private static Image bufferedImageToImage(BufferedImage img) {
         //javafx.scene.image.Image
 
         //converting to a good type, read about types here:

@@ -40,6 +40,7 @@ public class ChatMenuController {
     }
 
     private static Chat publicChat;
+
     static {
         publicChat = new Chat(Chat.Type.PUBLIC_CHAT);
         publicChat.setName("Public Chat");
@@ -59,12 +60,12 @@ public class ChatMenuController {
 
         }
     }
+
     public static Chat makePublicChat(String user) {
         if (!publicChat.users.contains(user))
             publicChat.addUser(user);
         return publicChat;
     }
-
 
 
     public static HashMap<String, String> getPrivateChats() {
@@ -186,7 +187,7 @@ public class ChatMenuController {
     }
 
     private static void makeMessagesSeen(Chat chat, String viewer) {
-        for (ChatMessage chatMessage:
+        for (ChatMessage chatMessage :
                 chat.getChatMessages()) {
             if (!chatMessage.sender.equals(viewer))
                 chatMessage.setSeen();

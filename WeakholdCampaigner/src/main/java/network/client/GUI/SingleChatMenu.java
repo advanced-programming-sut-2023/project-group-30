@@ -14,7 +14,7 @@ import network.client.controller.menu_controllers.ChatMenuController;
 import network.common.chat.Chat;
 import network.common.chat.ChatMessage;
 
-public class SingleChatMenu extends AbstractMenu{
+public class SingleChatMenu extends AbstractMenu {
     private Chat chat;
     private String name;
 

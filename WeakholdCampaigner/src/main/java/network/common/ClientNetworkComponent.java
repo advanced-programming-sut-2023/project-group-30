@@ -2,8 +2,9 @@ package network.common;
 
 import java.io.IOException;
 
-public class ClientNetworkComponent extends NetworkComponent{
+public class ClientNetworkComponent extends NetworkComponent {
     private Cookie authorizationCookie;
+
     public ClientNetworkComponent(NetworkComponent networkComponent, Cookie authorizationCookie) throws IOException {
         super(networkComponent);
         this.authorizationCookie = authorizationCookie;

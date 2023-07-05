@@ -69,6 +69,7 @@ public class Server {
     }
 
     private static int previousID = 999;
+
     public static int getNewID() {
         return ++previousID;
     }

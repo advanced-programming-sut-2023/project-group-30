@@ -62,8 +62,10 @@ public abstract class AbstractMenu extends Application {
     }
 
     protected abstract void initialize();
+
     protected BorderPane borderPane;
     protected static Scene scene;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;

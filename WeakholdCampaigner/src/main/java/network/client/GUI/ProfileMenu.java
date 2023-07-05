@@ -26,7 +26,7 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
 
         VBox vBox = SceneBuilder.getLabeledVBox("Profile Menu",
                 SceneBuilder.getHBox(getUserInfo(), getUserSlogan(), getAvatarRectangle(1.5)),
-                getChangeAvatarButton(), getChangeUsernameVBox() , getChangePasswordVBox(),
+                getChangeAvatarButton(), getChangeUsernameVBox(), getChangePasswordVBox(),
                 getChangeNicknameVBox(), getChangeEmailVBox(), getChangeSloganVBox(), getMainMenuButton());
         borderPane.setCenter(vBox);
     }
@@ -104,8 +104,7 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
             if (!MenuController.isUsernameValid(newValue)) {
                 usernameValidityLabel.setTextFill(Color.color(1, 0, 0));
                 usernameValidityLabel.setText("Username can only contain letters, digits and underscores.");
-            }
-            else {
+            } else {
                 usernameValidityLabel.setTextFill(Color.color(0, 1, 0));
                 usernameValidityLabel.setText("Valid Username.");
             }
@@ -135,7 +134,7 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
         });
 
         return SceneBuilder.getVBox(SceneBuilder.getHBox(
-                new Label("New username: "), usernameField, usernameValidityLabel),
+                        new Label("New username: "), usernameField, usernameValidityLabel),
                 button);
     }
 
@@ -149,8 +148,7 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
         oldCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 oldTextField.toFront();
-            }
-            else {
+            } else {
                 oldPasswordField.toFront();
             }
         });
@@ -195,8 +193,7 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 textField.toFront();
-            }
-            else {
+            } else {
                 passwordField.toFront();
             }
         });
@@ -253,8 +250,7 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
                     stage.setScene(scene);
 
                     captchaValidity = new TextField();
-                }
-                else {
+                } else {
                     stage.setScene(scene);
                     captchaValidity = new TextField();
                 }

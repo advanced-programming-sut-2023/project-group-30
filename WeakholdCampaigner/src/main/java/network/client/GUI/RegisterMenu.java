@@ -22,6 +22,7 @@ public class RegisterMenu extends AbstractMenu {
     private String username = "", password = "", slogan = "", email = "", nickname = "", passwordConfirmation = "";
     private final Label usernameValidityLabel = new Label(""), emailValidityLabel = new Label(""),
             passwordConfirmationValidity = new Label("");
+
     {
         usernameValidityLabel.setTextFill(Color.color(1, 0, 0));
         emailValidityLabel.setTextFill(Color.color(1, 0, 0));
@@ -58,8 +59,7 @@ public class RegisterMenu extends AbstractMenu {
             if (!MenuController.isUsernameValid(newValue)) {
                 usernameValidityLabel.setTextFill(Color.color(1, 0, 0));
                 usernameValidityLabel.setText("Username can only contain letters, digits and underscores.");
-            }
-            else {
+            } else {
                 usernameValidityLabel.setTextFill(Color.color(0, 1, 0));
                 usernameValidityLabel.setText("Valid Username.");
             }
@@ -114,8 +114,7 @@ public class RegisterMenu extends AbstractMenu {
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 textField.toFront();
-            }
-            else {
+            } else {
                 passwordField.toFront();
             }
         });
@@ -127,7 +126,7 @@ public class RegisterMenu extends AbstractMenu {
         Button generateRandomPasswordButton = new Button("generate random password");
         generateRandomPasswordButton.setOnMouseClicked((mouseEvent) -> {
             String randomPassword = SignupMenuController.generateRandomPassword();
-            if(showConfirmationAlertAndWait(
+            if (showConfirmationAlertAndWait(
                     "Do you want the randomly generated password below?",
                     randomPassword)
             ) {
@@ -211,6 +210,7 @@ public class RegisterMenu extends AbstractMenu {
 
     private static TextField pickedAnswer;
     private static Integer pickedQuestion = null;
+
     private void showSecurityQuestion() {
         List<String> questions = Arrays.asList("1. What is my father’s name?", "2. What was my first pet’s name?",
                 "3. What is my mother’s last name?");
@@ -278,8 +278,7 @@ public class RegisterMenu extends AbstractMenu {
 
                                 //todo can you close everything here before changing the menu?
                                 goToLoginMenu();
-                            }
-                            else {
+                            } else {
                                 stage.setScene(scene);
                                 captchaValidity = new TextField();
                             }

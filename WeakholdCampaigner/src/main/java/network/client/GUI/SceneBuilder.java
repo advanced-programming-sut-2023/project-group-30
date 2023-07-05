@@ -42,7 +42,7 @@ public class SceneBuilder {
         VBox vBox = new VBox(SPACING);
         vBox.setAlignment(Pos.CENTER);
 
-        Label label =  new Label(title);
+        Label label = new Label(title);
         label.getStyleClass().add("title"); // resources/CSS/defaultCSS -> .title
         vBox.getChildren().add(label);
 

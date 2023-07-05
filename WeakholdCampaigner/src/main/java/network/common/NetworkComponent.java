@@ -33,7 +33,7 @@ public class NetworkComponent {
         dataOutputStream.close();
     }
 
-    public void sendPacket(Packet packet) throws IOException{
+    public void sendPacket(Packet packet) throws IOException {
         dataOutputStream.writeUTF(packetToJSon(packet));
     }
 
@@ -106,7 +106,7 @@ public class NetworkComponent {
         }
     }
 
-    public void sendChat(Chat chat) throws IOException{
+    public void sendChat(Chat chat) throws IOException {
         dataOutputStream.writeUTF(new Gson().toJson(chat));
     }
 

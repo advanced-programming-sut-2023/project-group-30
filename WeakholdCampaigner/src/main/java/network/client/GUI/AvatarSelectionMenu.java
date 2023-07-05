@@ -68,8 +68,7 @@ public class AvatarSelectionMenu extends AbstractMenu {
                 selectedAvatarURL =
                         getRandomAvatarURL();
                 avatarIsRandom = true;
-            }
-            else
+            } else
                 selectedAvatarURL = selectedAvatar.getImage().getUrl();
 
             avatarIndex = Integer.parseInt(selectedAvatarURL.substring(

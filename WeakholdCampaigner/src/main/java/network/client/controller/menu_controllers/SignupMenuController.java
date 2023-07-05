@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class SignupMenuController extends MenuController {
 
     public static void newCreateUser(String username, String password, String email, String nickname,
-                                      String slogan, int securityQ, String securityA, String avatarURL) {
+                                     String slogan, int securityQ, String securityA, String avatarURL) {
         HashMap<String, String> arguments = new HashMap<>();
         arguments.put("username", username);
         arguments.put("password", password);

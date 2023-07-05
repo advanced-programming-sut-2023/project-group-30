@@ -7,10 +7,11 @@ import javafx.scene.layout.VBox;
 import network.client.controller.menu_controllers.ChatMenuController;
 import network.common.chat.Chat;
 
-public class AllChatsMenu extends AbstractMenu{
+public class AllChatsMenu extends AbstractMenu {
     public static void main(String[] args) {
         launch(args);
     }
+
     @Override
     protected void initialize() {
         VBox vBox = SceneBuilder.getLabeledVBox("Chat Menu", getAllChats(), getMainMenuButton());
@@ -114,7 +115,7 @@ public class AllChatsMenu extends AbstractMenu{
         Button button = new Button(name);
         button.setOnMouseClicked((mouseEvent) -> {
             try {
-                new SingleChatMenu().manualStart(stage, type , name);
+                new SingleChatMenu().manualStart(stage, type, name);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

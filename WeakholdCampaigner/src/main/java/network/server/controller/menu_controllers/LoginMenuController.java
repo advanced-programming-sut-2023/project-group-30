@@ -5,9 +5,6 @@ import network.common.messages.MenuMessages;
 import network.server.Database;
 import network.server.model.User;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class LoginMenuController extends MenuController {
     private static int attemptNumber = 0;
 

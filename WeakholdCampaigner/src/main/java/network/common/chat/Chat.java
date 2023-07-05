@@ -8,6 +8,7 @@ public class Chat {
         PRIVATE_CHAT,
         ROOM
     }
+
     public final Type type;
     public final ArrayList<String> users;
     private final ArrayList<ChatMessage> chatMessages = new ArrayList<>();

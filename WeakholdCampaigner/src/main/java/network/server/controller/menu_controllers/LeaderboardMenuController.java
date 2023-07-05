@@ -23,7 +23,7 @@ public class LeaderboardMenuController {
 
             leaderboard.add(hashMap);
         }
-        
+
         return leaderboard;
     }
 

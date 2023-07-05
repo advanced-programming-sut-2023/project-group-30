@@ -21,6 +21,7 @@ public class LoginMenu extends AbstractMenu {
     private static PasswordField passwordField;
     private static TextField usernameField;
     private static CheckBox stayLoggedInCheckBox;
+
     @Override
     protected void initialize() {
         captchaValidity = new TextField();
@@ -46,8 +47,7 @@ public class LoginMenu extends AbstractMenu {
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 textField.toFront();
-            }
-            else {
+            } else {
                 passwordField.toFront();
             }
         });
@@ -107,7 +107,7 @@ public class LoginMenu extends AbstractMenu {
     private Button getLoginButton() {
         Button button = new Button("Login");
         button.setOnMouseClicked((mouseEvent) -> {
-            String username = usernameField.getText() , password = passwordField.getText();
+            String username = usernameField.getText(), password = passwordField.getText();
 
             if (isNullOrEmpty(username, password)) {
                 showErrorAndWait("Please enter your credentials.");

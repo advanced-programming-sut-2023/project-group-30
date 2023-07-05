@@ -11,7 +11,7 @@ public class SignupMenuController extends MenuController {
     static PasswordRecoveryQNA passwordRecoveryQNA;
 
     public static void newCreateUser(String username, String password, String email, String nickname,
-                                      String slogan, int securityQ, String securityA, String avatarURL) {
+                                     String slogan, int securityQ, String securityA, String avatarURL) {
 
         passwordRecoveryQNA = new PasswordRecoveryQNA(Database.getSecurityQuestions().get(securityQ)
                 .getQuestion(), securityA);

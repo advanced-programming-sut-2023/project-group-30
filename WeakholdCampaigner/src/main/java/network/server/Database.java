@@ -74,20 +74,19 @@ public class Database {
                         changeUserPublicAndRooms.add(
                                 publicChatsAndRooms.get(chatName)
                         );
-                    }
-                    else publicChatsAndRooms.put(chatName, chat);
+                    } else publicChatsAndRooms.put(chatName, chat);
                 }
             }
 
-            for (Chat chat:
-                 changeUserPrivateChats) {
+            for (Chat chat :
+                    changeUserPrivateChats) {
                 //System.out.println("PrivateChanging " + username + " " + chat.getName(username));
                 boolean result = user.addChat(chat);
                 if (result)
                     throw new RuntimeException();
             }
 
-            for (Chat chat:
+            for (Chat chat :
                     changeUserPublicAndRooms) {
                 //System.out.println("Changing " + username + " " + chat.getName(username));
                 boolean result = user.addChat(chat);

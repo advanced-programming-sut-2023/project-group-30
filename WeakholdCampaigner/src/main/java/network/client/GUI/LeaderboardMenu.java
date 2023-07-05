@@ -16,8 +16,9 @@ import network.client.controller.menu_controllers.LeaderboardMenuController;
 
 import java.util.HashMap;
 
-public class LeaderboardMenu extends AbstractMenu{
+public class LeaderboardMenu extends AbstractMenu {
     static Timeline autoRefresher = null;
+
     @Override
     protected void initialize() {
         VBox vBox = SceneBuilder.getLabeledVBox("Leaderboard", getLeaderboardVBox(),
@@ -45,8 +46,8 @@ public class LeaderboardMenu extends AbstractMenu{
         VBox vBox = SceneBuilder.getVBox();
 
         Integer rank = 1;
-        for (HashMap<String, String> arguments:
-            LeaderboardMenuController.getLeaderboard()){
+        for (HashMap<String, String> arguments :
+                LeaderboardMenuController.getLeaderboard()) {
 
             String lastSeen = arguments.get("lastSeen");
             if (!lastSeen.equals("Online"))
