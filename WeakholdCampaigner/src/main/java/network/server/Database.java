@@ -3,6 +3,7 @@ package network.server;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import network.common.chat.Chat;
+import network.server.model.Game;
 import network.server.model.PasswordRecoveryQNA;
 import network.server.model.User;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 
 public class Database {
     private static ArrayList<User> allUsers = new ArrayList<>();
+    private static ArrayList<Game> games = new ArrayList<>();
     private static ArrayList<PasswordRecoveryQNA> securityQuestions = new ArrayList<>();
     private static ArrayList<String> slogans = new ArrayList<>();
 
@@ -139,25 +141,6 @@ public class Database {
         return null;
     }
 
-
-    public static ArrayList<User> sortUserByRank() {
-        ArrayList<User> sortedUserByRank = new ArrayList<>(allUsers);
-        Comparator<User> byScore = Comparator.comparing(User::getHighScore);
-        sortedUserByRank.sort(byScore);
-        Collections.reverse(sortedUserByRank);
-        return sortedUserByRank;
-    }
-
-    public static String generateSimilarUsername(String username) {
-        int addedNumberToUsername = 0;
-        String newUsername = username + addedNumberToUsername;
-        while (getUserByName(newUsername) != null) {
-            addedNumberToUsername++;
-            newUsername = username + addedNumberToUsername;
-        }
-        return newUsername;
-    }
-
     private static void loadStayLogin() {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader("src/main/resources/stayLoginUser.json")) {
@@ -200,4 +183,11 @@ public class Database {
         return slogans;
     }
 
+    public static ArrayList<Game> getGames() {
+        return games;
+    }
+
+    public static void addGame(Game game) {
+        games.add(game);
+    }
 }

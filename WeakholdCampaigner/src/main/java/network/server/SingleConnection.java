@@ -514,6 +514,20 @@ public class SingleConnection extends Thread {
                     ));
                     break;
 
+                case "createGame":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+
+                    result = LobbyController.createGame(
+                            Integer.parseInt(packet.arguments.get("capacity")),
+                            MainController.getCurrentUser().getUsername()
+                    );
+                    networkComponent.sendLine(result);
+                    break;
+
                 case "Disconnect":
                     isConnected = false;
                     break;
