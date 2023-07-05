@@ -380,6 +380,38 @@ public class SingleConnection extends Thread {
                     networkComponent.sendLine(result);
                     break;
 
+                case "makePrivateChat":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ChatMenuController.makePrivateChat(MainController.getCurrentUser().getUsername(),
+                            packet.arguments.get("username"));
+                    networkComponent.sendLine(result);
+                    break;
+
+                case "makeRoom":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ChatMenuController.makeRoom(MainController.getCurrentUser().getUsername(),
+                            packet.arguments.get("roomName"));
+                    networkComponent.sendLine(result);
+                    break;
+
+                case "addMember":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ChatMenuController.addMember(packet.arguments.get("username"));
+                    networkComponent.sendLine(result);
+                    break;
+
                 case "Disconnect":
                     isConnected = false;
                     break;

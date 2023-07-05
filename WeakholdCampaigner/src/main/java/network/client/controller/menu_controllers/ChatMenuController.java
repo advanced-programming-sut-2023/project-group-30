@@ -49,4 +49,28 @@ public class ChatMenuController {
         }
         System.out.println("message sent");
     }
+
+    public static String makePrivateChat(String username) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("username", username);
+        Client.clientNetworkComponent.sendPacket(new Packet("makePrivateChat", arguments));
+
+        return Client.clientNetworkComponent.readLine();
+    }
+
+    public static String makeRoom(String roomName) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("roomName", roomName);
+        Client.clientNetworkComponent.sendPacket(new Packet("makeRoom", arguments));
+
+        return Client.clientNetworkComponent.readLine();
+    }
+
+    public static String addMember(String username) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("username", username);
+        Client.clientNetworkComponent.sendPacket(new Packet("addMember", arguments));
+
+        return Client.clientNetworkComponent.readLine();
+    }
 }

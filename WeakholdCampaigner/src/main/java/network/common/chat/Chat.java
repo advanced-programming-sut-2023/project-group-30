@@ -24,11 +24,14 @@ public class Chat {
     }
 
     public boolean addUser(String user) {
+        if (users.contains(user)) return false;
+
         users.add(user);
         return true;
     }
 
     public void setName(String name) {
+        //todo check the name to be unique
         this.name = name;
     }
 

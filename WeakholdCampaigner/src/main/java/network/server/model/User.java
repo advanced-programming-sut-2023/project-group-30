@@ -101,4 +101,8 @@ public class User {
     public void setCurrentChat(Chat currentChat) {
         this.currentChat = currentChat;
     }
+
+    public void addChat(Chat chat) {
+        this.chats.add(chat);
+    }
 }

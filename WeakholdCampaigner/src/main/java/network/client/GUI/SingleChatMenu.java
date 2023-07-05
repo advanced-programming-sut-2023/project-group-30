@@ -24,6 +24,8 @@ public class SingleChatMenu extends AbstractMenu{
     protected void initialize() {
         VBox vBox = SceneBuilder.getLabeledVBox(name, getChatMessages(), getSendMessageField(),
                 getRefreshButton(), getBackButton());
+        if (chat.type.equals(Chat.Type.ROOM))
+            vBox.getChildren().add(getAddUserHBox());
 
         borderPane.setCenter(vBox);
     }
@@ -88,5 +90,23 @@ public class SingleChatMenu extends AbstractMenu{
         });
 
         return button;
+    }
+
+    private HBox getAddUserHBox() {
+        TextField textField = new TextField("Please enter the username of that whom you want to add");
+        Button button = new Button("Add member");
+        button.setOnMouseClicked((mouseEvent) -> {
+            String username = textField.getText();
+            if (username == null) {
+                showErrorAndWait("Please enter a username.");
+                return;
+            }
+
+            String result = ChatMenuController.addMember(username);
+            showInformationAlertAndWait(result);
+        });
+
+
+        return SceneBuilder.getHBox(textField, button);
     }
 }

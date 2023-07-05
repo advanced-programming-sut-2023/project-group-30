@@ -1,6 +1,7 @@
 package network.client.GUI;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import network.client.controller.menu_controllers.ChatMenuController;
@@ -29,6 +30,27 @@ public class AllChatsMenu extends AbstractMenu{
             vBox.getChildren().add(getSingleChatMenuButton(Chat.Type.PRIVATE_CHAT.toString(), name));
         }
 
+        TextField textField = new TextField("Enter the username of who you want to privately message.");
+        Button newPrivateChatButton = new Button("New private chat");
+        newPrivateChatButton.setOnMouseClicked((mouseEvent) -> {
+            String username = textField.getText();
+            if (username == null) {
+                showErrorAndWait("Please enter a username.");
+                return;
+            }
+
+            String result = ChatMenuController.makePrivateChat(username);
+            showInformationAlertAndWait(result);
+
+            try {
+                new AllChatsMenu().start(stage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        vBox.getChildren().add(textField);
+        vBox.getChildren().add(newPrivateChatButton);
+
         return vBox;
     }
 
@@ -38,6 +60,29 @@ public class AllChatsMenu extends AbstractMenu{
                 ChatMenuController.getRooms()) {
             vBox.getChildren().add(getSingleChatMenuButton(Chat.Type.ROOM.toString(), name));
         }
+
+
+        TextField textField = new TextField("Enter the new room's name.");
+        Button newPrivateChatButton = new Button("New room");
+        newPrivateChatButton.setOnMouseClicked((mouseEvent) -> {
+            String roomName = textField.getText();
+            if (roomName == null) {
+                showErrorAndWait("Please enter a room name.");
+                return;
+            }
+
+            String result = ChatMenuController.makeRoom(roomName);
+            showInformationAlertAndWait(result);
+
+            try {
+                new AllChatsMenu().start(stage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        vBox.getChildren().add(textField);
+        vBox.getChildren().add(newPrivateChatButton);
+
 
         return vBox;
     }

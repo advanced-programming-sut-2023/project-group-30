@@ -2,6 +2,7 @@ package network.server.controller.menu_controllers;
 
 import network.common.chat.Chat;
 import network.common.chat.ChatMessage;
+import network.server.Database;
 import network.server.controller.MainController;
 import network.server.model.User;
 
@@ -10,19 +11,32 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class ChatMenuController {
-    public static Chat makePrivateChat(String user1, String user2) {
+    public static String makePrivateChat(String username1, String username2) {
+        User user1 = Database.getUserByName(username1), user2 = Database.getUserByName(username2);
+        if (user1 == null || user2 == null)
+            return "User does not exist.";
+
         Chat chat = new Chat(Chat.Type.PRIVATE_CHAT);
-        chat.addUser(user1);
-        chat.addUser(user2);
-        return chat;
+        chat.addUser(username1);
+        chat.addUser(username2);
+
+        user1.addChat(chat);
+        user2.addChat(chat);
+        return "Success.";
     }
 
-    public static Chat makeRoom(String owner, String name) {
+    public static String makeRoom(String owner, String name) {
+        User user = Database.getUserByName(owner);
+        if (user == null)
+            return "User does not exist.";
+
         Chat chat = new Chat(Chat.Type.ROOM);
         chat.addUser(owner);
         chat.setName(name);
 
-        return chat;
+        user.addChat(chat);
+
+        return "Success.";
     }
 
     private static Chat publicChat;
@@ -31,12 +45,15 @@ public class ChatMenuController {
         publicChat.setName("Public Chat");
 
         try {
-            for (Chat chat :
-                    MainController.getCurrentUser().getChats()) {
-                if (chat.type.equals(Chat.Type.PUBLIC_CHAT)) {
-                    publicChat = chat;
-                    break;
-                }
+            for (User user :
+                    Database.getAllUsers()) {
+                for (Chat chat :
+                        user.getChats())
+                    if (chat.type.equals(Chat.Type.PUBLIC_CHAT)) {
+                        publicChat = chat;
+                        //break;
+                        //System.out.println(user.getUsername() + " has a PublicChat.");
+                    }
             }
         } catch (NullPointerException ignored) {
 
@@ -123,5 +140,22 @@ public class ChatMenuController {
                 new ChatMessage(currentUser.getUsername(), time, currentUser.getAvatarURL(), message)
         );
         return true;
+    }
+
+    public static String addMember(String username) {
+        Chat currentChat = MainController.getCurrentUser().getCurrentChat();
+        if (!currentChat.type.equals(Chat.Type.ROOM))
+            return "Only Rooms support adding members.";
+
+        User user = Database.getUserByName(username);
+        if (user == null)
+            return "This user does not exist.";
+
+        if (!currentChat.addUser(username)) {
+            return "This user is already in the chat.";
+        }
+        user.addChat(currentChat);
+
+        return "Success.";
     }
 }
