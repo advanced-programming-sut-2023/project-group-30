@@ -13,7 +13,8 @@ public class MainMenu extends AbstractMenu {
     @Override
     protected void initialize() {
         VBox vBox = SceneBuilder.getLabeledVBox("Main Menu", getEnterGameButton(),
-                getCreateGameButton(), getProfileMenuButton(), getChatMenuButton(), getLogoutButton());
+                getCreateGameButton(), getProfileMenuButton(), getChatMenuButton(), getLeaderboardMenuButton(),
+                getLogoutButton());
         borderPane.setCenter(vBox);
     }
 
@@ -67,6 +68,19 @@ public class MainMenu extends AbstractMenu {
         button.setOnMouseClicked((mouseEvent) -> {
             try {
                 new AllChatsMenu().start(stage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        return button;
+    }
+
+    private static Button getLeaderboardMenuButton() {
+        Button button = new Button("Leaderboard");
+        button.setOnMouseClicked((mouseEvent) -> {
+            try {
+                new LeaderboardMenu().start(stage);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

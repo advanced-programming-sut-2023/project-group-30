@@ -3,7 +3,10 @@ package network.server.model;
 import network.common.chat.Chat;
 import network.server.controller.menu_controllers.ChatMenuController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class User {
     private String username;
@@ -16,6 +19,8 @@ public class User {
     private String avatarURL;
     private final ArrayList<Chat> chats;
     private Chat currentChat;
+    private int score;
+    private String lastSeen;
 
 
     public String getNickname() {
@@ -38,6 +43,8 @@ public class User {
 
         this.chats = new ArrayList<>();
         chats.add(ChatMenuController.makePublicChat(username));
+        setScore();
+        this.lastSeen = "Never";
     }
 
     public Integer getHighScore() {
@@ -121,5 +128,34 @@ public class User {
 
         this.chats.add(chatToAdd);
         return true;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public String getLastSeen() {
+        return lastSeen;
+    }
+
+    public void toggleLastSeen() {
+        if (this.lastSeen.equals("Online")) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            String time = dtf.format(now);
+
+            lastSeen = time;
+            return;
+        }
+
+        this.lastSeen = "Online";
+    }
+
+    public void setOnline() {
+        this.lastSeen = "Online";
+    }
+
+    public void setScore() {
+        this.score = (new Random()).nextInt(100000);
     }
 }

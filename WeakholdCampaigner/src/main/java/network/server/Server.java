@@ -105,6 +105,8 @@ public class Server {
             }
 
             this.loggedInUserSessions.remove(toRemove);
+            if (toRemove != null) //toRemove will be null if a client closes while no user is logged in on it
+                toRemove.getUser().toggleLastSeen();
         }
     }
 }

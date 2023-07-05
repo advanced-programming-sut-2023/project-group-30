@@ -3,8 +3,6 @@ package network.client.controller.menu_controllers;
 import network.client.Client;
 import network.common.Packet;
 import network.common.chat.Chat;
-import network.server.controller.MainController;
-import network.server.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

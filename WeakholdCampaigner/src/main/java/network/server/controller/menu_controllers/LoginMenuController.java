@@ -5,6 +5,9 @@ import network.common.messages.MenuMessages;
 import network.server.Database;
 import network.server.model.User;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class LoginMenuController extends MenuController {
     private static int attemptNumber = 0;
 
@@ -23,6 +26,7 @@ public class LoginMenuController extends MenuController {
         if (stayLoggedIn) Database.saveStayLoggedInUser(user);
         MainController.setCurrentUser(user);
         attemptNumber = 0;
+        user.setOnline();
         return MenuMessages.USER_LOGGED_IN_SUCCESSFULLY;
     }
 
@@ -53,5 +57,7 @@ public class LoginMenuController extends MenuController {
 
     public static void userLogOut() {
         Database.saveStayLoggedInUser(null);
+
+        MainController.getCurrentUser().toggleLastSeen();
     }
 }

@@ -81,7 +81,7 @@ public class Database {
 
             for (Chat chat:
                  changeUserPrivateChats) {
-                System.out.println("PrivateChanging " + username + " " + chat.getName(username));
+                //System.out.println("PrivateChanging " + username + " " + chat.getName(username));
                 boolean result = user.addChat(chat);
                 if (result)
                     throw new RuntimeException();
@@ -89,7 +89,7 @@ public class Database {
 
             for (Chat chat:
                     changeUserPublicAndRooms) {
-                System.out.println("Changing " + username + " " + chat.getName(username));
+                //System.out.println("Changing " + username + " " + chat.getName(username));
                 boolean result = user.addChat(chat);
                 if (result)
                     throw new RuntimeException();

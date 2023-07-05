@@ -4,10 +4,7 @@ import network.common.Cookie;
 import network.common.NetworkComponent;
 import network.common.Packet;
 import network.server.controller.MainController;
-import network.server.controller.menu_controllers.ChatMenuController;
-import network.server.controller.menu_controllers.LoginMenuController;
-import network.server.controller.menu_controllers.ProfileMenuController;
-import network.server.controller.menu_controllers.SignupMenuController;
+import network.server.controller.menu_controllers.*;
 import network.common.messages.MenuMessages;
 
 import java.io.IOException;
@@ -446,6 +443,32 @@ public class SingleConnection extends Thread {
                     result = ChatMenuController.deleteMessage(
                             Integer.parseInt(packet.arguments.get("messageID"))
                     );
+                    networkComponent.sendLine(result);
+                    break;
+
+                case "getLeaderboard":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendPacket(new Packet("Error", new HashMap<>()));
+                        return;
+                    }
+
+                    networkComponent.sendLine("Sending");
+                    for (HashMap<String, String> argument :
+                            LeaderboardMenuController.getLeaderboard()) {
+                        networkComponent.sendPacket(new Packet("One", argument));
+                    }
+                    networkComponent.sendPacket(new Packet("Done", new HashMap<>()));
+
+                    break;
+
+                case "randomizeUserScores":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    LeaderboardMenuController.randomizeUserScores();
+                    result = "Success";
                     networkComponent.sendLine(result);
                     break;
 
