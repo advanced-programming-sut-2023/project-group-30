@@ -3,7 +3,10 @@ package network.server.controller.menu_controllers;
 import network.server.controller.MainController;
 import network.common.messages.MenuMessages;
 import network.server.Database;
+import network.server.model.User;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
 
 
 public class ProfileMenuController extends MenuController {
@@ -79,5 +82,61 @@ public class ProfileMenuController extends MenuController {
     public static String getSlogan() {
         String slogan = MainController.getCurrentUser().getSlogan();
         return (slogan != null) ? slogan : "slogan is empty";
+    }
+
+    public static String sendFriendRequest(String username) {
+        User user = Database.getUserByName(username);
+        if (user == null)
+            return "This username does not exist.";
+
+        User currentUser = MainController.getCurrentUser();
+        if (currentUser.getUsername().equals(username))
+            return "Cannot send a friend request to self.";
+
+        //currentUser.addFriendRequest(username);
+        user.addFriendRequest(currentUser.getUsername());
+
+        return "Success.";
+    }
+
+    public static HashMap<String, String> getFriends() {
+        HashMap<String, String> friends = new HashMap<>();
+
+        int friendCounter = 1;
+        for (String username :
+                MainController.getCurrentUser().getFriends()) {
+            friends.put(String.valueOf(friendCounter++), username);
+        }
+
+        return friends;
+    }
+
+    public static HashMap<String, String> getFriendRequests() {
+        HashMap<String, String> friends = new HashMap<>();
+
+        int friendCounter = 1;
+        for (String username :
+                MainController.getCurrentUser().getFriendRequests()) {
+            friends.put(String.valueOf(friendCounter++), username);
+        }
+
+        return friends;
+    }
+
+    public static String resolveFriendRequest(Boolean accept, String username) {
+        User otherUser = Database.getUserByName(username);
+        if (otherUser == null)
+            return "This username does not exist.";
+
+        User currentUser = MainController.getCurrentUser();
+        if (!currentUser.removeFromFriendRequests(username))
+            return "Something went wrong.";
+
+        if (accept) {
+            currentUser.addFriend(username);
+            otherUser.addFriend(currentUser.getUsername());
+        }
+
+        return "Success";
     }
 }

@@ -2,7 +2,8 @@ package network.common.chat;
 
 public class ChatMessage {
     public final String sender, sentTime, senderAvatarURL;
-    //todo: must not store the AvatarURL, rather an Image or ImagePattern
+    //todo: must not store the AvatarURL, rather an Image or ImagePattern. also do something so that if a user changes
+    // their avatar, the messages get updated.
     private String message;
     public final int IDLocalToChat;
     private boolean seen = false;

@@ -5,7 +5,9 @@ import network.common.Packet;
 import network.common.messages.MenuMessages;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ProfileMenuController extends MenuController {
@@ -98,6 +100,43 @@ public class ProfileMenuController extends MenuController {
 
     public static String getSlogan() {
         Client.clientNetworkComponent.sendPacket(new Packet("getSlogan", new HashMap<>()));
+
+        return Client.clientNetworkComponent.readLine();
+    }
+
+    public static String sendFriendRequest(String username) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("username", username);
+        Client.clientNetworkComponent.sendPacket(new Packet("sendFriendRequest", arguments));
+
+        return Client.clientNetworkComponent.readLine();
+    }
+
+    public static List<String> getFriends() {
+        Client.clientNetworkComponent.sendPacket(new Packet("getFriends", new HashMap<>()));
+
+        Packet packet = Client.clientNetworkComponent.readPacket();
+        if (!packet.command.equals("Friends"))
+            throw new RuntimeException();
+
+        return new ArrayList<>(packet.arguments.values());
+    }
+
+    public static List<String> getFriendRequests() {
+        Client.clientNetworkComponent.sendPacket(new Packet("getFriendRequests", new HashMap<>()));
+
+        Packet packet = Client.clientNetworkComponent.readPacket();
+        if (!packet.command.equals("FriendRequests"))
+            throw new RuntimeException();
+
+        return new ArrayList<>(packet.arguments.values());
+    }
+
+    public static String resolveFriendRequest(Boolean accept, String username) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("accept", accept.toString());
+        arguments.put("username", username);
+        Client.clientNetworkComponent.sendPacket(new Packet("resolveFriendRequest", arguments));
 
         return Client.clientNetworkComponent.readLine();
     }

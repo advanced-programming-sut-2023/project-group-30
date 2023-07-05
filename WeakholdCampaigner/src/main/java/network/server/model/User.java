@@ -21,6 +21,8 @@ public class User {
     private Chat currentChat;
     private int score;
     private String lastSeen;
+    private final ArrayList<String> friends = new ArrayList<>();
+    private final ArrayList<String> friendRequests = new ArrayList<>();
 
 
     public String getNickname() {
@@ -157,5 +159,30 @@ public class User {
 
     public void setScore() {
         this.score = (new Random()).nextInt(100000);
+    }
+
+    public boolean addFriend(String username) {
+        if (this.friends.size() >= 100)
+            return false;
+
+        this.friends.add(username);
+        return true;
+    }
+
+    public boolean addFriendRequest(String username) {
+        this.friendRequests.add(username);
+        return true;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public ArrayList<String> getFriendRequests() {
+        return friendRequests;
+    }
+
+    public boolean removeFromFriendRequests(String username) {
+        return this.friendRequests.remove(username);
     }
 }

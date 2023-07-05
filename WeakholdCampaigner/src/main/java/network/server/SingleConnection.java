@@ -84,10 +84,11 @@ public class SingleConnection extends Thread {
                         return;
                     }
 
-                    String username = packet.arguments.get("username"), password = packet.arguments.get("password");
-                    Boolean stayLoggedIn = packet.arguments.get("stayLoggedIn").equals("true");
-                    result = LoginMenuController.userLogin(username, password,
-                            stayLoggedIn).toString();
+                    result = LoginMenuController.userLogin(
+                            packet.arguments.get("username"),
+                            packet.arguments.get("password"),
+                            packet.arguments.get("stayLoggedIn").equals("true")
+                    ).toString();
 
                     networkComponent.sendLine(result);
 
@@ -470,6 +471,47 @@ public class SingleConnection extends Thread {
                     LeaderboardMenuController.randomizeUserScores();
                     result = "Success";
                     networkComponent.sendLine(result);
+                    break;
+
+                case "sendFriendRequest":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ProfileMenuController.sendFriendRequest(packet.arguments.get("username"));
+                    networkComponent.sendLine(result);
+                    break;
+
+                case "getFriends":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    networkComponent.sendPacket(new Packet("Friends", ProfileMenuController.getFriends()));
+                    break;
+
+                case "getFriendRequests":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    networkComponent.sendPacket(new Packet("FriendRequests", ProfileMenuController.getFriendRequests()));
+                    break;
+
+                case "resolveFriendRequest":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    networkComponent.sendLine(ProfileMenuController.resolveFriendRequest(
+                            Boolean.valueOf(packet.arguments.get("accept")),
+                            //Boolean.valueOf will return false for every incorrectly formatted string. Not desirable.
+                            packet.arguments.get("username")
+                    ));
                     break;
 
                 case "Disconnect":
