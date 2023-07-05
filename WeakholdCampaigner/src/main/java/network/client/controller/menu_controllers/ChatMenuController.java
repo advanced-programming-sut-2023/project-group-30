@@ -3,6 +3,8 @@ package network.client.controller.menu_controllers;
 import network.client.Client;
 import network.common.Packet;
 import network.common.chat.Chat;
+import network.server.controller.MainController;
+import network.server.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,6 +72,31 @@ public class ChatMenuController {
         HashMap<String, String> arguments = new HashMap<>();
         arguments.put("username", username);
         Client.clientNetworkComponent.sendPacket(new Packet("addMember", arguments));
+
+        return Client.clientNetworkComponent.readLine();
+    }
+
+    public static Boolean canEditMessage(Integer messageID) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("messageID", messageID.toString());
+        Client.clientNetworkComponent.sendPacket(new Packet("canEditMessage", arguments));
+
+        return Boolean.parseBoolean(Client.clientNetworkComponent.readLine());
+    }
+
+    public static String editMessage(Integer messageID, String newMessage) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("messageID", messageID.toString());
+        arguments.put("newMessage", newMessage);
+        Client.clientNetworkComponent.sendPacket(new Packet("editMessage", arguments));
+
+        return Client.clientNetworkComponent.readLine();
+    }
+
+    public static String deleteMessage(Integer messageID) {
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("messageID", messageID.toString());
+        Client.clientNetworkComponent.sendPacket(new Packet("deleteMessage", arguments));
 
         return Client.clientNetworkComponent.readLine();
     }

@@ -25,7 +25,7 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
         captchaValidity = new TextField();
 
         VBox vBox = SceneBuilder.getLabeledVBox("Profile Menu",
-                SceneBuilder.getHBox(getUserInfo(), getUserSlogan(), getAvatarRectangle()),
+                SceneBuilder.getHBox(getUserInfo(), getUserSlogan(), getAvatarRectangle(1.5)),
                 getChangeAvatarButton(), getChangeUsernameVBox() , getChangePasswordVBox(),
                 getChangeNicknameVBox(), getChangeEmailVBox(), getChangeSloganVBox(), getMainMenuButton());
         borderPane.setCenter(vBox);
@@ -55,8 +55,8 @@ public class ProfileMenu extends AbstractMenu implements SupportsAvatarSelection
         }
     }
 
-    private Rectangle getAvatarRectangle() {
-        Rectangle avatar = new Rectangle(1.5 * PIXEL_UNIT, 1.5 * PIXEL_UNIT);
+    private Rectangle getAvatarRectangle(Double size) {
+        Rectangle avatar = new Rectangle(size * PIXEL_UNIT, size * PIXEL_UNIT);
         try {
             Image image = new Image(ProfileMenuController.getAvatarURL());
             ImagePattern imagePattern = new ImagePattern(image);

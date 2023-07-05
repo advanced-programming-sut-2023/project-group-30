@@ -20,7 +20,7 @@ public class Chat {
 
         name = "NA";
 
-        chatMessages.add(new ChatMessage("me", "69:85", "", "this is a test"));
+        //chatMessages.add(new ChatMessage("me", "69:85", "", "this is a test"));
     }
 
     public boolean addUser(String user) {
@@ -50,5 +50,28 @@ public class Chat {
 
     public void addMessage(ChatMessage chatMessage) {
         chatMessages.add(chatMessage);
+    }
+
+    public int getNewMessageID() {
+        return this.chatMessages.size() + 1;
+    }
+
+    public ChatMessage getMessageByID(Integer messageID) {
+        for (ChatMessage message :
+                this.chatMessages) {
+            if (messageID.equals(message.IDLocalToChat)) {
+                return message;
+            }
+        }
+
+        return null;
+    }
+
+    public Boolean deleteMessage(Integer messageID) {
+        ChatMessage message = getMessageByID(messageID);
+        if (message == null) return false;
+
+        this.chatMessages.remove(message);
+        return true;
     }
 }

@@ -412,6 +412,43 @@ public class SingleConnection extends Thread {
                     networkComponent.sendLine(result);
                     break;
 
+                case "canEditMessage":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ChatMenuController.canEditMessage(
+                            Integer.parseInt(packet.arguments.get("messageID"))
+                    ).toString();
+                    networkComponent.sendLine(result);
+                    break;
+
+                case "editMessage":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ChatMenuController.editMessage(
+                            Integer.parseInt(packet.arguments.get("messageID")),
+                            packet.arguments.get("newMessage")
+                    );
+                    networkComponent.sendLine(result);
+                    break;
+
+                case "deleteMessage":
+                    if (!authorizeUser(authorizationCookie)) {
+                        networkComponent.sendLine("Error");
+                        return;
+                    }
+
+                    result = ChatMenuController.deleteMessage(
+                            Integer.parseInt(packet.arguments.get("messageID"))
+                    );
+                    networkComponent.sendLine(result);
+                    break;
+
                 case "Disconnect":
                     isConnected = false;
                     break;

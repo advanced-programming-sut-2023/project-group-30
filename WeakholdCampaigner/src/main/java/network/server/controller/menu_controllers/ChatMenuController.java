@@ -120,6 +120,7 @@ public class ChatMenuController {
             if (chat.getName(currentUser.getUsername()).equals(chatName)) {
                 if (chat.type.toString().equals(type)) {
                     currentUser.setCurrentChat(chat);
+                    makeMessagesSeen(chat, currentUser.getUsername());
                     return chat;
                 }
             }
@@ -129,15 +130,17 @@ public class ChatMenuController {
     }
 
     public static boolean sendChatMessage(String message) {
-        System.out.println("message received");
+        //System.out.println("message received");
         User currentUser = MainController.getCurrentUser();
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         String time = dtf.format(now);
 
-        currentUser.getCurrentChat().addMessage(
-                new ChatMessage(currentUser.getUsername(), time, currentUser.getAvatarURL(), message)
+        Chat currentChat = currentUser.getCurrentChat();
+        currentChat.addMessage(
+                new ChatMessage(currentUser.getUsername(), time, currentUser.getAvatarURL(),
+                        message, currentChat.getNewMessageID())
         );
         return true;
     }
@@ -157,5 +160,36 @@ public class ChatMenuController {
         user.addChat(currentChat);
 
         return "Success.";
+    }
+
+    public static Boolean canEditMessage(Integer messageID) {
+        User currentUser = MainController.getCurrentUser();
+        return
+                currentUser.getCurrentChat().getMessageByID(messageID).sender.equals(currentUser.getUsername());
+    }
+
+    public static String editMessage(Integer messageID, String newMessage) {
+        if (!canEditMessage(messageID))
+            return "Access Denied.";
+
+        MainController.getCurrentUser().getCurrentChat().getMessageByID(messageID).setMessage(newMessage);
+        return "Success.";
+    }
+
+    public static String deleteMessage(Integer messageID) {
+        if (!canEditMessage(messageID))
+            return "Access Denied.";
+
+        if (!MainController.getCurrentUser().getCurrentChat().deleteMessage(messageID))
+            return "Something went wrong.";
+        return "Success.";
+    }
+
+    private static void makeMessagesSeen(Chat chat, String viewer) {
+        for (ChatMessage chatMessage:
+                chat.getChatMessages()) {
+            if (!chatMessage.sender.equals(viewer))
+                chatMessage.setSeen();
+        }
     }
 }

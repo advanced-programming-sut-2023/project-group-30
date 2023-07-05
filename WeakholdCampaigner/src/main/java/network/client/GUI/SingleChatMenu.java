@@ -2,9 +2,12 @@ package network.client.GUI;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import network.client.controller.menu_controllers.ChatMenuController;
@@ -56,13 +59,21 @@ public class SingleChatMenu extends AbstractMenu{
         for (ChatMessage message :
                 chat.getChatMessages()) {
             Text preText = new Text("---by:" + message.sender + "---at:" + message.sentTime + "---");
-            preText.setFill(new Color(1, 1, 0, 1));
-            vBox.getChildren().add(preText);
+            preText.setFill(new Color(1, 0, 0, 1));
+
             Text text = new Text(message.getMessage());
             text.setFill(new Color(1, 1, 0, 1));
+
+            Text postText = new Text("-----------------");
+
+            postText.setFill(new Color(1, 0, 0, 1));
+
+            HBox editMessageField = getMessageDetailsAndOptionsField(message);
+
+            vBox.getChildren().add(SceneBuilder.getHBox(getAvatarRectangle(1.0, message), preText));
             vBox.getChildren().add(text);
-            Text postText = new Text("---------");
-            postText.setFill(new Color(1, 1, 0, 1));
+            if (editMessageField != null)
+                vBox.getChildren().add(editMessageField);
             vBox.getChildren().add(postText);
         }
 
@@ -82,11 +93,7 @@ public class SingleChatMenu extends AbstractMenu{
     private Button getRefreshButton() {
         Button button = new Button("Refresh");
         button.setOnMouseClicked((mouseEvent) -> {
-            try {
-                manualStart(stage, chat.type.toString(), name);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            refreshPage();
         });
 
         return button;
@@ -108,5 +115,57 @@ public class SingleChatMenu extends AbstractMenu{
 
 
         return SceneBuilder.getHBox(textField, button);
+    }
+
+    private HBox getMessageDetailsAndOptionsField(ChatMessage chatMessage) {
+        if (!ChatMenuController.canEditMessage(chatMessage.IDLocalToChat))
+            return null;
+
+        Button editMessageButton = new Button("Edit message");
+        editMessageButton.setOnMouseClicked((mouseEvent) -> {
+            String newMessage = showTextInputDialogAndWait("Enter new message");
+            String result = ChatMenuController.editMessage(chatMessage.IDLocalToChat, newMessage);
+            showInformationAlertAndWait(result);
+
+            refreshPage();
+        });
+
+        Button deleteMessageButton = new Button("Delete message");
+        deleteMessageButton.setOnMouseClicked((mouseEvent) -> {
+            String result = ChatMenuController.deleteMessage(chatMessage.IDLocalToChat);
+            showInformationAlertAndWait(result);
+
+            refreshPage();
+        });
+
+        Text sent = new Text("--Sent--");
+        sent.setFill(new Color(1, 0, 0, 1));
+
+        Text seen = new Text();
+        seen.setText(chatMessage.isSeen() ? "--Seen--" : "--Not Seen--");
+        seen.setFill(new Color(1, 0, 0, 1));
+
+        return SceneBuilder.getHBox(editMessageButton, deleteMessageButton, sent, seen);
+    }
+
+    private void refreshPage() {
+        try {
+            manualStart(stage, chat.type.toString(), name);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Rectangle getAvatarRectangle(Double size, ChatMessage message) {
+        Rectangle avatar = new Rectangle(size * PIXEL_UNIT, size * PIXEL_UNIT);
+        try {
+            Image image = new Image(message.senderAvatarURL);
+            ImagePattern imagePattern = new ImagePattern(image);
+            avatar.setFill(imagePattern);
+        } catch (Exception exception) {
+            avatar.setFill(new Color(0.69, 0.69, 0.69, 1));
+        }
+
+        return avatar;
     }
 }
