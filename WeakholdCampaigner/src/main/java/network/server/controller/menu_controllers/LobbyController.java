@@ -10,6 +10,7 @@ public class LobbyController {
 
         Game game = new Game(capacity, admin, Database.getGames().size() + 1);
         Database.addGame(game);
+        System.out.println("created game: capacity=" + capacity + " admin=" + admin);
 
         return "Success";
     }
