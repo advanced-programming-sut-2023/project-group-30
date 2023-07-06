@@ -8,9 +8,11 @@ public class LobbyController {
         if (capacity > 8 || capacity < 2)
             return "Capacity must be between 2 and 8";
 
-        Game game = new Game(capacity, admin, Database.getGames().size() + 1);
+        Integer ID = Database.getGames().size() + 1;
+        Game game = new Game(capacity, admin, ID);
         Database.addGame(game);
-        System.out.println("created game: capacity=" + capacity + " admin=" + admin);
+        System.out.println("created game: capacity=" + capacity + " admin=" + admin + " ID=" + ID);
+        System.out.println(ChatMenuController.makeRoom(admin, String.valueOf(ID)));
 
         return "Success";
     }
