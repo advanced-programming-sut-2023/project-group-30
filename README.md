@@ -14,7 +14,7 @@ The networking features are only available under the /Network branch. The main g
 
 We adhered to the Model-View-Controller architectural pattern, clean code principles, and object-oriented design paradigms for easier development, debugging, and testing.
 
-The game's data is stored in JSON format, and sensitive information are encrypted using the SHA-256 algorithm.
+The game stores its data in JSON format, and encrypts sensitive information using the SHA-256 algorithm.
 
 ## Tools
 - Build automation and project management: Apache Maven
@@ -22,6 +22,12 @@ The game's data is stored in JSON format, and sensitive information are encrypte
 - Test automation: JUnit
   
 Maven will automatically download and install all required packages.
+
+## Documentation
+
+Project assets and documentation can be found under [this link](https://github.com/advanced-programming-sut-2023/project-assets).
+
+Before starting the development process, we summarized what we thought would be the architecture for this project in a UML diagram, which you can find under the *UML* directory.
 
 ## Team
 - [Mirshaf](https://github.com/mirshaf)
